@@ -107,7 +107,7 @@ bool HelloWorld::init()
     else
     {
         // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+        sprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
@@ -119,6 +119,9 @@ bool HelloWorld::init()
     // the .plist file can be generated with any of the tools mentioned below
     spritecache->addSpriteFramesWithFile("sprites/lemmings.plist");
 
+    /*auto test = Sprite::create("sprites/traps.png");
+    test->setPosition(20, 20);
+    this->addChild(test, 0);*/
 
     auto lemming1 = new Lemmings(Vec2(20,20));
     this->addChild(lemming1, 0);
