@@ -28,7 +28,12 @@ USING_NS_CC;
 
 Scene* HelloWorld::createScene()
 {
-    return HelloWorld::create();
+    auto scene = Scene::createWithPhysics();
+
+    auto layer = HelloWorld::create();
+    scene->addChild(layer);
+
+    return scene;
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -41,21 +46,11 @@ static void problemLoading(const char* filename)
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-    //////////////////////////////
-    // 1. super init first
-    if ( !Scene::init() )
-    {
-        return false;
-    }
+    if (!Scene::initWithPhysics()) return false;
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
-
-    // add a "close" icon to exit the progress. it's an autorelease object
     auto closeItem = MenuItemImage::create(
                                            "CloseNormal.png",
                                            "CloseSelected.png",
@@ -79,48 +74,37 @@ bool HelloWorld::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-    /////////////////////////////
-    // 3. add your codes below...
-
-    // add a label shows "Hello World"
-    // create and initialize a label
-
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr)
-    {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    }
-    else
-    {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
-
-        // add the label as a child to this layer
-        this->addChild(label, 1);
-    }
-
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
-
     // load the Sprite Sheet
     auto spritecache = SpriteFrameCache::getInstance();
 
     // the .plist file can be generated with any of the tools mentioned below
     spritecache->addSpriteFramesWithFile("sprites/lemmings.plist");
 
+    _tileMap = TMXTiledMap::create("maps/test.tmx");
+    addChild(_tileMap);
+    _tileMap->setScale(3.0);
+
+    _backGround = _tileMap->getLayer("ForeGround");
+    _collision = _tileMap->getObjectGroup("MapCollisions");
+
+    ValueVector& rectangles_array = _collision->getObjects();
+    for (Value &rectangle : rectangles_array)
+    {
+        ValueMap rectangle_properties = rectangle.asValueMap();
+
+        Node* node = Node::create();
+        PhysicsBody* box = PhysicsBody::createEdgeBox(Size(rectangle_properties["width"].asInt(), rectangle_properties["height"].asInt()));
+        node->setPhysicsBody(box);
+
+        box->setGroup(1);
+
+        node->setPosition(Vec2(rectangle_properties["x"].asInt() + rectangle_properties["width"].asInt() / 2, rectangle_properties["y"].asInt() + +rectangle_properties["height"].asInt() / 2));
+        box->setGravityEnable(false);
+        box->setDynamic(false);
+
+        this->addChild(node);
+    }
+    
 
     return true;
 }

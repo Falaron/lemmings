@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="220" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="26">
+ <tileset firstgid="1" name="TileKit" tilewidth="32" tileheight="32" tilecount="228" columns="12">
+  <image source="TileKit.png" width="384" height="608"/>
+ </tileset>
+ <layer id="1" name="Background" width="220" height="18">
+  <data encoding="base64" compression="zlib">
+   eJztmMtugzAQRb3oY5smatf8RLuGPr6t+/DDdVRQR5N5ObiBwL3SEcSMx+PHJVGalFIDAAAAAAAAuBmo5q4FgLVDNXctAKwdqrlrAWDtUC0xHwBTeM7cZx4yL4X9SuIjRFWas7mgHwD/wS7zlNlnDoX9SuIjSFpiTgAuZUt+4201awdAgmuLfmuEz2A5fGZeM2/Ddbz/Ksih6dpz4dqy32qNAerSZrrM+0A38FGQY5T2+VpwbdVv9HnNOYDptOnPY7fqt5Pu0u//kBEenfrW5LdaY4E6tGm63045uKz4ktho/PhdNrInV47npbX4jcZJNUypf2rtW4OqS+d+4/o2aAvjS2Kj8fS3I71K/js44+0CMaVIqpnTi7tk3afsGdDXL+K3fuDI7o+kzYvthb7aMx43SutX6jdr7NFvPYs7KvG8TXomiee31tdak5TO6+xZjFWfNY62BtI+SO1aX+uMSHP1Yq3avHlqtXvtWl9pbnQfJL/RGOtMRdZHm0PkDEiekHJyv2lQv2n7z/3mnR/PJ9wbdF21dbHG4l7y5L3vvHMd9WLUe96eWv6z3nOWj0vfJZFzZ60pf/YDFOi2jA==
+  </data>
+ </layer>
+ <layer id="2" name="CloudLayer" width="220" height="18">
+  <data encoding="base64" compression="zlib">
+   eJzt1jkKAzEMBdC5/+GyldnOEkGKDJnGAQ+S4/dAteUvg7wsQIZD1DHqFHVO7oV233O75LZDo2vULeoe9Yh65rZDI3OjMvugn4pZZvRU4cyqquyDim/1V1WyXMvoaZYzRyYvADL9w78PRuHfx2zsmLdeOcjzQxZbI+6YPebYK4e98xzpDY/4ttiaeY4z3x0AAAAAoKIXN6V7wQ==
+  </data>
+ </layer>
+ <layer id="3" name="Foreground" width="220" height="18">
+  <data encoding="base64" compression="zlib">
+   eJztmTlOAzEUhi12UrEoVCw1lIhFdGE7AFdAIERDScEBImrgBEBJgJKtysn4rbHFZGQz3mbsGb1P+pXJ5I3jPPuXnx3GCIIgCIIgCIJoCmNQF5qElqBrT3VFO7N1/giC+IdH6Al6jt0RwRw0Dy0GaitEOwQRilfoDXqP3REB+Y1IAV5rjUMzbLQ+0t035Qv6hn58OxiI0H7jbcn6lOpKQoWvh0zb2FTcM90b2caXifd1gmX+kJqGOgqZ5kX6TYpoDqntc9pI0R++a1yxPVrnmkPofc4LNBDXIdYzU4YVt+9D1X4j3zUH1T7nVLyeQeea5y7E6yUbnesf0GfIDhrA68cjaBvagY41cbHW8rr8RvVlusg9zq3isytmvj/h83wXOhHaYtl836uw7yp60D50AB1qYmKdWdbtN1rn0uVBce/G4vkey+b3oPA+FPn6tKwfZX6LdWZZt99onUsX1fpmQ49l85vXkEMW3m+6+lTuDTsObdqcBYYglt9onUsL7g/V+laM0SHnPD/v5mM7xbKzbtVctol1iU+ZWH6T36XLo83/GU0fg5jkc6f6H8gmv332N/4LrHwu2cS6xKdIbL/ln3HJYxvGICb53PUVss3vMrQCrUJrAWNd4lMkBb/55LENYxCTfO7uhe5y1y75XYc2Koh1iU+NWH4rjp9PHps+BjH5BTnwYdA=
+  </data>
+ </layer>
+ <layer id="4" name="Foreground Decor" width="220" height="18">
+  <data encoding="base64" compression="zlib">
+   eJzt2cENgkAQBVDizXa82Y43rMQCrMUCxMLkSBTNLLvsYnwvmYTDQv4BEn6m6wAAyjmNc86cvnpq+F37jHt3xVIAABCV0pn6xPO6FryLdKZpN8rpWHPPA4Ac99YBYIFoP3nV8n2/TK5L/A9CLcfAmcPqKdJcWweAPzL3vQ3jPGoHgZXcPgzbFt152GfUN7QOwGLfdhI6LgAAbN8TPQsnpQ==
+  </data>
+ </layer>
+ <objectgroup id="5" name="MapCollisions">
+  <object id="25" x="1.33333" y="480" width="414.667" height="96"/>
+ </objectgroup>
+ <objectgroup id="6" name="Destructibles">
+  <object id="21" name="flower" x="368.182" y="479.818">
+   <point/>
+  </object>
+ </objectgroup>
+</map>
