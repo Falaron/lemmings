@@ -45,6 +45,15 @@
     <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\res\.gitkeep">
       <Filter>Resources\res</Filter>
     </ClInclude>
+    <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\sprites\doors_and_decorations.png">
+      <Filter>Resources\sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\sprites\lemmings.png">
+      <Filter>Resources\sprites</Filter>
+    </ClInclude>
+    <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\sprites\traps.png">
+      <Filter>Resources\sprites</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="S:\~\Lemmings\Lemmings\CMakeLists.txt" />
@@ -63,6 +72,9 @@
     </Filter>
     <Filter Include="Resources\res">
       <UniqueIdentifier>{F06EDF6D-3039-3D06-A6DD-D5146171A011}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\sprites">
+      <UniqueIdentifier>{24597EE6-FDD0-383B-AD06-7BB5B3F97BB5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{44CFCAD0-9CD1-32F6-A09D-89B06426873B}</UniqueIdentifier>

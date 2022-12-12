@@ -819,6 +819,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\fonts\Marker Felt.ttf" />
     <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\fonts\arial.ttf" />
     <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\res\.gitkeep" />
+    <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\sprites\doors_and_decorations.png" />
+    <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\sprites\lemmings.png" />
+    <ClInclude Include="S:\~\Lemmings\Lemmings\Resources\sprites\traps.png" />
     <ClCompile Include="S:\~\Lemmings\Lemmings\cocos2d\cocos\precheader.cpp" />
   </ItemGroup>
   <ItemGroup>
