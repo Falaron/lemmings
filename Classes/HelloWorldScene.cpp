@@ -48,8 +48,6 @@ bool HelloWorld::init()
         return false;
     }
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/lemmings.plist");
-
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -84,8 +82,9 @@ bool HelloWorld::init()
     /////////////////////////////
 
     // sprite
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/lemmings.plist");
     auto frames = GetAnimation("walk/%04d.png", 9);
-    auto sprite = Sprite::createWithSpriteFrame(frames.front());
+    /*auto sprite = Sprite::createWithSpriteFrame(frames.front());
     this->addChild(sprite,1);
     sprite->setPosition(50, 50);
     sprite->setScale(5);
@@ -95,7 +94,7 @@ bool HelloWorld::init()
 
     auto movement = MoveTo::create(50, Vec2(2148, 50));
     auto sequence = Sequence::create(movement, NULL);
-    sprite->runAction(RepeatForever::create(sequence));
+    sprite->runAction(RepeatForever::create(sequence));*/
 
 
     return true;
