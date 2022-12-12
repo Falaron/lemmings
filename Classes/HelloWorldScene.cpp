@@ -114,6 +114,14 @@ bool HelloWorld::init()
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }
+
+    // load the Sprite Sheet
+    auto spritecache = SpriteFrameCache::getInstance();
+
+    // the .plist file can be generated with any of the tools mentioned below
+    spritecache->addSpriteFramesWithFile("sprites/lemmings.plist");
+
+
     return true;
 }
 
