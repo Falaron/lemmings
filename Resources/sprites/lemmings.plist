@@ -181,7 +181,7 @@
                 <key>spriteSize</key>
                 <string>{6,12}</string>
                 <key>spriteSourceSize</key>
-                <string>{16,16}</string>
+                <string>{437,710}</string>
                 <key>textureRect</key>
                 <string>{{22,0},{6,12}}</string>
                 <key>textureRotated</key>
