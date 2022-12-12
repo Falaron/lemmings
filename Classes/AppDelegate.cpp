@@ -73,9 +73,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("Lemmings", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithFullScreen("Lemmings : The Two");
 #else
-        glview = GLViewImpl::create("Lemmings");
+        glview = GLViewImpl::create("Lemmings : The Two");
 #endif
         director->setOpenGLView(glview);
     }
