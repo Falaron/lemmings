@@ -15,7 +15,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{29,15},{6,11}}</string>
+                <string>{{21,12},{6,11}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
@@ -23,7 +23,7 @@
                 <key>vertices</key>
                 <string>11 14 5 14 5 3 11 3</string>
                 <key>verticesUV</key>
-                <string>35 26 29 26 29 15 35 15</string>
+                <string>27 23 21 23 21 12 27 12</string>
             </dict>
             <key>walk/0002.png</key>
             <dict>
@@ -36,7 +36,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{20,1},{7,12}}</string>
+                <string>{{15,0},{7,12}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
@@ -44,7 +44,7 @@
                 <key>vertices</key>
                 <string>12 14 5 14 5 2 12 2</string>
                 <key>verticesUV</key>
-                <string>27 13 20 13 20 1 27 1</string>
+                <string>22 12 15 12 15 0 22 0</string>
             </dict>
             <key>walk/0003.png</key>
             <dict>
@@ -57,7 +57,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,14},{8,11}}</string>
+                <string>{{0,12},{8,11}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
@@ -65,7 +65,7 @@
                 <key>vertices</key>
                 <string>12 14 4 14 4 3 12 3</string>
                 <key>verticesUV</key>
-                <string>9 25 1 25 1 14 9 14</string>
+                <string>8 23 0 23 0 12 8 12</string>
             </dict>
             <key>walk/0004.png</key>
             <dict>
@@ -78,7 +78,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{20,15},{7,11}}</string>
+                <string>{{28,0},{7,11}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
@@ -86,7 +86,7 @@
                 <key>vertices</key>
                 <string>11 14 4 14 4 3 11 3</string>
                 <key>verticesUV</key>
-                <string>27 26 20 26 20 15 27 15</string>
+                <string>35 11 28 11 28 0 35 0</string>
             </dict>
             <key>walk/0005.png</key>
             <dict>
@@ -99,7 +99,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{37,1},{6,11}}</string>
+                <string>{{15,12},{6,11}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
@@ -107,7 +107,7 @@
                 <key>vertices</key>
                 <string>11 14 5 14 5 3 11 3</string>
                 <key>verticesUV</key>
-                <string>43 12 37 12 37 1 43 1</string>
+                <string>21 23 15 23 15 12 21 12</string>
             </dict>
             <key>walk/0006.png</key>
             <dict>
@@ -120,7 +120,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{11,1},{7,12}}</string>
+                <string>{{8,0},{7,12}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
@@ -128,7 +128,7 @@
                 <key>vertices</key>
                 <string>12 14 5 14 5 2 12 2</string>
                 <key>verticesUV</key>
-                <string>18 13 11 13 11 1 18 1</string>
+                <string>15 12 8 12 8 0 15 0</string>
             </dict>
             <key>walk/0007.png</key>
             <dict>
@@ -141,7 +141,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{8,11}}</string>
+                <string>{{0,0},{8,11}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
@@ -149,7 +149,7 @@
                 <key>vertices</key>
                 <string>12 14 4 14 4 3 12 3</string>
                 <key>verticesUV</key>
-                <string>9 12 1 12 1 1 9 1</string>
+                <string>8 11 0 11 0 0 8 0</string>
             </dict>
             <key>walk/0008.png</key>
             <dict>
@@ -162,7 +162,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{11,15},{7,11}}</string>
+                <string>{{8,12},{7,11}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
@@ -170,7 +170,7 @@
                 <key>vertices</key>
                 <string>11 14 4 14 4 3 11 3</string>
                 <key>verticesUV</key>
-                <string>18 26 11 26 11 15 18 15</string>
+                <string>15 23 8 23 8 12 15 12</string>
             </dict>
             <key>walk/0009.png</key>
             <dict>
@@ -183,7 +183,7 @@
                 <key>spriteSourceSize</key>
                 <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{29,1},{6,12}}</string>
+                <string>{{22,0},{6,12}}</string>
                 <key>textureRotated</key>
                 <false/>
                 <key>triangles</key>
@@ -191,7 +191,7 @@
                 <key>vertices</key>
                 <string>11 14 5 14 5 2 11 2</string>
                 <key>verticesUV</key>
-                <string>35 13 29 13 29 1 35 1</string>
+                <string>28 12 22 12 22 0 28 0</string>
             </dict>
         </dict>
         <key>metadata</key>
@@ -205,9 +205,9 @@
             <key>realTextureFileName</key>
             <string>lemmings.png</string>
             <key>size</key>
-            <string>{44,27}</string>
+            <string>{35,23}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:70a0f4c720ce14576386659c8ef9772b:a90d14c06eddf291d25f8952f7d98457:88ab09b251cb682b789df6fd09f6f023$</string>
+            <string>$TexturePacker:SmartUpdate:7ff064f87560b0207b2c71f255e7479a:a90d14c06eddf291d25f8952f7d98457:88ab09b251cb682b789df6fd09f6f023$</string>
             <key>textureFileName</key>
             <string>lemmings.png</string>
         </dict>

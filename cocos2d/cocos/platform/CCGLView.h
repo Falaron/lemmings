@@ -115,6 +115,7 @@ public:
      */
     virtual ~GLView();
 
+
     /** Force destroying EGL view, subclass must implement this method. 
      *
      * @lua endToLua

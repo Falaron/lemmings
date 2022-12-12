@@ -494,4 +494,5 @@ void GLView::renderScene(Scene* scene, Renderer* renderer)
     scene->render(renderer, Mat4::IDENTITY, nullptr);
 }
 
+
 NS_CC_END

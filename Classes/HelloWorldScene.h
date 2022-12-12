@@ -39,8 +39,13 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+    //void update(float delta) override;
 private:
     cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
+
+    cocos2d::Sprite* cursorSprite;
+    float cursorX, cursorY;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

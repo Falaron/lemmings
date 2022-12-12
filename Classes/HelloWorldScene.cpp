@@ -21,7 +21,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-
+#include <iostream>
 #include "HelloWorldScene.h"
 
 USING_NS_CC;
@@ -89,12 +89,36 @@ bool HelloWorld::init()
     sprite->setPosition(50, 50);
     sprite->setScale(5);
 
-    auto animation = Animation::createWithSpriteFrames(frames, 1.0f / 8);
+    auto animation = Animation::createWithSpriteFrames(frames, 1.0f / 9);
     sprite->runAction(RepeatForever::create(Animate::create(animation)));
 
     auto movement = MoveTo::create(50, Vec2(2148, 50));
     auto sequence = Sequence::create(movement, NULL);
     sprite->runAction(RepeatForever::create(sequence));
+
+
+    //Cursor show
+    this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
+    this->addChild(this->cursorSprite, 1);
+
+    //Mouse listener
+    auto mouseListener = EventListenerMouse::create();
+    mouseListener->onMouseMove = [=](cocos2d::Event* event) {
+        auto* mouseEvent = dynamic_cast<EventMouse*>(event);
+
+        cursorX = mouseEvent->getCursorX();
+        cursorY = mouseEvent->getCursorY();
+        const Vec2 dotPos = { mouseEvent->getCursorX(), mouseEvent->getCursorY() };
+        this->cursorSprite->setPosition(dotPos);
+        
+        if (mouseEvent->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) {
+            this->cursorSprite->setTexture("sprites/cursor/0001.png");
+        }
+        else
+            this->cursorSprite->setTexture("sprites/cursor/0002.png");
+    };
+
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
 
     return true;
