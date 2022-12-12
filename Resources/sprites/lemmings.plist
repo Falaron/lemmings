@@ -4,18 +4,138 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>lemmings.png</key>
+            <key>walk/0001.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{437,710}</string>
+                <string>{16,16}</string>
                 <key>spriteSourceSize</key>
-                <string>{437,710}</string>
+                <string>{16,16}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{437,710}}</string>
+                <string>{{0,0},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>walk/0002.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{16,0},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>walk/0003.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{32,0},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>walk/0004.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{48,0},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>walk/0005.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{64,0},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>walk/0006.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{80,0},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>walk/0007.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{96,0},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>walk/0008.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{112,0},{16,16}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>walk/0009.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{16,16}</string>
+                <key>spriteSourceSize</key>
+                <string>{16,16}</string>
+                <key>textureRect</key>
+                <string>{{128,0},{16,16}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -31,9 +151,9 @@
             <key>realTextureFileName</key>
             <string>lemmings.png</string>
             <key>size</key>
-            <string>{439,712}</string>
+            <string>{144,16}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:71f483e387ad88f67f8a1bdded14bc0a:4a4c5d93c010935df84d2623611f7aae:88ab09b251cb682b789df6fd09f6f023$</string>
+            <string>$TexturePacker:SmartUpdate:c710998a07d23ac45191c00136815f92:a90d14c06eddf291d25f8952f7d98457:88ab09b251cb682b789df6fd09f6f023$</string>
             <key>textureFileName</key>
             <string>lemmings.png</string>
         </dict>

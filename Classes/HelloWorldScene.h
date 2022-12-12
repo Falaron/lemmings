@@ -39,6 +39,8 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+private:
+    cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

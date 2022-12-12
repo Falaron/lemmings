@@ -48,6 +48,8 @@ bool HelloWorld::init()
         return false;
     }
 
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/lemmings.plist");
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -80,46 +82,20 @@ bool HelloWorld::init()
     this->addChild(menu, 1);
 
     /////////////////////////////
-    // 3. add your codes below...
 
-    // add a label shows "Hello World"
-    // create and initialize a label
+    // sprite
+    auto frames = GetAnimation("walk/%04d.png", 9);
+    auto sprite = Sprite::createWithSpriteFrame(frames.front());
+    this->addChild(sprite,1);
+    sprite->setPosition(50, 50);
+    sprite->setScale(5);
 
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-    if (label == nullptr)
-    {
-        problemLoading("'fonts/Marker Felt.ttf'");
-    }
-    else
-    {
-        // position the label on the center of the screen
-        label->setPosition(Vec2(origin.x + visibleSize.width/2,
-                                origin.y + visibleSize.height - label->getContentSize().height));
+    auto animation = Animation::createWithSpriteFrames(frames, 1.0f / 8);
+    sprite->runAction(RepeatForever::create(Animate::create(animation)));
 
-        // add the label as a child to this layer
-        this->addChild(label, 1);
-    }
-
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
-
-    // load the Sprite Sheet
-    auto spritecache = SpriteFrameCache::getInstance();
-
-    // the .plist file can be generated with any of the tools mentioned below
-    spritecache->addSpriteFramesWithFile("sprites/lemmings.plist");
+    auto movement = MoveTo::create(50, Vec2(2148, 50));
+    auto sequence = Sequence::create(movement, NULL);
+    sprite->runAction(RepeatForever::create(sequence));
 
 
     return true;
@@ -137,4 +113,17 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+cocos2d::Vector<cocos2d::SpriteFrame*> HelloWorld::GetAnimation(const char* format, int count)
+{
+    auto spritecache = SpriteFrameCache::getInstance();
+    Vector<SpriteFrame*> animFrames;
+    char str[100];
+    for (int i = 1; i <= count; i++)
+    {
+        sprintf(str, format, i);
+        animFrames.pushBack(spritecache->getSpriteFrameByName(str));
+    }
+    return animFrames;
 }
