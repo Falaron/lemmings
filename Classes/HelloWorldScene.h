@@ -26,6 +26,9 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+#include <vector>
+
+class Lemmings;
 
 class HelloWorld : public cocos2d::Scene
 {
@@ -39,6 +42,8 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+    std::vector<Lemmings*> lemmingsList;
 
     //void update(float delta) override;
 private:
