@@ -86,4 +86,9 @@
       <UniqueIdentifier>{58B298F7-E99F-3813-9622-B05203F3A1E2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\sprites\lemmings.plist">
+      <Filter>Resources\sprites</Filter>
+    </None>
+  </ItemGroup>
 </Project>
