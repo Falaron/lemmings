@@ -1,37 +1,13 @@
-/****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
-
-#include "HelloWorldScene.h"
+#include "MainGame.h"
 
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+Scene* MainGame::createScene()
 {
     auto scene = Scene::createWithPhysics();
     scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
-    auto layer = HelloWorld::create();
+    auto layer = MainGame::create();
     scene->addChild(layer);
 
     return scene;
@@ -45,7 +21,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool MainGame::init()
 {
     if (!Scene::initWithPhysics()) return false;
 
@@ -53,9 +29,9 @@ bool HelloWorld::init()
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     auto closeItem = MenuItemImage::create(
-                                           "CloseNormal.png",
-                                           "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+        "CloseNormal.png",
+        "CloseSelected.png",
+        CC_CALLBACK_1(MainGame::menuCloseCallback, this));
 
     if (closeItem == nullptr ||
         closeItem->getContentSize().width <= 0 ||
@@ -65,9 +41,9 @@ bool HelloWorld::init()
     }
     else
     {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
-        float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(x,y));
+        float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
+        float y = origin.y + closeItem->getContentSize().height / 2;
+        closeItem->setPosition(Vec2(x, y));
     }
 
     // create menu, it's an autorelease object
@@ -83,12 +59,17 @@ bool HelloWorld::init()
 
     _tileMap = TMXTiledMap::create("maps/test.tmx");
     addChild(_tileMap);
-
     _backGround = _tileMap->getLayer("ForeGround");
     _collision = _tileMap->getObjectGroup("MapCollisions");
+    auto spawnPoint = _tileMap->getObjectGroup("SpawnPoint")->getObject("spawn");
+
+    auto sprite = Sprite::create("sprites/flower.png");
+    sprite->setPosition(spawnPoint["x"].asInt(), spawnPoint["y"].asInt());
+    sprite->setPhysicsBody(PhysicsBody::createBox(sprite->getContentSize()));
+    addChild(sprite);
 
     ValueVector& rectangles_array = _collision->getObjects();
-    for (Value &rectangle : rectangles_array)
+    for (Value& rectangle : rectangles_array)
     {
         ValueMap rectangle_properties = rectangle.asValueMap();
         Node* node = Node::create();
@@ -109,7 +90,7 @@ bool HelloWorld::init()
 }
 
 
-void HelloWorld::menuCloseCallback(Ref* pSender)
+void MainGame::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
