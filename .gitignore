@@ -53,6 +53,8 @@ local.properties
 # Ignore python compiled files
 *.pyc
 
+out/build
+
 # Ignore files build by airplay and marmalade
 build_*_xcode/
 build_*_vc10/
@@ -182,3 +184,6 @@ temp/
 # external libs zip
 *.zip
 **/simulator/
+/out/build/x64-Debug/build.ninja
+/out/build/x64-Debug/.ninja_log
+/out/build/x64-Debug/.ninja_deps

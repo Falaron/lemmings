@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="S:\~\Lemmings\Lemmings\proj.win32\CMakeFiles\ee92ffbdbbc1823d94538583bbfdb6d3\SYNC_RESOURCE-Lemmings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="S:\~\Lemmings\Lemmings\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="S:\~\Lemmings\Lemmings\proj.win32\CMakeFiles\SYNC_RESOURCE-Lemmings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{4A6BAF9D-84DE-3245-94D1-D198933DC194}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
