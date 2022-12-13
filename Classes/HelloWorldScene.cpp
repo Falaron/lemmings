@@ -81,7 +81,7 @@ bool HelloWorld::init()
 
     /////////////////////////////
 
-    // sprite
+    // Import sprite sheet to the cache
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/lemmings.plist");
     auto frames = GetAnimation("walk/%04d.png", 9);
     auto sprite = Sprite::createWithSpriteFrame(frames.front());
@@ -89,13 +89,10 @@ bool HelloWorld::init()
     sprite->setPosition(50, 50);
     sprite->setScale(5);
 
+
+    //Animate the Lemming by 9 (sprite has 9 sprites)
     auto animation = Animation::createWithSpriteFrames(frames, 1.0f / 9);
     sprite->runAction(RepeatForever::create(Animate::create(animation)));
-
-    auto movement = MoveTo::create(50, Vec2(2148, 50));
-    auto sequence = Sequence::create(movement, NULL);
-    sprite->runAction(RepeatForever::create(sequence));
-
 
     //Cursor show
     this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
