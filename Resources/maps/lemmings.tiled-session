@@ -21,11 +21,11 @@
             "scaleInDock": 1
         },
         "test.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 4,
+            "scale": 1,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 208.66666666666674,
-                "y": 528
+                "x": 386.5,
+                "y": 404
             }
         },
         "test.tmx#TileKit": {
@@ -35,7 +35,7 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 480,
+                "x": 527.5,
                 "y": 319.5
             }
         },

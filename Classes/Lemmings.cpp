@@ -12,10 +12,12 @@ Lemmings::Lemmings(Vector<SpriteFrame*> frame)
 	this->direction = RIGHT;
 	this->speed = DEFAULT_SPEED;
 
-	/*PhysicsBody* box = PhysicsBody::createEdgeBox(this->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 0.5f);
+	PhysicsBody* box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.2f,0,0));
 	box->setGravityEnable(true);
 	box->setDynamic(true);
-	this->setPhysicsBody(box);*/
+	box->setRotationEnable(false);
+
+	this->addComponent(box);
 }
 
 void Lemmings::move()

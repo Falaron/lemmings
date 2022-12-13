@@ -21,19 +21,19 @@ void MapLoader::LoadMapCollisions()
 {
     cocos2d::TMXObjectGroup* collisions = _map->getObjectGroup("MapCollisions");
 
-    ValueVector& rectangles_array = collisions->getObjects();
-    for (Value& rectangle : rectangles_array)
+    ValueVector& collider_array = collisions->getObjects();
+    for (Value& rectangle : collider_array)
     {
         ValueMap rectangle_properties = rectangle.asValueMap();
-        Node* node = Node::create();
-        node->setPosition(Vec2(rectangle_properties["x"].asInt() + rectangle_properties["width"].asInt() / 2, rectangle_properties["y"].asInt() + rectangle_properties["height"].asInt() / 2));
+        Node* collider = Node::create();
+        collider->setPosition(Vec2(rectangle_properties["x"].asInt() + rectangle_properties["width"].asInt() / 2, rectangle_properties["y"].asInt() + rectangle_properties["height"].asInt() / 2));
 
         PhysicsBody* box = PhysicsBody::createEdgeBox(Size(rectangle_properties["width"].asInt(), rectangle_properties["height"].asInt()), PHYSICSBODY_MATERIAL_DEFAULT, 0.5f);
         box->setGravityEnable(false);
         box->setDynamic(false);
 
-        node->setPhysicsBody(box);
-        _scene->addChild(node);
+        collider->setPhysicsBody(box);
+        _scene->addChild(collider);
     }
 }
 

@@ -28,7 +28,7 @@
   <object id="26" x="610" y="446" width="190" height="130"/>
  </objectgroup>
  <objectgroup id="7" name="SpawnPoint">
-  <object id="27" name="spawn" x="48" y="415">
+  <object id="27" name="spawn" x="53" y="410">
    <point/>
   </object>
  </objectgroup>
