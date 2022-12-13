@@ -12,5 +12,5 @@ public:
 
 private:
 	int direction;
-	int speed;
+	float speed;
 };
