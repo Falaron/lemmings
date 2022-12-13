@@ -53,13 +53,47 @@ bool MainGame::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-    // load the Sprite Sheet
-    auto spritecache = SpriteFrameCache::getInstance();
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/lemmings.plist");
+    auto walkFrames = GetAnimation("walk/%04d.png", 9);
 
-    // the .plist file can be generated with any of the tools mentioned below
-    spritecache->addSpriteFramesWithFile("sprites/lemmings.plist");
+    auto sprite = new Lemmings(Vec2(20, 20), walkFrames);
+    this->addChild(sprite, 1);
+    this->lemmingsList.push_back(sprite);
 
+    //Cursor show
+    this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
+    this->addChild(this->cursorSprite, 1);
+
+    //Mouse listener
+    auto mouseListener = EventListenerMouse::create();
+    mouseListener->onMouseMove = [=](cocos2d::Event* event) {
+        auto* mouseEvent = dynamic_cast<EventMouse*>(event);
+
+        cursorX = mouseEvent->getCursorX();
+        cursorY = mouseEvent->getCursorY();
+        const Vec2 dotPos = { mouseEvent->getCursorX(), mouseEvent->getCursorY() };
+        this->cursorSprite->setPosition(dotPos);
+
+        if (mouseEvent->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) {
+            this->cursorSprite->setTexture("sprites/cursor/0001.png");
+        }
+        else
+            this->cursorSprite->setTexture("sprites/cursor/0002.png");
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
+
+    this->scheduleUpdate();
     return true;
+}
+
+void MainGame::update(float delta)
+{
+    Node::update(delta);
+
+    for (auto lemming : lemmingsList)
+    {
+        lemming->move();
+    }
 }
 
 
@@ -75,3 +109,24 @@ void MainGame::menuCloseCallback(Ref* pSender)
 
 
 }
+
+cocos2d::Vector<cocos2d::SpriteFrame*> MainGame::GetAnimation(const char* format, int count)
+{
+    auto spritecache = SpriteFrameCache::getInstance();
+    Vector<SpriteFrame*> animFrames;
+    char str[100];
+    for (int i = 1; i <= count; i++)
+    {
+        sprintf(str, format, i);
+        animFrames.pushBack(spritecache->getSpriteFrameByName(str));
+    }
+    return animFrames;
+}
+
+bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
+    // Check if the key is pressed
+    if (std::find(keys.begin(), keys.end(), code) != keys.end())
+        return true;
+    return false;
+}
+
