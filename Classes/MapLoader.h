@@ -6,7 +6,9 @@ class MapLoader {
 public:
 
 	static void LoadMap(const char *, cocos2d::Scene*);
+
 	static cocos2d::TMXTiledMap* GetLoadedMap() { return _map; };
+	static cocos2d::Vec2* GetSpawnPoint() { return _spawnPoint; };
 
 
 private:
