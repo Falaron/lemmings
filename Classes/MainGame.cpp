@@ -74,9 +74,8 @@ bool MainGame::init()
         const Vec2 dotPos = { mouseEvent->getCursorX(), mouseEvent->getCursorY() };
         this->cursorSprite->setPosition(dotPos);
 
-        if (mouseEvent->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) {
+        if (mouseEvent->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) 
             this->cursorSprite->setTexture("sprites/cursor/0001.png");
-        }
         else
             this->cursorSprite->setTexture("sprites/cursor/0002.png");
     };

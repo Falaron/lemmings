@@ -22,17 +22,17 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include <iostream>
-#include "HelloWorldScene.h"
+#include "TestScene.h"
 #include "Lemmings.h"
 
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+Scene* TestScene::createScene()
 {
     auto scene = Scene::createWithPhysics();
     scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
-    auto layer = HelloWorld::create();
+    auto layer = TestScene::create();
     scene->addChild(layer);
 
     return scene;
@@ -46,7 +46,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool HelloWorld::init()
+bool TestScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -61,7 +61,7 @@ bool HelloWorld::init()
     auto closeItem = MenuItemImage::create(
         "CloseNormal.png",
         "CloseSelected.png",
-        CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+        CC_CALLBACK_1(TestScene::menuCloseCallback, this));
 
     if (closeItem == nullptr ||
         closeItem->getContentSize().width <= 0 ||
@@ -136,7 +136,7 @@ bool HelloWorld::init()
     return true;
 }
 
-void HelloWorld::update(float delta)
+void TestScene::update(float delta)
 {
     Node::update(delta);
 
@@ -148,7 +148,7 @@ void HelloWorld::update(float delta)
         
 }
 
-void HelloWorld::menuCloseCallback(Ref* pSender)
+void TestScene::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
@@ -161,7 +161,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 }
 
-cocos2d::Vector<cocos2d::SpriteFrame*> HelloWorld::GetAnimation(const char* format, int count)
+cocos2d::Vector<cocos2d::SpriteFrame*> TestScene::GetAnimation(const char* format, int count)
 {
     auto spritecache = SpriteFrameCache::getInstance();
     Vector<SpriteFrame*> animFrames;
@@ -174,7 +174,7 @@ cocos2d::Vector<cocos2d::SpriteFrame*> HelloWorld::GetAnimation(const char* form
     return animFrames;
 }
 
-bool HelloWorld::isKeyPressed(EventKeyboard::KeyCode code) {
+bool TestScene::isKeyPressed(EventKeyboard::KeyCode code) {
     // Check if the key is pressed
     if (std::find(keys.begin(), keys.end(), code) != keys.end())
         return true;
