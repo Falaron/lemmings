@@ -2,6 +2,8 @@
 
 USING_NS_CC;
 
+using namespace ui;
+
 Scene* MainMenu::createScene()
 {
     return MainMenu::create();
@@ -35,6 +37,7 @@ bool MainMenu::init()
     backgroundMenu->getTexture()->setAliasTexParameters();
     this->addChild(backgroundMenu, 0);
 
+
     // Adding title sprite
     Sprite* titleMenu = Sprite::create(MAIN_MENU_TITLE_PATH);
     titleMenu->setPosition(Vec2(origin.x + screenSize.width * .5f, screenSize.height + titleMenu->getContentSize().height - 70));
@@ -58,7 +61,47 @@ bool MainMenu::init()
     titleMenu->runAction(RepeatForever::create(rotateSequence));
     titleMenu->runAction(RepeatForever::create(scaleSequence));
 
-    // Adding buttons
+
+    // Adding Play button
+    auto button = Button::create(MAIN_MENU_BUTTON_PLAY_NORMAL, MAIN_MENU_BUTTON_PLAY_SELECTED);
+    //button->getRendererNormal()->setAliasTexParameters();
+    button->setScale(.2f);
+    button->setPosition(Vec2(origin.x + screenSize.width * 0.25f, origin.y + screenSize.height * 0.3f));
+
+    button->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
+        switch (type)
+        {
+        case ui::Widget::TouchEventType::BEGAN:
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            /*std::cout << "Button 1 clicked" << std::endl;*/
+            break;
+        default:
+            break;
+        }
+        });
+
+    this->addChild(button);
+
+    auto button2 = Button::create(MAIN_MENU_BUTTON_PLAY_NORMAL, MAIN_MENU_BUTTON_PLAY_SELECTED);
+    //button->getRendererNormal()->setAliasTexParameters();
+    button2->setScale(.2f);
+    button2->setPosition(Vec2(origin.x + screenSize.width * 0.75f, origin.y + screenSize.height * 0.3f));
+
+    button2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
+        switch (type)
+        {
+        case ui::Widget::TouchEventType::BEGAN:
+            break;
+        case ui::Widget::TouchEventType::ENDED:
+            /*std::cout << "Button 1 clicked" << std::endl;*/
+            break;
+        default:
+            break;
+        }
+        });
+
+    this->addChild(button2);
 
     return true;
 }
