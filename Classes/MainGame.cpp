@@ -85,6 +85,17 @@ bool MainGame::init()
     return true;
 }
 
+void MainGame::onEnter()
+{
+    Layer::onEnter();
+    auto defaultCamera = Camera::getDefaultCamera();
+    auto s = Director::getInstance()->getWinSize();
+    defaultCamera->initOrthographic(s.width * 0.66, s.height * 0.66, 1, 2000);
+    defaultCamera->setPosition(0, 0);
+
+    //changed static zoom to distance between spawn and ecit
+}
+
 void MainGame::update(float delta)
 {
     Node::update(delta);
