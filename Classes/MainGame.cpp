@@ -25,6 +25,8 @@ bool MainGame::init()
 {
     if (!Scene::initWithPhysics()) return false;
 
+    MapLoader::LoadMap("maps/test.tmx", this);
+
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -56,35 +58,6 @@ bool MainGame::init()
 
     // the .plist file can be generated with any of the tools mentioned below
     spritecache->addSpriteFramesWithFile("sprites/lemmings.plist");
-
-    _tileMap = TMXTiledMap::create("maps/test.tmx");
-    addChild(_tileMap);
-    _backGround = _tileMap->getLayer("ForeGround");
-    _collision = _tileMap->getObjectGroup("MapCollisions");
-    auto spawnPoint = _tileMap->getObjectGroup("SpawnPoint")->getObject("spawn");
-
-    auto sprite = Sprite::create("sprites/flower.png");
-    sprite->setPosition(spawnPoint["x"].asInt(), spawnPoint["y"].asInt());
-    sprite->setPhysicsBody(PhysicsBody::createBox(sprite->getContentSize()));
-    addChild(sprite);
-
-    ValueVector& rectangles_array = _collision->getObjects();
-    for (Value& rectangle : rectangles_array)
-    {
-        ValueMap rectangle_properties = rectangle.asValueMap();
-        Node* node = Node::create();
-        PhysicsBody* box = PhysicsBody::createEdgeBox(Size(rectangle_properties["width"].asInt(), rectangle_properties["height"].asInt()));
-        node->setPhysicsBody(box);
-
-        box->setGroup(1);
-
-        node->setPosition(Vec2(rectangle_properties["x"].asInt() + rectangle_properties["width"].asInt() / 2, rectangle_properties["y"].asInt() + rectangle_properties["height"].asInt() / 2));
-
-        box->setGravityEnable(false);
-        box->setDynamic(false);
-
-        this->addChild(node);
-    }
 
     return true;
 }
