@@ -3,17 +3,19 @@
 USING_NS_CC;
 
 TMXTiledMap* MapLoader::_map = 0;
-Scene* MapLoader::_scene = 0;
+Layer* MapLoader::_layer = 0;
 Vec2* MapLoader::_spawnPoint = 0;
+Vec2* MapLoader::_exitpoint = 0;
 
-void MapLoader::LoadMap(const char * mapName, Scene* currentScene)
+void MapLoader::LoadMap(const char * mapName, Layer* currentLayer)
 {
-    _scene = currentScene;
+    _layer = currentLayer;
     _map = TMXTiledMap::create(mapName);
-    _scene->addChild(_map);
+    _layer->addChild(_map);
 
     LoadMapCollisions();
     LoadSpawnPoint();
+    LoadExitPoint();
 }
 
 
@@ -33,12 +35,18 @@ void MapLoader::LoadMapCollisions()
         box->setDynamic(false);
 
         collider->setPhysicsBody(box);
-        _scene->addChild(collider);
+        _layer->addChild(collider);
     }
 }
 
 void MapLoader::LoadSpawnPoint()
 {
-	auto spawnPointObject = _map->getObjectGroup("SpawnPoint")->getObject("spawn");
+	auto spawnPointObject = _map->getObjectGroup("Meta")->getObject("spawnPoint");
     _spawnPoint = new Vec2(spawnPointObject["x"].asInt(), spawnPointObject["y"].asInt());
+}
+
+void MapLoader::LoadExitPoint()
+{
+    auto exitPointObject = _map->getObjectGroup("Meta")->getObject("exitPoint");
+    _exitpoint = new Vec2(exitPointObject["x"].asInt(), exitPointObject["y"].asInt());
 }
