@@ -56,7 +56,7 @@ bool MainGame::init()
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/lemmings.plist");
     auto walkFrames = GetAnimation("walk/%04d.png", 9);
 
-    auto sprite = new Lemmings(Vec2(20, 20), walkFrames);
+    auto sprite = new Lemmings(walkFrames);
     this->addChild(sprite, 1);
     this->lemmingsList.push_back(sprite);
 

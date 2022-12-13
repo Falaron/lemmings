@@ -26,16 +26,13 @@ void MapLoader::LoadMapCollisions()
     {
         ValueMap rectangle_properties = rectangle.asValueMap();
         Node* node = Node::create();
-        PhysicsBody* box = PhysicsBody::createEdgeBox(Size(rectangle_properties["width"].asInt(), rectangle_properties["height"].asInt()), PHYSICSBODY_MATERIAL_DEFAULT, 0.5f);
-        node->setPhysicsBody(box);
-
-        box->setGroup(1);
-
         node->setPosition(Vec2(rectangle_properties["x"].asInt() + rectangle_properties["width"].asInt() / 2, rectangle_properties["y"].asInt() + rectangle_properties["height"].asInt() / 2));
 
+        PhysicsBody* box = PhysicsBody::createEdgeBox(Size(rectangle_properties["width"].asInt(), rectangle_properties["height"].asInt()), PHYSICSBODY_MATERIAL_DEFAULT, 0.5f);
         box->setGravityEnable(false);
         box->setDynamic(false);
 
+        node->setPhysicsBody(box);
         _scene->addChild(node);
     }
 }
@@ -43,5 +40,5 @@ void MapLoader::LoadMapCollisions()
 void MapLoader::LoadSpawnPoint()
 {
 	auto spawnPointObject = _map->getObjectGroup("SpawnPoint")->getObject("spawn");
-    _spawnPoint = &Vec2(spawnPointObject["x"].asInt(), spawnPointObject["y"].asInt());
+    _spawnPoint = new Vec2(spawnPointObject["x"].asInt(), spawnPointObject["y"].asInt());
 }

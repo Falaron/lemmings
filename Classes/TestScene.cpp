@@ -89,7 +89,7 @@ bool TestScene::init()
 
 
 
-    auto sprite = new Lemmings(Vec2(20,20),walkFrames);
+    auto sprite = new Lemmings(walkFrames);
     this->addChild(sprite, 1);
     this->lemmingsList.push_back(sprite);
 

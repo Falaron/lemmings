@@ -1,15 +1,21 @@
 #include "Lemmings.h"
+#include "MapLoader.h"
 #define RIGHT false
 #define LEFT true
 #define DEFAULT_SPEED 0.5f
 
 
-Lemmings::Lemmings(Vec2 pos, Vector<SpriteFrame*> frame)
+Lemmings::Lemmings(Vector<SpriteFrame*> frame)
 {
 	this->setAnimation(frame);
-	this->setPosition(pos);
+	this->setPosition(*MapLoader::GetSpawnPoint());
 	this->direction = RIGHT;
 	this->speed = DEFAULT_SPEED;
+
+	/*PhysicsBody* box = PhysicsBody::createEdgeBox(this->getContentSize(), PHYSICSBODY_MATERIAL_DEFAULT, 0.5f);
+	box->setGravityEnable(true);
+	box->setDynamic(true);
+	this->setPhysicsBody(box);*/
 }
 
 void Lemmings::move()
