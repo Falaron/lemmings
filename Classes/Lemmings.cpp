@@ -1,12 +1,12 @@
 #include "Lemmings.h"
-#define RIGHT 0
-#define LEFT 1
+#define RIGHT false
+#define LEFT true
 #define DEFAULT_SPEED 0.5f
 
 
-Lemmings::Lemmings(Vec2 pos)
+Lemmings::Lemmings(Vec2 pos, Vector<SpriteFrame*> frame)
 {
-	this->setTexture("HelloWorld.png");
+	this->setAnimation(frame);
 	this->setPosition(pos);
 	this->direction = RIGHT;
 	this->speed = DEFAULT_SPEED;
@@ -44,7 +44,15 @@ void Lemmings::move()
 
 void Lemmings::ChangeDirection()
 {
-	this->direction = ~this->direction;
+	this->direction = !direction;
+	this->setFlippedX(direction);
+}
+
+void Lemmings::setAnimation(Vector<SpriteFrame*> frame)
+{
+	this->setSpriteFrame(frame.front());
+	auto animation = Animation::createWithSpriteFrames(frame, 1.0f / 9);
+	this->runAction(RepeatForever::create(Animate::create(animation)));
 }
 
 

@@ -6,11 +6,12 @@ USING_NS_CC;
 class Lemmings : public cocos2d::Sprite
 {
 public:
-	Lemmings(Vec2 pos);
+	Lemmings(Vec2 pos, Vector<SpriteFrame*> frame);
 	void move();
 	void ChangeDirection();
+	void setAnimation(Vector<SpriteFrame*> frame);
 
 private:
-	int direction;
+	bool direction;
 	float speed;
 };

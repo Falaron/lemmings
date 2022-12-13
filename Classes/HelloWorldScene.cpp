@@ -84,16 +84,13 @@ bool HelloWorld::init()
 
     // Import sprite sheet to the cache
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/lemmings.plist");
-    auto frames = GetAnimation("walk/%04d.png", 9);
-    auto sprite = Sprite::createWithSpriteFrame(frames.front());
+    auto walkFrames = GetAnimation("walk/%04d.png", 9);
+
+
+
+    auto sprite = new Lemmings(Vec2(20,20),walkFrames);
     this->addChild(sprite, 1);
-    sprite->setPosition(50, 50);
-    sprite->setScale(5);
-
-
-    //Animate the Lemming by 9 (sprite has 9 sprites)
-    auto animation = Animation::createWithSpriteFrames(frames, 1.0f / 9);
-    sprite->runAction(RepeatForever::create(Animate::create(animation)));
+    this->lemmingsList.push_back(sprite);
 
     //Cursor show
     this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
@@ -118,21 +115,6 @@ bool HelloWorld::init()
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
-
     // load the Sprite Sheet
     auto spritecache = SpriteFrameCache::getInstance();
     //region Keyboard Listener
@@ -149,37 +131,7 @@ bool HelloWorld::init()
     this->_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
     //endregion
 
-
-    auto movement = MoveTo::create(50, Vec2(2148, 50));
-    auto sequence = Sequence::create(movement, NULL);
-    sprite->runAction(RepeatForever::create(sequence));
-
-    // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
-    if (sprite == nullptr)
-    {
-        problemLoading("'HelloWorld.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    auto movement = MoveTo::create(50, Vec2(2148, 50));
-    auto sequence = Sequence::create(movement, NULL);
-    sprite->runAction(RepeatForever::create(sequence));
-
-    // load the Sprite Sheet
-    auto spritecache = SpriteFrameCache::getInstance();
-    // the .plist file can be generated with any of the tools mentioned below
-    spritecache->addSpriteFramesWithFile("sprites/lemmings.plist");
-
-    /*auto test = Sprite::create("sprites/traps.png");
-    test->setPosition(20, 20);
-    this->addChild(test, 0);*/
-
-    auto lemming1 = new Lemmings(Vec2(20,20));
-    this->addChild(lemming1, 0);
+    this->scheduleUpdate();
     return true;
 }
 

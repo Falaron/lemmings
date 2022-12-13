@@ -27,8 +27,7 @@
 
 #include "cocos2d.h"
 #include <vector>
-
-class Lemmings;
+#include "Lemmings.h"
 
 class HelloWorld : public cocos2d::Scene
 {
