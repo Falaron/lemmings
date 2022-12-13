@@ -1,4 +1,5 @@
 #include "MainGame.h"
+#include "PhysicsShapeCache.h"
 
 USING_NS_CC;
 
@@ -23,7 +24,7 @@ static void problemLoading(const char* filename)
 // on "init" you need to initialize your instance
 bool MainGame::init()
 {
-    if (!Scene::initWithPhysics()) return false;
+    if (!Layer::init()) return false;
 
     MapLoader::LoadMap("maps/test.tmx", this);
 
@@ -53,16 +54,30 @@ bool MainGame::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprites/lemmings.plist");
+    auto frameCache = SpriteFrameCache::getInstance();
+    frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
     auto walkFrames = GetAnimation("walk/%04d.png", 9);
 
-    auto sprite = new Lemmings(walkFrames);
-    this->addChild(sprite, 1);
-    this->lemmingsList.push_back(sprite);
+    auto lemming = new Lemmings(walkFrames);
+    this->addChild(lemming, 2);
+    this->lemmingsList.push_back(lemming);
 
     //Cursor show
     this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
-    this->addChild(this->cursorSprite, 1);
+    this->addChild(this->cursorSprite, 2);
+
+    auto shapeCache = PhysicsShapeCache::getInstance();
+    shapeCache->addShapesWithFile("sprites/exit-door.plist");
+
+    _spawn = Sprite::create("sprites/spawn-door.png");
+    _spawn->setPosition(*MapLoader::GetSpawnPoint());
+    this->addChild(_spawn, 1);
+
+    _exit = Sprite::create("sprites/exit-door.png");
+    shapeCache->setBodyOnSprite("exit-door", _exit);
+    this->addChild(_exit, 1);
+    _exit->setAnchorPoint(Vec2(0.5, 0));
+    _exit->setPosition(*MapLoader::GetExitPoint());
 
     //Mouse listener
     auto mouseListener = EventListenerMouse::create();
@@ -71,8 +86,7 @@ bool MainGame::init()
 
         cursorX = mouseEvent->getCursorX();
         cursorY = mouseEvent->getCursorY();
-        const Vec2 dotPos = { mouseEvent->getCursorX(), mouseEvent->getCursorY() };
-        this->cursorSprite->setPosition(dotPos);
+        this->cursorSprite->setPosition(cursorX, cursorY);
 
         if (mouseEvent->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) 
             this->cursorSprite->setTexture("sprites/cursor/0001.png");
