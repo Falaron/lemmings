@@ -87,12 +87,27 @@ bool HelloWorld::init()
     // sprite
     auto frames = GetAnimation("walk/%04d.png", 9);
     auto sprite = Sprite::createWithSpriteFrame(frames.front());
-    this->addChild(sprite,1);
+    this->addChild(sprite, 1);
     sprite->setPosition(50, 50);
     sprite->setScale(5);
 
     auto animation = Animation::createWithSpriteFrames(frames, 1.0f / 8);
     sprite->runAction(RepeatForever::create(Animate::create(animation)));
+
+    //region Keyboard Listener
+    auto keyboardListener = EventListenerKeyboard::create();
+    Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
+
+    keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
+        keys.push_back(keyCode);
+    };
+    keyboardListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event) {
+        // remove the key.
+        keys.erase(std::remove(keys.begin(), keys.end(), keyCode), keys.end());
+    };
+    this->_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+    //endregion
+
 
     auto movement = MoveTo::create(50, Vec2(2148, 50));
     auto sequence = Sequence::create(movement, NULL);
@@ -107,11 +122,11 @@ bool HelloWorld::init()
     else
     {
         // position the sprite on the center of the screen
-        sprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+        sprite->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 
-        // add the sprite as a child to this layer
-        this->addChild(sprite, 0);
-    }
+    auto movement = MoveTo::create(50, Vec2(2148, 50));
+    auto sequence = Sequence::create(movement, NULL);
+    sprite->runAction(RepeatForever::create(sequence));
 
     // load the Sprite Sheet
     auto spritecache = SpriteFrameCache::getInstance();
@@ -123,15 +138,19 @@ bool HelloWorld::init()
     test->setPosition(20, 20);
     this->addChild(test, 0);*/
 
-    auto lemming1 = new Lemmings(Vec2(20,20));
-    this->addChild(lemming1, 0);
     return true;
 }
 
-bool HelloWorld::update()
+void HelloWorld::update(float delta)
 {
+    Node::update(delta);
 
-    return true;
+    for (auto lemming : lemmingsList)
+    {
+        lemming->move();
+    }
+
+        
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
@@ -158,4 +177,11 @@ cocos2d::Vector<cocos2d::SpriteFrame*> HelloWorld::GetAnimation(const char* form
         animFrames.pushBack(spritecache->getSpriteFrameByName(str));
     }
     return animFrames;
+}
+
+bool HelloWorld::isKeyPressed(EventKeyboard::KeyCode code) {
+    // Check if the key is pressed
+    if (std::find(keys.begin(), keys.end(), code) != keys.end())
+        return true;
+    return false;
 }
