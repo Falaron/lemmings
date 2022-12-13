@@ -1,11 +1,12 @@
 #include "Lemmings.h"
 #define RIGHT 0
 #define LEFT 1
-#define DEFAULT_SPEED 3
+#define DEFAULT_SPEED 0.5f
 
 
 Lemmings::Lemmings(Vec2 pos)
 {
+	this->setTexture("HelloWorld.png");
 	this->setPosition(pos);
 	this->direction = RIGHT;
 	this->speed = DEFAULT_SPEED;
@@ -17,11 +18,22 @@ void Lemmings::move()
 
 	// todo : detect platform under the lemmings
 
+	//tempTest {
+	int posX = this->getPositionX();
+	int posY = this->getPositionY();
+	if (posX > 400) {
+		this->ChangeDirection();
+	}
+	else if (posX < 0) {
+		this->ChangeDirection();
+	}
+	// } end temp 
 
-	int distance;
+
+	float distance;
 	if (this->direction) 
 	{
-		distance = ~this->speed;
+		distance = -this->speed;
 	}
 	else
 	{
@@ -30,7 +42,7 @@ void Lemmings::move()
 	this->setPosition(this->getPositionX() + distance, this->getPositionY());
 }
 
-void Lemmings::changeDirection()
+void Lemmings::ChangeDirection()
 {
 	this->direction = ~this->direction;
 }
