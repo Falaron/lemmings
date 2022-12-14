@@ -25,14 +25,17 @@ Lemmings::Lemmings(Vector<SpriteFrame*> frame)
 
 void Lemmings::move()
 {
-	//CCLOG("Vélocité : %f : %f", this->getPhysicsBody()->getVelocity().x,this->getPhysicsBody()->getVelocity().y);
+	const auto physicsBody = this->getPhysicsBody();
+	const auto velocity = physicsBody->getVelocity();
+
 	// detect if the lemmings is falling
-	if ((((int)this->getPhysicsBody()->getVelocity().y * 100)) / 100 == 0)
+	if ((((int)velocity.y * 100)) / 100 == 0)
 	{
 		// detect if the lemmgings is moving will is in the ground
 		if (this->_state == MOVING) {
-			if ((((int)this->getPhysicsBody()->getVelocity().x * 100)) / 100 == 0) this->ChangeDirection();
+			if (((int)velocity.x * 100) / 100 == 0) this->ChangeDirection();
 		}
+		else { this->_state = MOVING;}
 
 		float distance;
 		if (this->_direction)
@@ -43,14 +46,12 @@ void Lemmings::move()
 		{
 			distance = this->_speed;
 		}
-		this->getPhysicsBody()->setVelocity(Vec2(distance, this->getPhysicsBody()->getVelocity().y));
-
-		if (this->_state != MOVING) this->_state = MOVING;
+		physicsBody->setVelocity(Vec2(distance, velocity.y));
 	}
 	else 
 	{
 		this->_state = FALLING;
-		this->getPhysicsBody()->setVelocity(Vec2(0, this->getPhysicsBody()->getVelocity().y));
+		physicsBody->setVelocity(Vec2(0, velocity.y));
 	}
 }
 
