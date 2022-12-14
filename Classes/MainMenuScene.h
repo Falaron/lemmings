@@ -5,11 +5,12 @@
 # include "ui/CocosGUI.h"
 # include "Definitions.h"
 
-class MainMenu : public cocos2d::Scene
+class MainMenu : public cocos2d::Layer
 {
 public:
     static cocos2d::Scene* createScene();
     virtual bool init();
+    virtual void onEnter();
 
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenu);

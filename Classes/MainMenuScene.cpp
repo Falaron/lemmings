@@ -6,7 +6,10 @@ using namespace ui;
 
 Scene* MainMenu::createScene()
 {
-    return MainMenu::create();
+    auto scene = Scene::create();
+    auto layer = Layer::create();
+    
+    scene->addChild(layer);
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -19,7 +22,7 @@ static void problemLoading(const char* filename)
 // Initialize MainMenu instance
 bool MainMenu::init()
 {
-    if (!Scene::init())
+    if (!Layer::init())
     {
         return false;
     }
@@ -104,5 +107,16 @@ bool MainMenu::init()
     this->addChild(button2);
 
     return true;
+}
+
+void MainMenu::onEnter()
+{
+    Layer::onEnter();
+    auto defaultCamera = Camera::getDefaultCamera();
+    auto s = Director::getInstance()->getWinSize();
+    defaultCamera->initOrthographic(s.width * 0.66, s.height * 0.66, 1, 2000);
+    defaultCamera->setPosition(0, 0);
+
+    //changed static zoom to distance between spawn and ecit
 }
 
