@@ -22,8 +22,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "AppDelegate.h"
-#include "MainGame.h"
+# include "AppDelegate.h"
+# include "MainMenuScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 
@@ -36,7 +36,7 @@ USING_NS_CC;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
-static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
+static cocos2d::Size mediumResolutionSize = cocos2d::Size(1000, 800);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
 
 
@@ -85,7 +85,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 
     // turn on display FPS
-    director->setDisplayStats(true);
+    director->setDisplayStats(false);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0f / 60);
@@ -112,7 +112,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
 
     // create a scene. it's an autorelease object
-    auto scene = MainGame::createScene();
+    auto scene = MainMenu::createScene();
 
     // run
     director->runWithScene(scene);

@@ -32,21 +32,25 @@ bool MainMenu::init()
     Size screenSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    //auto mainGameScene = HelloWorld::createScene();
+
 
 
     //////////////////////
     // Adding background sprite
     Sprite* backgroundMenu = Sprite::create(MAIN_MENU_BACKGROUND_PATH);
-    backgroundMenu->setPosition(Vec2(origin.x + screenSize.width/2, origin.y + screenSize.height/2));
+    backgroundMenu->setAnchorPoint(Vec2(0,0));
+    backgroundMenu->setPosition(Vec2(0,0));
     backgroundMenu->getTexture()->setAliasTexParameters();
+    backgroundMenu->setScale(3);
     this->addChild(backgroundMenu, 0);
 
 
     // Adding title sprite
     Sprite* titleMenu = Sprite::create(MAIN_MENU_TITLE_PATH);
-    titleMenu->setPosition(Vec2(origin.x + screenSize.width * .5f, screenSize.height + titleMenu->getContentSize().height - 70));
+    titleMenu->setPosition(Vec2(160, 220));
     titleMenu->getTexture()->setAliasTexParameters();
-    titleMenu->setScale(.5);
+    titleMenu->setScale(1.7f);
     this->addChild(titleMenu, 1);
 
     // Create sequences of titleMenu sprite
@@ -55,8 +59,8 @@ bool MainMenu::init()
 
     auto rotate = RotateTo::create(4.0f, -2.0f);
     auto rotateReverse = RotateTo::create(4.0f, 2.0f);
-    auto scale = ScaleTo::create(2.0f, 0.5f);
-    auto scaleReverse = ScaleTo::create(2.0f, 0.47f);
+    auto scale = ScaleTo::create(2.0f, 1.7f);
+    auto scaleReverse = ScaleTo::create(2.0f, 1.65f);
 
     auto rotateSequence = Sequence::create(rotate, rotateReverse, nullptr);
     auto scaleSequence = Sequence::create(scale, scaleReverse, nullptr);
@@ -67,45 +71,33 @@ bool MainMenu::init()
 
 
     // Adding Play button
-    auto button = Button::create(MAIN_MENU_BUTTON_PLAY_NORMAL, MAIN_MENU_BUTTON_PLAY_SELECTED);
-    //button->getRendererNormal()->setAliasTexParameters();
-    button->setScale(.2f);
-    button->setPosition(Vec2(origin.x + screenSize.width * 0.25f, origin.y + screenSize.height * 0.3f));
+    auto button = Button::create(MAIN_MENU_BUTTON_PLAY_NORMAL);
+    button->setScale(.5f);
+    button->setPosition(Vec2(95, 75));
 
     button->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
-        switch (type)
-        {
-        case ui::Widget::TouchEventType::BEGAN:
-            break;
-        case ui::Widget::TouchEventType::ENDED:
-            /*std::cout << "Button 1 clicked" << std::endl;*/
-            break;
-        default:
-            break;
-        }
+        if (type == ui::Widget::TouchEventType::ENDED)
+            Director::getInstance()->replaceScene(TransitionFade::create(1.5f, HelloWorld::createScene()));
         });
 
     this->addChild(button);
 
-    auto button2 = Button::create(MAIN_MENU_BUTTON_PLAY_NORMAL, MAIN_MENU_BUTTON_PLAY_SELECTED);
-    //button->getRendererNormal()->setAliasTexParameters();
-    button2->setScale(.2f);
-    button2->setPosition(Vec2(origin.x + screenSize.width * 0.75f, origin.y + screenSize.height * 0.3f));
+    // Adding Quit button
+    auto button2 = Button::create(MAIN_MENU_BUTTON_QUIT_NORMAL);
+    button2->setScale(.5f);
+    button2->setPosition(Vec2(220, 75));
 
-    button2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
-        switch (type)
-        {
-        case ui::Widget::TouchEventType::BEGAN:
-            break;
-        case ui::Widget::TouchEventType::ENDED:
-            /*std::cout << "Button 1 clicked" << std::endl;*/
-            break;
-        default:
-            break;
-        }
+    button2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type){
+        if(type == ui::Widget::TouchEventType::ENDED)
+            Director::getInstance()->end();
         });
 
     this->addChild(button2);
+
+    // Adding credits
+    auto credit = Label::createWithSystemFont("Albert & Co. 2022 - All right reserved", "arial.ttf", 6);
+    credit->setPosition(Vec2(160,10));
+    this->addChild(credit);
 
     return true;
 }
