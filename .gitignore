@@ -198,3 +198,4 @@ proj.win32/
 /proj.win32/engine/external/ConvertUTF/ext_convertUTF.vcxproj
 /proj.win32/Lemmings.vcxproj.filters
 /proj.win32/Lemmings.vcxproj
+/Classes/MainMenuScene.cpp
