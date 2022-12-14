@@ -25,6 +25,9 @@ public:
 	/// <summary> Manage Animations of the lemmings depend on which state he is </summary>
 	void UpdateAnimation();
 
+	/// <summary> Return true if the lemming is in the map </summary>
+	bool isInMap();
+
 private:
 	cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
 	bool _direction;

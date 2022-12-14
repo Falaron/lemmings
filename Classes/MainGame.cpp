@@ -5,8 +5,8 @@ USING_NS_CC;
 Scene* MainGame::createScene()
 {
     auto scene = Scene::createWithPhysics();
-   //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
-
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
     auto layer = MainGame::create();
     scene->addChild(layer);
 
@@ -57,18 +57,17 @@ bool MainGame::init()
     frameCache = SpriteFrameCache::getInstance();
 
     frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
-    //auto walkFrames = GetAnimation("walk-%04d.png", 9);
 
    
     
 
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0; i < 10; i++) {
         cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
             auto lemming = new Lemmings();
             this->addChild(lemming, 2);
             this->lemmingsList.push_back(lemming);
             });
-        cocos2d::DelayTime* delay = cocos2d::DelayTime::create(i*0.01);
+        cocos2d::DelayTime* delay = cocos2d::DelayTime::create(i);
         runAction(cocos2d::Sequence::create(delay,A, NULL));
     }
 
@@ -125,10 +124,15 @@ void MainGame::onEnter()
 void MainGame::update(float delta)
 {
     Node::update(delta);
-
+    CCLOG("for");
     for (auto lemming : lemmingsList)
     {
         lemming->Move();
+        if (!lemming->isInMap()) {
+            lemmingsList.erase(std::remove(lemmingsList.begin(),lemmingsList.end(), lemming),lemmingsList.end());
+            lemming->removeFromParentAndCleanup(true);
+            CCLOG("delete");
+        }
     }
 }
 

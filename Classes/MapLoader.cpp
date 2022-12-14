@@ -33,6 +33,7 @@ void MapLoader::LoadMapCollisions()
         PhysicsBody* box = PhysicsBody::createEdgeBox(Size(rectangle_properties["width"].asInt(), rectangle_properties["height"].asInt()), PHYSICSBODY_MATERIAL_DEFAULT, 0.5f);
         box->setGravityEnable(false);
         box->setDynamic(false);
+        box->setGroup(1);
 
         collider->setPhysicsBody(box);
         _layer->addChild(collider);

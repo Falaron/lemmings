@@ -15,6 +15,7 @@ Lemmings::Lemmings()
 	this->_speed = DEFAULT_SPEED;
 	this->_currentAnimation = SPAWNING;
 	this->_state = SPAWNING;
+	this->setScale(1);
 
 	// create a temp sprite to create the physic box ( in game animation is manage in UpdateAnimation()
 	auto frames = GetAnimation("walk-%04d.png", 9);
@@ -24,6 +25,8 @@ Lemmings::Lemmings()
 	//create Physic body and setup basics parameters
 	PhysicsBody* box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.2f,0,0));
 	box->setGravityEnable(true);
+	box->setGroup(-1);
+	box->setGroup(1);
 	box->setDynamic(true);
 	box->setRotationEnable(false);
 
@@ -130,3 +133,11 @@ cocos2d::Vector<cocos2d::SpriteFrame*> Lemmings::GetAnimation(const char* format
 	return animFrames;
 }
 
+bool Lemmings::isInMap()
+{
+	float y = this->getPositionY();
+	if  (y < 0) {
+		return false;
+	}
+	else return true;
+}
