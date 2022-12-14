@@ -103,8 +103,21 @@ void MainGame::onEnter()
 {
     Layer::onEnter();
     auto defaultCamera = Camera::getDefaultCamera();
+
     auto s = Director::getInstance()->getWinSize();
-    defaultCamera->initOrthographic(s.width * 0.66, s.height * 0.66, 1, 2000);
+    auto exitPos = _exit->getPosition();
+    auto exitSize = _exit->getContentSize();
+    auto spawnPos = _spawn->getPosition();
+    auto spawnSize = _spawn->getContentSize();
+
+    int distX = exitPos.x - spawnPos.x;
+    int distY = spawnPos.y - exitPos.y;
+    int ratio;
+    if (distX > distY) ratio = distX;
+    else ratio = distY;
+    CCLOG("ratio: %d | distX:%d | distY:%d", ratio, distX, distY);
+
+    defaultCamera->initOrthographic(s.width*0.5, s.height*0.5, 1, 2000);
     defaultCamera->setPosition(0, 0);
 
     //changed static zoom to distance between spawn and ecit
