@@ -6,7 +6,7 @@ USING_NS_CC;
 Scene* MainGame::createScene()
 {
     auto scene = Scene::createWithPhysics();
-   // scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+   //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = MainGame::create();
     scene->addChild(layer);
@@ -116,7 +116,7 @@ void MainGame::update(float delta)
 
     for (auto lemming : lemmingsList)
     {
-        lemming->move();
+        lemming->Move();
     }
 }
 

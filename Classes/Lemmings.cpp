@@ -9,12 +9,19 @@
 
 Lemmings::Lemmings()
 {
+	// setup private var
 	this->setPosition(*MapLoader::GetSpawnPoint());
 	this->_direction = RIGHT;
 	this->_speed = DEFAULT_SPEED;
+	this->_currentAnimation = SPAWNING;
 	this->_state = SPAWNING;
-	this->updateAnimation();
 
+	// create a temp sprite to create the physic box ( in game animation is manage in UpdateAnimation()
+	auto frames = GetAnimation("walk-%04d.png", 9);
+	this->setSpriteFrame(frames.front());
+
+
+	//create Physic body and setup basics parameters
 	PhysicsBody* box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.2f,0,0));
 	box->setGravityEnable(true);
 	box->setDynamic(true);
@@ -23,7 +30,7 @@ Lemmings::Lemmings()
 	this->addComponent(box);
 }
 
-void Lemmings::move()
+void Lemmings::Move()
 {
 	const auto physicsBody = this->getPhysicsBody();
 	const auto velocity = physicsBody->getVelocity();
@@ -32,15 +39,16 @@ void Lemmings::move()
 	// detect if the lemmings is falling
 	if ((int)velocity.y == 0)
 	{
-		// detect if the lemmgings is moving will is in the ground
+		// detect if the lemmgings is moving will he's on the ground
 		if (this->_state == MOVING) {
 			if (((int)velocity.x * 100) / 100 == 0) this->ChangeDirection();
 		}
 		else { 
 			this->_state = MOVING;
-			this->updateAnimation();
+			this->UpdateAnimation();
 		}
 
+		//movement
 		float distance;
 		if (this->_direction)
 		{
@@ -54,8 +62,10 @@ void Lemmings::move()
 	}
 	else 
 	{
-		if (this->_state != FALLING) { this->_state = FALLING; }
-		this->updateAnimation();
+		if (this->_state != FALLING) { 
+			this->_state = FALLING; 
+			this->UpdateAnimation();
+		}
 		physicsBody->setVelocity(Vec2(0, velocity.y));
 	}
 }
@@ -66,37 +76,45 @@ void Lemmings::ChangeDirection()
 	this->setFlippedX(_direction);
 }
 
-void Lemmings::updateAnimation()
+void Lemmings::UpdateAnimation()
 {
-	switch (this->_state)
-	{
-	case SPAWNING:
-		frames = GetAnimation("walk-%04d.png", 9);
-		this->setSpriteFrame(frames.front());
-		this->runAction(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 9)));
-		CCLOG("SPAWNING");
-		
-		break;
 
-	case FALLING:
-		frames = GetAnimation("fall-%04d.png", 5);
-		this->setSpriteFrame(frames.front());
-		this->runAction(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5)));	
-		CCLOG("FALLING");
-		break;
+	cocos2d::Vector<cocos2d::SpriteFrame*> frames;
 
-	case MOVING:
-		frames = GetAnimation("walk-%04d.png", 9);
-		this->setSpriteFrame(frames.front());
-		this->runAction(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 9)));
-		CCLOG("MOVING");
-		break;
+	// check only if the state change
+	if (this->_state != this->_currentAnimation) {
+		this->stopAllActions();
+		switch (this->_state)
+		{
+		case SPAWNING:
+			frames = GetAnimation("walk-%04d.png", 9);
+			this->setSpriteFrame(frames.front());
+			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 9))));
+			this->_currentAnimation = SPAWNING;
 
-	default:
-		break;
+			break;
+
+		case FALLING:
+			frames = GetAnimation("fall-%04d.png", 5);
+			this->setSpriteFrame(frames.front());
+			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5))));
+			this->_currentAnimation = FALLING;
+
+			break;
+
+		case MOVING:
+			frames = GetAnimation("walk-%04d.png", 9);
+			this->setSpriteFrame(frames.front());
+			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 9))));
+			this->_currentAnimation = MOVING;
+
+			break;
+
+		default:
+			break;
+
+		}
 	}
-	
-
 }
 
 cocos2d::Vector<cocos2d::SpriteFrame*> Lemmings::GetAnimation(const char* format, int count)
