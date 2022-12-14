@@ -59,9 +59,20 @@ bool MainGame::init()
     frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
     //auto walkFrames = GetAnimation("walk-%04d.png", 9);
 
-    auto lemming = new Lemmings();
-    this->addChild(lemming, 2);
-    this->lemmingsList.push_back(lemming);
+   
+    
+
+    for (int i = 0; i < 10000; i++) {
+        cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
+            auto lemming = new Lemmings();
+            this->addChild(lemming, 2);
+            this->lemmingsList.push_back(lemming);
+            });
+        cocos2d::DelayTime* delay = cocos2d::DelayTime::create(i*0.01);
+        runAction(cocos2d::Sequence::create(delay,A, NULL));
+    }
+
+    CCLOG("length : %d", this->lemmingsList.size());
 
     //Cursor show
     this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
