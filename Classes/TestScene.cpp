@@ -89,7 +89,7 @@ bool TestScene::init()
 
 
 
-    auto sprite = new Lemmings(walkFrames);
+    auto sprite = new Lemmings();
     this->addChild(sprite, 1);
     this->lemmingsList.push_back(sprite);
 
@@ -142,7 +142,7 @@ void TestScene::update(float delta)
 
     for (auto lemming : lemmingsList)
     {
-        lemming->move();
+        lemming->Move();
     }
 
         
