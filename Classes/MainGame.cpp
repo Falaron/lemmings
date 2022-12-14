@@ -56,7 +56,7 @@ bool MainGame::init()
 
     auto frameCache = SpriteFrameCache::getInstance();
     frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
-    auto walkFrames = GetAnimation("walk/%04d.png", 9);
+    auto walkFrames = GetAnimation("walk-%04d.png", 9);
 
     auto lemming = new Lemmings(walkFrames);
     this->addChild(lemming, 2);
