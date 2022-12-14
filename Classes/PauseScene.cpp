@@ -45,6 +45,12 @@ bool PauseMenu::init()
     backgroundMenu->setScale(3);
     this->addChild(backgroundMenu, 0);
 
+
+    // Adding pause title
+    auto pauseTitle = Label::createWithSystemFont("PAUSE", "arial.ttf", 40);
+    pauseTitle->setPosition(Vec2(160,250));
+    this->addChild(pauseTitle);
+
     auto menuReturn = MenuItemFont::create("return", CC_CALLBACK_1(PauseMenu::Return,this));
     auto menuQuitMainMenu = MenuItemFont::create("quit", CC_CALLBACK_1(PauseMenu::Quit, this));
     auto moveTo = MoveBy::create(0, Vec2(0, -50));
