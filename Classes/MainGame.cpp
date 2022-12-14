@@ -95,6 +95,14 @@ bool MainGame::init()
     };
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
+    auto keyboardListener = EventListenerKeyboard::create();
+    keyboardListener->onKeyPressed = [](EventKeyboard::KeyCode keyCode, Event* event) {
+        if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
+            Director::getInstance()->pushScene(TransitionFade::create(.2f, MainMenu::createScene()));
+    };
+
+    this->_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
     this->scheduleUpdate();
     return true;
 }
@@ -125,13 +133,6 @@ void MainGame::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
-
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
-
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
 }
 
 cocos2d::Vector<cocos2d::SpriteFrame*> MainGame::GetAnimation(const char* format, int count)
@@ -153,4 +154,3 @@ bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
         return true;
     return false;
 }
-

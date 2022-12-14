@@ -1,5 +1,5 @@
-#ifndef __MAINMENU_SCENE_H__
-#define __MAINMENU_SCENE_H__
+#ifndef __PAUSE_SCENE_H__
+#define __PAUSE_SCENE_H__
 
 # include "cocos2d.h"
 # include "ui/CocosGUI.h"
@@ -7,7 +7,7 @@
 
 # include "MainGame.h"
 
-class MainMenu : public cocos2d::Layer
+class PauseScene : public cocos2d::Layer
 {
 public:
     static cocos2d::Scene* createScene();
@@ -15,10 +15,10 @@ public:
     virtual void onEnter();
 
     // implement the "static create()" method manually
-    CREATE_FUNC(MainMenu);
+    CREATE_FUNC(PauseScene);
 private:
     cocos2d::Label* standardLabel;
     cocos2d::Label* customTTFLabel;
 };
 
-#endif // __MAINMENU_SCENE_H__
+#endif // __PAUSE_SCENE_H__
