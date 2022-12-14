@@ -7,7 +7,7 @@ using namespace ui;
 Scene* MainMenu::createScene()
 {
     auto scene = Scene::create();
-    auto layer = Layer::create();
+    auto layer = MainMenu::create();
     
     scene->addChild(layer);
     return scene;
