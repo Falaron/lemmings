@@ -22,10 +22,10 @@
         },
         "test.tmx": {
             "scale": 1,
-            "selectedLayer": 3,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 386.5,
-                "y": 404
+                "x": 237.5,
+                "y": 413
             }
         },
         "test.tmx#TileKit": {
@@ -35,7 +35,7 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 527,
+                "x": 480,
                 "y": 319.5
             }
         },

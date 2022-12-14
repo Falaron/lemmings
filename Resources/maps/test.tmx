@@ -28,7 +28,7 @@
   <object id="26" x="610" y="446" width="190" height="130"/>
  </objectgroup>
  <objectgroup id="7" name="Meta">
-  <object id="27" name="spawnPoint" x="111.5" y="354">
+  <object id="27" name="spawnPoint" x="98.5" y="359">
    <point/>
   </object>
   <object id="28" name="exitPoint" x="400" y="480.125">
