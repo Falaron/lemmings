@@ -4,6 +4,7 @@
 #include "MapLoader.h"
 #include <vector>
 #include "Lemmings.h"
+#include "PhysicsShapeCache.h"
 
 #include "PauseScene.h"
 
@@ -18,6 +19,9 @@ public:
 
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
+
+    void InitCamera();
+    void InitSpawnAndExit();
 
     // implement the "static create()" method manually
     CREATE_FUNC(MainGame);
@@ -34,4 +38,7 @@ private:
     cocos2d::Sprite* _exit;
     cocos2d::Sprite* _spawn;
     float cursorX, cursorY;
+
+    SpriteFrameCache* frameCache;
+    PhysicsShapeCache* physicCache;
 };

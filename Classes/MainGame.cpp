@@ -1,5 +1,4 @@
 #include "MainGame.h"
-#include "PhysicsShapeCache.h"
 
 USING_NS_CC;
 
@@ -54,7 +53,9 @@ bool MainGame::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu, 1);
 
-    auto frameCache = SpriteFrameCache::getInstance();
+    physicCache = PhysicsShapeCache::getInstance();
+    frameCache = SpriteFrameCache::getInstance();
+
     frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
     auto walkFrames = GetAnimation("walk-%04d.png", 9);
 
@@ -69,15 +70,8 @@ bool MainGame::init()
     auto shapeCache = PhysicsShapeCache::getInstance();
     shapeCache->addShapesWithFile("sprites/exit-door.plist");
 
-    _spawn = Sprite::create("sprites/spawn-door.png");
-    _spawn->setPosition(*MapLoader::GetSpawnPoint());
-    this->addChild(_spawn, 1);
-
-    _exit = Sprite::create("sprites/exit-door.png");
-    shapeCache->setBodyOnSprite("exit-door", _exit);
-    this->addChild(_exit, 1);
-    _exit->setAnchorPoint(Vec2(0.5, 0));
-    _exit->setPosition(*MapLoader::GetExitPoint());
+    InitSpawnAndExit();
+    InitCamera();
 
     //Mouse listener
     auto mouseListener = EventListenerMouse::create();
@@ -112,26 +106,7 @@ bool MainGame::init()
 void MainGame::onEnter()
 {
     Layer::onEnter();
-    auto defaultCamera = Camera::getDefaultCamera();
-
-    auto s = Director::getInstance()->getWinSize();
-    Vec2 exitPos = _exit->getPosition();
-    Size exitSize = _exit->getContentSize();
-    Vec2 spawnPos = _spawn->getPosition();
-    Size spawnSize = _spawn->getContentSize();
-
-    int distX = (exitPos.x + exitSize.width) - (spawnPos.x + spawnSize.width);
-    int distY = (spawnPos.y + spawnSize.height) - (exitPos.y + exitSize.height);
-    int ratio;
-    if (distX > distY) ratio = distX;
-    else ratio = distY;
-    ratio *= 1.66;
-
-    CCLOG("distX:%d | distY:%d", distX, distY);
-
-    defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
-    defaultCamera->setPosition(spawnPos.x - spawnSize.width, exitPos.y - exitSize.height);
-    defaultCamera->setScale(ratio / s.width);
+    
 
     //changed static zoom to distance between spawn and ecit
 }
@@ -151,6 +126,44 @@ void MainGame::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
+}
+
+void MainGame::InitCamera()
+{
+    auto defaultCamera = Director::getInstance()->getRunningScene()->getDefaultCamera();
+
+    auto s = Director::getInstance()->getWinSize();
+    Vec2 exitPos = _exit->getPosition();
+    Size exitSize = _exit->getContentSize();
+    Vec2 spawnPos = _spawn->getPosition();
+    Size spawnSize = _spawn->getContentSize();
+
+    int distX = (exitPos.x + exitSize.width) - (spawnPos.x + spawnSize.width);
+    int distY = (spawnPos.y + spawnSize.height) - (exitPos.y + exitSize.height);
+    int ratio;
+    if (distX > distY) ratio = distX;
+    else ratio = distY;
+    ratio *= 1.66;
+
+    CCLOG("distX:%d | distY:%d", distX, distY);
+
+    defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
+    defaultCamera->setPosition(spawnPos.x - spawnSize.width, exitPos.y - exitSize.height);
+    defaultCamera->setScale(ratio / s.width);
+}
+
+void MainGame::InitSpawnAndExit()
+{
+    _spawn = Sprite::create("sprites/spawn-door.png");
+    _spawn->setPosition(*MapLoader::GetSpawnPoint());
+    this->addChild(_spawn, 1);
+
+    _exit = Sprite::create("sprites/exit-door.png");
+    physicCache->setBodyOnSprite("exit-door", _exit);
+    this->addChild(_exit, 1);
+    _exit->setAnchorPoint(Vec2(0.5, 0));
+    _exit->setPosition(*MapLoader::GetExitPoint());
+
 }
 
 cocos2d::Vector<cocos2d::SpriteFrame*> MainGame::GetAnimation(const char* format, int count)
