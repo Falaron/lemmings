@@ -5,7 +5,7 @@
 #include <vector>
 #include "Lemmings.h"
 
-# include "PauseScene.h"
+#include "PauseScene.h"
 
 class MainGame : public cocos2d::Layer
 {

@@ -97,8 +97,10 @@ bool MainGame::init()
 
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = [](EventKeyboard::KeyCode keyCode, Event* event) {
-        if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
-            Director::getInstance()->pushScene(TransitionFade::create(.2f, MainMenu::createScene()));
+        if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
+            auto pauseScene = PauseMenu::createScene();
+            Director::getInstance()->pushScene(TransitionFade::create(.2f, pauseScene));
+        }
     };
 
     this->_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
