@@ -2,15 +2,18 @@
 #include "MapLoader.h"
 #define RIGHT false
 #define LEFT true
-#define DEFAULT_SPEED 0.5f
+#define DEFAULT_SPEED 15.0f
+
+#include <iostream>
 
 
 Lemmings::Lemmings(Vector<SpriteFrame*> frame)
 {
 	this->setAnimation(frame);
 	this->setPosition(*MapLoader::GetSpawnPoint());
-	this->direction = RIGHT;
-	this->speed = DEFAULT_SPEED;
+	this->_direction = RIGHT;
+	this->_speed = DEFAULT_SPEED;
+	this->_state = SPAWNING;
 
 	PhysicsBody* box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.2f,0,0));
 	box->setGravityEnable(true);
@@ -22,38 +25,39 @@ Lemmings::Lemmings(Vector<SpriteFrame*> frame)
 
 void Lemmings::move()
 {
-	// todo : detect collision
-
-	// todo : detect platform under the lemmings
-
-	//tempTest {
-	int posX = this->getPositionX();
-	int posY = this->getPositionY();
-	if (posX > 400) {
-		this->ChangeDirection();
-	}
-	else if (posX < 0) {
-		this->ChangeDirection();
-	}
-	// } end temp 
-
-
-	float distance;
-	if (this->direction) 
+	//CCLOG("Vélocité : %f : %f", this->getPhysicsBody()->getVelocity().x,this->getPhysicsBody()->getVelocity().y);
+	// detect if the lemmings is falling
+	if ((((int)this->getPhysicsBody()->getVelocity().y * 100)) / 100 == 0)
 	{
-		distance = -this->speed;
+		// detect if the lemmgings is moving will is in the ground
+		if (this->_state == MOVING) {
+			if ((((int)this->getPhysicsBody()->getVelocity().x * 100)) / 100 == 0) this->ChangeDirection();
+		}
+
+		float distance;
+		if (this->_direction)
+		{
+			distance = -this->_speed;
+		}
+		else
+		{
+			distance = this->_speed;
+		}
+		this->getPhysicsBody()->setVelocity(Vec2(distance, this->getPhysicsBody()->getVelocity().y));
+
+		if (this->_state != MOVING) this->_state = MOVING;
 	}
-	else
+	else 
 	{
-		distance = this->speed;
+		this->_state = FALLING;
+		this->getPhysicsBody()->setVelocity(Vec2(0, this->getPhysicsBody()->getVelocity().y));
 	}
-	this->setPosition(this->getPositionX() + distance, this->getPositionY());
 }
 
 void Lemmings::ChangeDirection()
 {
-	this->direction = !direction;
-	this->setFlippedX(direction);
+	this->_direction = !_direction;
+	this->setFlippedX(_direction);
 }
 
 void Lemmings::setAnimation(Vector<SpriteFrame*> frame)
