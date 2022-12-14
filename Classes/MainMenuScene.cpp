@@ -10,6 +10,7 @@ Scene* MainMenu::createScene()
     auto layer = Layer::create();
     
     scene->addChild(layer);
+    return scene;
 }
 
 // Print useful error message instead of segfaulting when files are not there.
