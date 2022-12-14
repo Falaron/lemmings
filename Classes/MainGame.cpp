@@ -105,20 +105,23 @@ void MainGame::onEnter()
     auto defaultCamera = Camera::getDefaultCamera();
 
     auto s = Director::getInstance()->getWinSize();
-    auto exitPos = _exit->getPosition();
-    auto exitSize = _exit->getContentSize();
-    auto spawnPos = _spawn->getPosition();
-    auto spawnSize = _spawn->getContentSize();
+    Vec2 exitPos = _exit->getPosition();
+    Size exitSize = _exit->getContentSize();
+    Vec2 spawnPos = _spawn->getPosition();
+    Size spawnSize = _spawn->getContentSize();
 
-    int distX = exitPos.x - spawnPos.x;
-    int distY = spawnPos.y - exitPos.y;
+    int distX = (exitPos.x + exitSize.width) - (spawnPos.x + spawnSize.width);
+    int distY = (spawnPos.y + spawnSize.height) - (exitPos.y + exitSize.height);
     int ratio;
     if (distX > distY) ratio = distX;
     else ratio = distY;
-    CCLOG("ratio: %d | distX:%d | distY:%d", ratio, distX, distY);
+    ratio *= 1.66;
 
-    defaultCamera->initOrthographic(s.width*0.5, s.height*0.5, 1, 2000);
-    defaultCamera->setPosition(0, 0);
+    CCLOG("distX:%d | distY:%d", distX, distY);
+
+    defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
+    defaultCamera->setPosition(spawnPos.x - spawnSize.width, exitPos.y - exitSize.height);
+    defaultCamera->setScale(ratio / s.width);
 
     //changed static zoom to distance between spawn and ecit
 }
