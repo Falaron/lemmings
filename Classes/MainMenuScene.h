@@ -5,6 +5,8 @@
 # include "ui/CocosGUI.h"
 # include "Definitions.h"
 
+# include "HelloWorldScene.h"
+
 class MainMenu : public cocos2d::Layer
 {
 public:
@@ -15,7 +17,8 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenu);
 private:
-    
+    cocos2d::Label* standardLabel;
+    cocos2d::Label* customTTFLabel;
 };
 
 #endif // __MAINMENU_SCENE_H__
