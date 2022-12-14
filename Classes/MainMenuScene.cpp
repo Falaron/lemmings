@@ -77,7 +77,7 @@ bool MainMenu::init()
 
     button->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED)
-            Director::getInstance()->replaceScene(TransitionFade::create(1.5f, MainGame::createScene()));
+            Director::getInstance()->replaceScene(MainGame::createScene());
         });
 
     this->addChild(button);

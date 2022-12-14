@@ -5,7 +5,7 @@ USING_NS_CC;
 Scene* MainGame::createScene()
 {
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+   //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = MainGame::create();
     scene->addChild(layer);
@@ -57,9 +57,9 @@ bool MainGame::init()
     frameCache = SpriteFrameCache::getInstance();
 
     frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
-    auto walkFrames = GetAnimation("walk-%04d.png", 9);
+    //auto walkFrames = GetAnimation("walk-%04d.png", 9);
 
-    auto lemming = new Lemmings(walkFrames);
+    auto lemming = new Lemmings();
     this->addChild(lemming, 2);
     this->lemmingsList.push_back(lemming);
 
@@ -117,7 +117,7 @@ void MainGame::update(float delta)
 
     for (auto lemming : lemmingsList)
     {
-        lemming->move();
+        lemming->Move();
     }
 }
 
@@ -164,19 +164,6 @@ void MainGame::InitSpawnAndExit()
     _exit->setAnchorPoint(Vec2(0.5, 0));
     _exit->setPosition(*MapLoader::GetExitPoint());
 
-}
-
-cocos2d::Vector<cocos2d::SpriteFrame*> MainGame::GetAnimation(const char* format, int count)
-{
-    auto spritecache = SpriteFrameCache::getInstance();
-    Vector<SpriteFrame*> animFrames;
-    char str[100];
-    for (int i = 1; i <= count; i++)
-    {
-        sprintf(str, format, i);
-        animFrames.pushBack(spritecache->getSpriteFrameByName(str));
-    }
-    return animFrames;
 }
 
 bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {

@@ -30,8 +30,6 @@ public:
     std::vector<Lemmings*> lemmingsList;
 
 private:
-    cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
-
     std::vector<cocos2d::EventKeyboard::KeyCode> keys;
 
     cocos2d::Sprite* cursorSprite;
