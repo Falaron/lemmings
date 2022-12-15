@@ -1,5 +1,7 @@
 #include "MainGame.h"
 
+#define CAMERA_STEP 25
+
 USING_NS_CC;
 
 Scene* MainGame::createScene()
@@ -58,9 +60,6 @@ bool MainGame::init()
 
     frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
 
-   
-    
-
     for (int i = 0; i < 10; i++) {
         cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
             auto lemming = new Lemmings();
@@ -81,7 +80,6 @@ bool MainGame::init()
     shapeCache->addShapesWithFile("sprites/exit-door.plist");
 
     InitSpawnAndExit();
-    InitCamera();
 
     //Mouse listener
     auto mouseListener = EventListenerMouse::create();
@@ -100,11 +98,26 @@ bool MainGame::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
     auto keyboardListener = EventListenerKeyboard::create();
-    keyboardListener->onKeyPressed = [](EventKeyboard::KeyCode keyCode, Event* event) {
+    keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
         if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
             auto pauseScene = PauseMenu::createScene();
             Director::getInstance()->pushScene(TransitionFade::create(.2f, pauseScene));
         }
+        
+        switch (keyCode)
+        {
+        case cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+        case cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+        case cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW:
+        case cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW:
+            keys.push_back(keyCode);
+            break;
+        }
+    };
+
+    keyboardListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event) {
+        // remove the key.
+        keys.erase(std::remove(keys.begin(), keys.end(), keyCode), keys.end());
     };
 
     this->_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
@@ -117,6 +130,7 @@ void MainGame::onEnter()
 {
     Layer::onEnter();
     
+    InitCamera();
 
     //changed static zoom to distance between spawn and ecit
 }
@@ -124,15 +138,28 @@ void MainGame::onEnter()
 void MainGame::update(float delta)
 {
     Node::update(delta);
-    CCLOG("for");
+
     for (auto lemming : lemmingsList)
     {
         lemming->Move();
         if (!lemming->isInMap()) {
             lemmingsList.erase(std::remove(lemmingsList.begin(),lemmingsList.end(), lemming),lemmingsList.end());
             lemming->removeFromParentAndCleanup(true);
-            CCLOG("delete");
         }
+    }
+
+    if (isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
+    {
+        this->getScene()->getDefaultCamera()->setPositionX(this->getScene()->getDefaultCamera()->getPositionX() + CAMERA_STEP * delta);
+    }
+    else if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+        this->getScene()->getDefaultCamera()->setPositionX(this->getScene()->getDefaultCamera()->getPositionX() - CAMERA_STEP * delta);
+    }
+    else if (isKeyPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+        this->getScene()->getDefaultCamera()->setPositionY(this->getScene()->getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
+    }
+    else if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+        this->getScene()->getDefaultCamera()->setPositionY(this->getScene()->getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
     }
 }
 
