@@ -23,10 +23,12 @@ Lemmings::Lemmings()
 
 
 	//create Physic body and setup basics parameters
-	PhysicsBody* box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.2f,0,0));
+	box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.2f,0,0));
 	box->setGravityEnable(true);
 	box->setGroup(-1);
 	box->setGroup(1);
+	box->setCategoryBitmask(1);
+	box->setCollisionBitmask(2);
 	box->setDynamic(true);
 	box->setRotationEnable(false);
 

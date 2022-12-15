@@ -22,6 +22,7 @@ public:
 
     void InitCamera();
     void InitSpawnAndExit();
+    bool onContactExit(PhysicsContact& contact);
 
     // implement the "static create()" method manually
     CREATE_FUNC(MainGame);
@@ -36,6 +37,9 @@ private:
     cocos2d::Sprite* _exit;
     cocos2d::Sprite* _spawn;
     float cursorX, cursorY;
+
+    int exitBitmask;
+    int lemmingBitmask;
 
     SpriteFrameCache* frameCache;
     PhysicsShapeCache* physicCache;

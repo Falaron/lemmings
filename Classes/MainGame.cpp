@@ -13,6 +13,8 @@ Scene* MainGame::createScene()
     return scene;
 }
 
+
+
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
 {
@@ -107,7 +109,12 @@ bool MainGame::init()
         }
     };
 
-    this->_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
+
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(MainGame::onContactExit, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     this->scheduleUpdate();
     return true;
@@ -124,7 +131,7 @@ void MainGame::onEnter()
 void MainGame::update(float delta)
 {
     Node::update(delta);
-    CCLOG("for");
+    //CCLOG("for");
     for (auto lemming : lemmingsList)
     {
         lemming->Move();
@@ -133,9 +140,10 @@ void MainGame::update(float delta)
             lemming->removeFromParentAndCleanup(true);
             CCLOG("delete");
         }
+
+        lemmingBitmask = lemming->getPhysicsBody()->getCollisionBitmask();
     }
 }
-
 
 void MainGame::menuCloseCallback(Ref* pSender)
 {
@@ -178,7 +186,9 @@ void MainGame::InitSpawnAndExit()
     this->addChild(_exit, 1);
     _exit->setAnchorPoint(Vec2(0.5, 0));
     _exit->setPosition(*MapLoader::GetExitPoint());
-
+    _exit->getPhysicsBody()->setCategoryBitmask(2);
+    _exit->getPhysicsBody()->setCollisionBitmask(1);
+    exitBitmask = _exit->getPhysicsBody()->getCollisionBitmask();
 }
 
 bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
@@ -186,4 +196,15 @@ bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
     if (std::find(keys.begin(), keys.end(), code) != keys.end())
         return true;
     return false;
+}
+
+bool MainGame::onContactExit(PhysicsContact& contact)
+{
+    CCLOG("CONTACT");
+    if (lemmingBitmask && exitBitmask)
+    {
+        CCLOG("CONTACT");
+    }
+    
+    return true;
 }
