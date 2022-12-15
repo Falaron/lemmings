@@ -8,13 +8,17 @@
 
 #include "PauseScene.h"
 
-class MainGame : public cocos2d::Layer
+#include "Layers/HUD.h"
+#include "Layers/Game.h"
+
+class MainGame : public cocos2d::Scene
 {
 public:
+
     static cocos2d::Scene* createScene();
 
     bool init() override;
-    void onEnter() override;
+    void onEnterTransitionDidFinish() override;
     bool isKeyPressed(cocos2d::EventKeyboard::KeyCode);
 
     // a selector callback
@@ -30,6 +34,7 @@ public:
     std::vector<Lemmings*> lemmingsList;
 
 private:
+
     std::vector<cocos2d::EventKeyboard::KeyCode> keys;
 
     cocos2d::Sprite* cursorSprite;
@@ -39,4 +44,7 @@ private:
 
     SpriteFrameCache* frameCache;
     PhysicsShapeCache* physicCache;
+
+    GameLayer* gameLayer;
+    HUDLayer* hudLayer;
 };

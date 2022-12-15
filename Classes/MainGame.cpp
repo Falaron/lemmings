@@ -1,5 +1,7 @@
 #include "MainGame.h"
 
+#define HUD_LAYER_TAG 999
+#define GAME_LAYER_TAG 900
 #define CAMERA_STEP 25
 
 USING_NS_CC;
@@ -9,8 +11,14 @@ Scene* MainGame::createScene()
     auto scene = Scene::createWithPhysics();
     //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
-    auto layer = MainGame::create();
-    scene->addChild(layer);
+
+    auto gameLayer = MainGame::create();
+    gameLayer->setTag(GAME_LAYER_TAG);
+    scene->addChild(gameLayer);
+
+    HUDLayer* hud = HUDLayer::create();
+    hud->setTag(HUD_LAYER_TAG);
+    scene->addChild(hud);
 
     return scene;
 }
@@ -25,35 +33,14 @@ static void problemLoading(const char* filename)
 // on "init" you need to initialize your instance
 bool MainGame::init()
 {
-    if (!Layer::init()) return false;
+    if (!Scene::init()) return false;
+    this->hudLayer = (HUDLayer*)Director::getInstance()->getRunningScene()->getChildByTag(HUD_LAYER_TAG);
+    this->gameLayer = (GameLayer*)Director::getInstance()->getRunningScene()->getChildByTag(GAME_LAYER_TAG);
 
-    MapLoader::LoadMap("maps/test.tmx", this);
+    MapLoader::LoadMap("maps/test.tmx", gameLayer);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    auto closeItem = MenuItemImage::create(
-        "CloseNormal.png",
-        "CloseSelected.png",
-        CC_CALLBACK_1(MainGame::menuCloseCallback, this));
-
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
-    {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-    }
-    else
-    {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
-        float y = origin.y + closeItem->getContentSize().height / 2;
-        closeItem->setPosition(Vec2(x, y));
-    }
-
-    // create menu, it's an autorelease object
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
 
     physicCache = PhysicsShapeCache::getInstance();
     frameCache = SpriteFrameCache::getInstance();
@@ -76,8 +63,8 @@ bool MainGame::init()
     this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
     this->addChild(this->cursorSprite, 2);
 
-    auto shapeCache = PhysicsShapeCache::getInstance();
-    shapeCache->addShapesWithFile("sprites/exit-door.plist");
+    /*auto shapeCache = PhysicsShapeCache::getInstance();
+    shapeCache->addShapesWithFile("sprites/exit-door.plist");*/
 
     InitSpawnAndExit();
 
@@ -126,10 +113,9 @@ bool MainGame::init()
     return true;
 }
 
-void MainGame::onEnter()
+void MainGame::onEnterTransitionDidFinish()
 {
-    Layer::onEnter();
-    
+    Scene::onEnterTransitionDidFinish();
     InitCamera();
 
     //changed static zoom to distance between spawn and ecit
