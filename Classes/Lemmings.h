@@ -6,6 +6,7 @@ enum state {
 	SPAWNING,
 	FALLING,
 	MOVING,
+	JUMPING,
 };
 
 USING_NS_CC;
@@ -16,8 +17,8 @@ public:
 	/// <summary> Spawn point define by the map (refer to MapLoader.h) / Create the physicalBody / Animation manage by UpdateAnimation() </summary>
 	Lemmings();
 
-	/// <summary> check collisions and automatically move accordingly </summary>
-	void Move();
+	/// <summary> main loop for each lemmings. Mange collisions, actions and movements. </summary>
+	void Update();
 
 	/// <summary> change the direction of the lemmings </summary>
 	void ChangeDirection();
@@ -27,6 +28,12 @@ public:
 
 	/// <summary> Return true if the lemming is in the map </summary>
 	bool isInMap();
+
+	/// <summary> Move forward depend of the direction </summary>
+	void Move();
+
+	/// <summary> Jump action </summary>
+	void Jump();
 
 private:
 	cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);

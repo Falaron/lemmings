@@ -124,14 +124,13 @@ void MainGame::onEnter()
 void MainGame::update(float delta)
 {
     Node::update(delta);
-    CCLOG("for");
+
     for (auto lemming : lemmingsList)
     {
-        lemming->Move();
+        lemming->Update();
         if (!lemming->isInMap()) {
             lemmingsList.erase(std::remove(lemmingsList.begin(),lemmingsList.end(), lemming),lemmingsList.end());
             lemming->removeFromParentAndCleanup(true);
-            CCLOG("delete");
         }
     }
 }
