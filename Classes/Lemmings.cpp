@@ -2,7 +2,7 @@
 #include "MapLoader.h"
 #define RIGHT false
 #define LEFT true
-#define DEFAULT_SPEED 15.0f
+#define DEFAULT_SPEED 13.0f
 
 #include <iostream>
 
@@ -34,43 +34,38 @@ Lemmings::Lemmings()
 	this->addComponent(box);
 }
 
-void Lemmings::Move()
+void Lemmings::Update()
 {
 	const auto physicsBody = this->getPhysicsBody();
 	const auto velocity = physicsBody->getVelocity();
 
+	CCLOG("state : %d" ,this->_state);
 
-	// detect if the lemmings is falling
-	if ((int)velocity.y == 0)
-	{
-		// detect if the lemmgings is moving will he's on the ground
-		if (this->_state == MOVING) {
-			if (((int)velocity.x * 100) / 100 == 0) this->ChangeDirection();
-		}
-		else { 
-			this->_state = MOVING;
-			this->UpdateAnimation();
-		}
+	if (this->_state == JUMPING) {
+		this->Jump();
+	}
+	else {
 
-		//movement
-		float distance;
-		if (this->_direction)
+		// detect if the lemmings is falling
+		if ((int)velocity.y == 0)
 		{
-			distance = -this->_speed;
+			// detect if the lemmgings is moving will he's on the ground
+			if (this->_state == MOVING) {
+				if (((int)velocity.x * 100) / 100 == 0) this->ChangeDirection();
+			}
+			else { this->_state = MOVING; }
+
+			//movement
+			this->Move();
 		}
+
 		else
 		{
-			distance = this->_speed;
+			if (this->_state != FALLING) { this->_state = FALLING; }
+			physicsBody->setVelocity(Vec2(0, velocity.y));
 		}
-		physicsBody->setVelocity(Vec2(distance, velocity.y));
-	}
-	else 
-	{
-		if (this->_state != FALLING) { 
-			this->_state = FALLING; 
-			this->UpdateAnimation();
-		}
-		physicsBody->setVelocity(Vec2(0, velocity.y));
+
+		this->UpdateAnimation();
 	}
 }
 
@@ -101,7 +96,7 @@ void Lemmings::UpdateAnimation()
 		case FALLING:
 			frames = GetAnimation("fall-%04d.png", 5);
 			this->setSpriteFrame(frames.front());
-			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5))));
+			this->runAction(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5)));
 			this->_currentAnimation = FALLING;
 
 			break;
@@ -111,6 +106,14 @@ void Lemmings::UpdateAnimation()
 			this->setSpriteFrame(frames.front());
 			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 9))));
 			this->_currentAnimation = MOVING;
+
+			break;
+
+		case JUMPING:
+			frames = GetAnimation("fall-%04d.png", 5);
+			this->setSpriteFrame(frames.front());
+			this->runAction(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5)));
+			this->_currentAnimation = JUMPING;
 
 			break;
 
@@ -141,4 +144,36 @@ bool Lemmings::isInMap()
 		return false;
 	}
 	else return true;
+}
+
+void Lemmings::Move()
+{
+	float distance;
+	if (this->_direction)
+	{
+		distance = -this->_speed;
+	}
+	else
+	{
+		distance = this->_speed;
+	}
+	this->getPhysicsBody()->setVelocity(Vec2(distance, this->getPhysicsBody()->getVelocity().y));
+}
+
+void Lemmings::Jump()
+{
+	// check only if the state change
+	if (this->_state != this->_currentAnimation) {
+
+		auto jump = JumpBy::create(1.6f, Vec2(2.0f, 0.0f), 2.0f, 1);
+
+		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(1);
+
+		auto callbackChangeState = CallFunc::create([this]() {
+			this->_state = MOVING;
+			});
+
+		auto seq = Sequence::create(delay, jump, callbackChangeState, nullptr);
+		this->runAction(seq);
+	}
 }
