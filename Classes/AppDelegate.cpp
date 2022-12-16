@@ -23,7 +23,7 @@
  ****************************************************************************/
 
 # include "AppDelegate.h"
-# include "MainMenuScene.h"
+# include "Scenes/TitleScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 

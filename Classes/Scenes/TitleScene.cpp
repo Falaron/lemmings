@@ -1,4 +1,4 @@
-# include "MainMenuScene.h"
+# include "TitleScene.h"
 
 USING_NS_CC;
 
@@ -76,7 +76,7 @@ bool MainMenu::init()
     button->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED)
             Director::getInstance()->replaceScene(MainGame::createScene());
-        });
+    });
 
     this->addChild(button);
 

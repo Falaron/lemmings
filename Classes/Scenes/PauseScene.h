@@ -6,7 +6,6 @@
 # include "Definitions.h"
 
 # include "MainGame.h"
-# include "MainMenuScene.h"
 
 class PauseMenu : public cocos2d::Layer
 {

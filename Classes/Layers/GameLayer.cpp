@@ -1,5 +1,6 @@
 #include "GameLayer.h"
 #include "MapLoader.h"
+#include "GameManager.h"
 
 #define HUD_LAYER_TAG 999
 
@@ -22,6 +23,7 @@ bool GameLayer::init()
 
 
     InitSpawnAndExit();
+    SpawnLemmings();
 
     this->scheduleUpdate();
 
@@ -37,12 +39,15 @@ void GameLayer::update(float delta) {
         if (!lemming->isInMap()) {
             lemmingsList.erase(std::remove(lemmingsList.begin(), lemmingsList.end(), lemming), lemmingsList.end());
             lemming->removeFromParentAndCleanup(true);
+            GameManager::IncreaseLemmingDead();
+            //if (GameManager::IsEndOfLevel())
+                //Director::getInstance()->replaceScene(EndLevelScene::createScene());
         }
     }
 }
 
 void GameLayer::SpawnLemmings() {
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < GameManager::GetLemmingSpawn(); i++) {
         cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
             auto lemming = new Lemmings();
             this->addChild(lemming, 1);
@@ -64,4 +69,5 @@ void GameLayer::InitSpawnAndExit()
     this->addChild(_exit);
     _exit->setAnchorPoint(Vec2(0.5, 0));
     _exit->setPosition(*MapLoader::GetExitPoint());
+    _exit->getPhysicsBody()->setContactTestBitmask(0xFFFFFFFF);
 }

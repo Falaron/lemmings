@@ -2,15 +2,16 @@
 
 #include "cocos2d.h"
 
-#include "PauseScene.h"
-#include "EndLevelScene.h"
-#include "GameManager.h"
 #include <iostream>
+#include <vector>
 
-using namespace std;
-
+#include "GameManager.h"
+#include "EndLevelScene.h"
+#include "PauseScene.h"
 #include "Layers/HUDLayer.h"
 #include "Layers/GameLayer.h"
+
+using namespace std;
 
 class MainGame : public cocos2d::Scene
 {
@@ -22,9 +23,9 @@ public:
     bool isKeyPressed(cocos2d::EventKeyboard::KeyCode);
 
     void onEnterTransitionDidFinish() override;
+    bool onContactEnter(PhysicsContact& contact);
 
     void InitCamera();
-    bool onContactEnter(PhysicsContact& contact);
 
     // implement the "static create()" method manually
     CREATE_FUNC(MainGame);
@@ -44,7 +45,7 @@ private:
     SpriteFrameCache* frameCache;
     PhysicsShapeCache* physicCache;
     EventListenerPhysicsContact* contactListener;
+
     GameLayer* gameLayer;
     HUDLayer* hudLayer;
-    float cameraMoveTimer;
 };

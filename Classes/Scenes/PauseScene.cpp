@@ -34,8 +34,6 @@ bool PauseMenu::init()
 
     //auto mainGameScene = HelloWorld::createScene();
 
-
-
     //////////////////////
     // Adding background sprite
     Sprite* backgroundMenu = Sprite::create(MAIN_MENU_BACKGROUND_PATH);

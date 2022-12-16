@@ -33,10 +33,18 @@ bool MainGame::init()
 {
     if (!Scene::initWithPhysics()) return false;
 
+    //std::vector<LemmingAction>
+
     GameManager::SetLemmingSpawn(10);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    //Load available actions from level
+    int actions[] = { PARACHUTE, DIG };
+    for (int action : actions) {
+        GameManager::AddAction((LemmingAction)action);
+    }
 
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {

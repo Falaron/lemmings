@@ -1,4 +1,9 @@
 #include "HUDLayer.h"
+#include "GameManager.h"
+
+std::vector<LemmingAction> GameManager::_actions;
+
+const std::string lemmingActionNames[] = { "build", "", "dig", "", "jump", "", "parachute", "stop" };
 
 USING_NS_CC;
 
@@ -9,18 +14,32 @@ bool HUDLayer::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    comboLabel1 = Label::createWithTTF("COUCOU", "fonts/arial.ttf", visibleSize.height * 0.1);
-    comboLabel1->setColor(Color3B::WHITE);
-    comboLabel1->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+
+    frameCache = SpriteFrameCache::getInstance();
+    frameCache->addSpriteFramesWithFile("sprites/lemmings/actions/actions.plist");
+
     setAnchorPoint(Vec2(0,0));
 
-    addChild(comboLabel1);
+    for (int i = 0 ; i < GameManager::GetLemmingActions().size() ; i++)
+    {
+        LemmingAction action = GameManager::GetLemmingActions()[i];
+        auto sprite = Sprite::createWithSpriteFrame(frameCache->getSpriteFrameByName(lemmingActionNames[action] + ".png"));
+        sprite->setAnchorPoint(Vec2(0, 0));
+        sprite->setPosition(i * 50, 0);
+        addChild(sprite);
+    }
 
     //Cursor show
     this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
     this->cursorSprite->setScale(4);
-    this->addChild(this->cursorSprite);
+    this->addChild(this->cursorSprite);    
 
+    InitializeCursorMovementTrigger();
+
+    return true;
+}
+
+void HUDLayer::InitializeCursorMovementTrigger() {
     //Mouse listener
     auto mouseListener = EventListenerMouse::create();
     mouseListener->onMouseMove = [=](cocos2d::Event* event) {
@@ -35,7 +54,6 @@ bool HUDLayer::init()
         else
             this->cursorSprite->setTexture("sprites/cursor/0002.png");
     };
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
-    return true;
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
