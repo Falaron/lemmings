@@ -24,11 +24,11 @@
   </data>
  </layer>
  <objectgroup id="5" name="MapCollisions">
-  <object id="25" x="1.33333" y="480" width="414.667" height="96"/>
+  <object id="25" x="0" y="480" width="416" height="96"/>
   <object id="26" x="610" y="446" width="190" height="130"/>
  </objectgroup>
  <objectgroup id="7" name="Meta">
-  <object id="27" name="spawnPoint" x="98.5" y="359">
+  <object id="27" name="spawnPoint" x="107.5" y="360">
    <point/>
   </object>
   <object id="28" name="exitPoint" x="400" y="480.125">
