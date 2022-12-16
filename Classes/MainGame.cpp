@@ -1,88 +1,38 @@
 #include "MainGame.h"
 
-#define HUD_LAYER_TAG 999
-#define GAME_LAYER_TAG 900
+#define HUD_LAYER_NAME "HUDLayer"
+#define GAME_LAYER_NAME "GameLayer"
 #define CAMERA_STEP 25
+#define CAMERA_MOVE_COOLDOWN 0.2
 
 USING_NS_CC;
 
 Scene* MainGame::createScene()
 {
-    auto scene = Scene::createWithPhysics();
+    auto scene = MainGame::create();
     //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
 
-    auto gameLayer = MainGame::create();
-    gameLayer->setTag(GAME_LAYER_TAG);
+    HUDLayer* hud = HUDLayer::create();
+    hud->setName(HUD_LAYER_NAME);
+    scene->addChild(hud, 1);
+
+    auto gameLayer = GameLayer::create();
+    gameLayer->setName(GAME_LAYER_NAME);
     scene->addChild(gameLayer);
 
-    HUDLayer* hud = HUDLayer::create();
-    hud->setTag(HUD_LAYER_TAG);
-    scene->addChild(hud);
-
     return scene;
-}
-
-// Print useful error message instead of segfaulting when files are not there.
-static void problemLoading(const char* filename)
-{
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
 // on "init" you need to initialize your instance
 bool MainGame::init()
 {
-    if (!Scene::init()) return false;
-    this->hudLayer = (HUDLayer*)Director::getInstance()->getRunningScene()->getChildByTag(HUD_LAYER_TAG);
-    this->gameLayer = (GameLayer*)Director::getInstance()->getRunningScene()->getChildByTag(GAME_LAYER_TAG);
+    if (!Scene::initWithPhysics()) return false;
 
-    MapLoader::LoadMap("maps/test.tmx", gameLayer);
+    cameraMoveTimer = CAMERA_MOVE_COOLDOWN;
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    physicCache = PhysicsShapeCache::getInstance();
-    frameCache = SpriteFrameCache::getInstance();
-
-    frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
-
-    for (int i = 0; i < 10; i++) {
-        cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
-            auto lemming = new Lemmings();
-            this->addChild(lemming, 2);
-            this->lemmingsList.push_back(lemming);
-            });
-        cocos2d::DelayTime* delay = cocos2d::DelayTime::create(i);
-        runAction(cocos2d::Sequence::create(delay,A, NULL));
-    }
-
-    CCLOG("length : %d", this->lemmingsList.size());
-
-    //Cursor show
-    this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
-    this->addChild(this->cursorSprite, 2);
-
-    /*auto shapeCache = PhysicsShapeCache::getInstance();
-    shapeCache->addShapesWithFile("sprites/exit-door.plist");*/
-
-    InitSpawnAndExit();
-
-    //Mouse listener
-    auto mouseListener = EventListenerMouse::create();
-    mouseListener->onMouseMove = [=](cocos2d::Event* event) {
-        auto* mouseEvent = dynamic_cast<EventMouse*>(event);
-
-        cursorX = mouseEvent->getCursorX();
-        cursorY = mouseEvent->getCursorY();
-        this->cursorSprite->setPosition(cursorX, cursorY);
-
-        if (mouseEvent->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) 
-            this->cursorSprite->setTexture("sprites/cursor/0001.png");
-        else
-            this->cursorSprite->setTexture("sprites/cursor/0002.png");
-    };
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
@@ -110,88 +60,32 @@ bool MainGame::init()
     this->_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
     this->scheduleUpdate();
+
     return true;
-}
-
-void MainGame::onEnterTransitionDidFinish()
-{
-    Scene::onEnterTransitionDidFinish();
-    InitCamera();
-
-    //changed static zoom to distance between spawn and ecit
 }
 
 void MainGame::update(float delta)
 {
     Node::update(delta);
 
-    for (auto lemming : lemmingsList)
-    {
-        lemming->Move();
-        if (!lemming->isInMap()) {
-            lemmingsList.erase(std::remove(lemmingsList.begin(),lemmingsList.end(), lemming),lemmingsList.end());
-            lemming->removeFromParentAndCleanup(true);
-        }
-    }
-
     if (isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
     {
-        this->getScene()->getDefaultCamera()->setPositionX(this->getScene()->getDefaultCamera()->getPositionX() + CAMERA_STEP * delta);
+        this->getDefaultCamera()->setPositionX(this->getDefaultCamera()->getPositionX() + CAMERA_STEP * delta);
+        hudLayer->setPositionX(hudLayer->getPositionX() + CAMERA_STEP * delta);
     }
-    else if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
-        this->getScene()->getDefaultCamera()->setPositionX(this->getScene()->getDefaultCamera()->getPositionX() - CAMERA_STEP * delta);
+    if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+        this->getDefaultCamera()->setPositionX(this->getDefaultCamera()->getPositionX() - CAMERA_STEP * delta);
+        hudLayer->setPositionX(hudLayer->getPositionX() - CAMERA_STEP * delta);
     }
-    else if (isKeyPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
-        this->getScene()->getDefaultCamera()->setPositionY(this->getScene()->getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
+    if (isKeyPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
+        this->getDefaultCamera()->setPositionY(this->getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
+        hudLayer->setPositionY(hudLayer->getPositionY() + CAMERA_STEP * delta);
     }
-    else if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
-        this->getScene()->getDefaultCamera()->setPositionY(this->getScene()->getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
+    if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
+        this->getDefaultCamera()->setPositionY(this->getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
+        hudLayer->setPositionY(hudLayer->getPositionY() - CAMERA_STEP * delta);
     }
-}
-
-
-void MainGame::menuCloseCallback(Ref* pSender)
-{
-    //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
-}
-
-void MainGame::InitCamera()
-{
-    auto defaultCamera = Director::getInstance()->getRunningScene()->getDefaultCamera();
-
-    auto s = Director::getInstance()->getWinSize();
-    Vec2 exitPos = _exit->getPosition();
-    Size exitSize = _exit->getContentSize();
-    Vec2 spawnPos = _spawn->getPosition();
-    Size spawnSize = _spawn->getContentSize();
-
-    int distX = (exitPos.x + exitSize.width) - (spawnPos.x + spawnSize.width);
-    int distY = (spawnPos.y + spawnSize.height) - (exitPos.y + exitSize.height);
-    int ratio;
-    if (distX > distY) ratio = distX;
-    else ratio = distY;
-    ratio *= 1.66;
-
-    CCLOG("distX:%d | distY:%d", distX, distY);
-
-    defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
-    defaultCamera->setPosition(spawnPos.x - spawnSize.width, exitPos.y - exitSize.height);
-    defaultCamera->setScale(ratio / s.width);
-}
-
-void MainGame::InitSpawnAndExit()
-{
-    _spawn = Sprite::create("sprites/spawn-door.png");
-    _spawn->setPosition(*MapLoader::GetSpawnPoint());
-    this->addChild(_spawn, 1);
-
-    _exit = Sprite::create("sprites/exit-door.png");
-    physicCache->setBodyOnSprite("exit-door", _exit);
-    this->addChild(_exit, 1);
-    _exit->setAnchorPoint(Vec2(0.5, 0));
-    _exit->setPosition(*MapLoader::GetExitPoint());
-
+    
 }
 
 bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
@@ -199,4 +93,39 @@ bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
     if (std::find(keys.begin(), keys.end(), code) != keys.end())
         return true;
     return false;
+}
+
+void MainGame::onEnterTransitionDidFinish()
+{
+    Node::onEnterTransitionDidFinish();
+
+    this->hudLayer = (HUDLayer*)this->getChildByName(HUD_LAYER_NAME);
+    this->gameLayer = (GameLayer*)this->getChildByName(GAME_LAYER_NAME);
+
+    InitCamera();
+}
+
+void MainGame::InitCamera()
+{
+    auto defaultCamera = Director::getInstance()->getRunningScene()->getDefaultCamera();
+    auto s = Director::getInstance()->getWinSize();
+
+    Vec2 exitPos = gameLayer->GetExitPos();
+    Size exitSize = gameLayer->GetExitSize();
+    Vec2 spawnPos = gameLayer->GetSpawnPos();
+    Size spawnSize = gameLayer->GetSpawnSize();
+
+    int distX = (exitPos.x + exitSize.width) - (spawnPos.x + spawnSize.width);
+    int distY = (spawnPos.y + spawnSize.height) - (exitPos.y + exitSize.height);
+    int ratio;
+    if (distX > distY) ratio = distX;
+    else ratio = distY;
+    ratio *= 2.0f;
+
+    //CCLOG("distX:%d | distY:%d", distX, distY);
+
+    defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
+    defaultCamera->setPosition(0, 0);
+    defaultCamera->setScale(ratio / s.width);
+    hudLayer->setScale(ratio / s.width);
 }
