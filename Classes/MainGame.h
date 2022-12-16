@@ -3,6 +3,8 @@
 #include "cocos2d.h"
 
 #include "PauseScene.h"
+#include <iostream>
+using namespace std;
 
 #include "Layers/HUDLayer.h"
 #include "Layers/GameLayer.h"
@@ -19,6 +21,8 @@ public:
     void onEnterTransitionDidFinish() override;
 
     void InitCamera();
+    void InitSpawnAndExit();
+    bool onContactEnter(PhysicsContact& contact);
 
     // implement the "static create()" method manually
     CREATE_FUNC(MainGame);

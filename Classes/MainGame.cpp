@@ -57,7 +57,12 @@ bool MainGame::init()
         keys.erase(std::remove(keys.begin(), keys.end(), keyCode), keys.end());
     };
 
-    this->_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
+
+
+    contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(MainGame::onContactEnter, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     this->scheduleUpdate();
 

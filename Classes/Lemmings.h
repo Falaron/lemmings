@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "PhysicsShapeCache.h"
 
+
 enum state {
 	SPAWNING,
 	FALLING,
@@ -28,10 +29,13 @@ public:
 	/// <summary> Return true if the lemming is in the map </summary>
 	bool isInMap();
 
+	bool onContactExit(PhysicsContact& contact, int exitBit);
+
 private:
 	cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
 	bool _direction;
 	float _speed;
 	state _state;
 	state _currentAnimation;
+	PhysicsBody* box;
 };
