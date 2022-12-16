@@ -7,6 +7,7 @@ enum state {
 	FALLING,
 	MOVING,
 	JUMPING,
+	PARACHUTING,
 };
 
 USING_NS_CC;
@@ -35,11 +36,17 @@ public:
 	/// <summary> Jump action </summary>
 	void Jump();
 
+	/// <summary> Parachute action </summary>
+	void Parachute();
+
 	bool onContactExit(PhysicsContact& contact, int exitBit);
 
 private:
 	cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
-	bool _direction;
+	void setVerticalDirection();
+
+	bool _horizontalDirection;
+	bool _verticalDirection;
 	float _speed;
 	state _state;
 	state _currentAnimation;

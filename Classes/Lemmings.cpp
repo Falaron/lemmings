@@ -2,6 +2,8 @@
 #include "MapLoader.h"
 #define RIGHT false
 #define LEFT true
+#define UP false
+#define DOWN true
 #define DEFAULT_SPEED 13.0f
 
 #include <iostream>
@@ -11,7 +13,8 @@ Lemmings::Lemmings()
 {
 	// setup private var
 	this->setPosition(*MapLoader::GetSpawnPoint());
-	this->_direction = RIGHT;
+	this->_horizontalDirection = RIGHT;
+	this->_verticalDirection = UP;
 	this->_speed = DEFAULT_SPEED;
 	this->_currentAnimation = SPAWNING;
 	this->_state = SPAWNING;
@@ -39,10 +42,12 @@ void Lemmings::Update()
 	const auto physicsBody = this->getPhysicsBody();
 	const auto velocity = physicsBody->getVelocity();
 
-	CCLOG("state : %d" ,this->_state);
-
 	if (this->_state == JUMPING) {
 		this->Jump();
+	}
+
+	else if (this->_state == PARACHUTING) {
+		this->Parachute();
 	}
 	else {
 
@@ -51,7 +56,7 @@ void Lemmings::Update()
 		{
 			// detect if the lemmgings is moving will he's on the ground
 			if (this->_state == MOVING) {
-				if (((int)velocity.x * 100) / 100 == 0) this->ChangeDirection();
+				if ((int)velocity.x == 0) this->ChangeDirection();
 			}
 			else { this->_state = MOVING; }
 
@@ -67,12 +72,13 @@ void Lemmings::Update()
 
 		this->UpdateAnimation();
 	}
+	this->setVerticalDirection();
 }
 
 void Lemmings::ChangeDirection()
 {
-	this->_direction = !_direction;
-	this->setFlippedX(_direction);
+	this->_horizontalDirection = !_horizontalDirection;
+	this->setFlippedX(_horizontalDirection);
 }
 
 void Lemmings::UpdateAnimation()
@@ -117,6 +123,14 @@ void Lemmings::UpdateAnimation()
 
 			break;
 
+		case PARACHUTING:
+			frames = GetAnimation("parachute-%04d.png", 8);
+			this->setSpriteFrame(frames.front());
+			this->runAction(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5)));
+			this->_currentAnimation = PARACHUTING;
+
+			break;
+
 		default:
 			break;
 
@@ -149,7 +163,7 @@ bool Lemmings::isInMap()
 void Lemmings::Move()
 {
 	float distance;
-	if (this->_direction)
+	if (this->_horizontalDirection)
 	{
 		distance = -this->_speed;
 	}
@@ -167,13 +181,50 @@ void Lemmings::Jump()
 
 		auto jump = JumpBy::create(1.6f, Vec2(2.0f, 0.0f), 2.0f, 1);
 
-		cocos2d::DelayTime* delay = cocos2d::DelayTime::create(1);
-
 		auto callbackChangeState = CallFunc::create([this]() {
 			this->_state = MOVING;
 			});
 
-		auto seq = Sequence::create(delay, jump, callbackChangeState, nullptr);
+		auto seq = Sequence::create(jump, callbackChangeState, nullptr);
 		this->runAction(seq);
 	}
+}
+
+void Lemmings::Parachute()
+{
+	auto physicsBody = this->getPhysicsBody();
+	auto velocity = physicsBody->getVelocity();
+
+	CCLOG("state : %d  current state : %d", this->_state, this->_currentAnimation);
+	CCLOG("velocity start: %f . %f", velocity.x, velocity.y);
+
+	// check only if the state change
+	if (this->_state != this->_currentAnimation) 
+	{
+		physicsBody->setVelocity(Vec2(velocity.x, 50.0f));
+	}
+	else {
+		if ((int)velocity.y == 0 && this->_verticalDirection == DOWN)
+		{
+			this->Move();
+			this->_state = MOVING;
+		}
+		else
+		{
+			if (velocity.y < -8.0f) physicsBody->setVelocity(Vec2(velocity.x, -8.0f));
+		}
+	}
+
+	physicsBody = this->getPhysicsBody();
+	velocity = physicsBody->getVelocity();
+
+	CCLOG("velocity end: %f . %f", velocity.x, velocity.y);
+	this->UpdateAnimation();
+}
+
+void Lemmings::setVerticalDirection() {
+	const auto velocityY = this->getPhysicsBody()->getVelocity().y;
+	if (velocityY > 0) this->_verticalDirection = UP;
+	else if (velocityY < 0) this->_verticalDirection = DOWN;
+	
 }
