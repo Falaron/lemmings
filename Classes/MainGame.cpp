@@ -204,7 +204,6 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         {
             lemming->removeFromParentAndCleanup(true);
             numberLemmingExit++;
-            CCLOG(to_string(numberLemmingExit).c_str());
         }
     }
 
