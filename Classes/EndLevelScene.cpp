@@ -58,6 +58,16 @@ bool EndLevelScene::init()
     lemmingsDeadText->setPosition(Vec2(100, 170));
     this->addChild(lemmingsDeadText);
 
+    if (GameManager::GetLemmingExit == 0)
+        winRate = 0;
+    else {
+        winRate = (float(GameManager::GetLemmingExit()) / GameManager::GetLemmingSpawn()) * 100;
+    }
+        
+    auto winRateText = Label::createWithSystemFont("Win rate : " + to_string(int(winRate)) + "%", "fonts/arial.ttf", 20);
+    winRateText->setPosition(Vec2(100, 140));
+    this->addChild(winRateText);
+
 
     // Quit Menu
     auto menuQuit = MenuItemFont::create("quit", CC_CALLBACK_1(EndLevelScene::Quit, this));

@@ -7,6 +7,10 @@
 # include "MainGame.h"
 # include "GameManager.h"
 
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+
 class EndLevelScene : public cocos2d::Layer
 {
 public:
@@ -20,6 +24,7 @@ public:
     void Quit(Ref* pSender);
 
 private:
+    float winRate;
 };
 
 #endif // __ENDLEVEL_SCENE_H__
