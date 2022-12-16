@@ -61,7 +61,7 @@ bool MainGame::init()
    
     
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1; i++) {
         cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
             auto lemming = new Lemmings();
             this->addChild(lemming, 2);
