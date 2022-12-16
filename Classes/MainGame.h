@@ -37,6 +37,7 @@ private:
 
     int numberLemmingSpawn;
     int numberLemmingExit = 0;
+    int numberLemmingDead = 0;
 
     cocos2d::Sprite* cursorSprite;
     cocos2d::Sprite* _exit;
