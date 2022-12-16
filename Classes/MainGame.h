@@ -7,6 +7,8 @@
 #include "PhysicsShapeCache.h"
 
 #include "PauseScene.h"
+#include <iostream>
+using namespace std;
 
 class MainGame : public cocos2d::Layer
 {
@@ -22,7 +24,7 @@ public:
 
     void InitCamera();
     void InitSpawnAndExit();
-    bool onContactExit(PhysicsContact& contact);
+    bool onContactEnter(PhysicsContact& contact);
 
     // implement the "static create()" method manually
     CREATE_FUNC(MainGame);
@@ -33,14 +35,15 @@ public:
 private:
     std::vector<cocos2d::EventKeyboard::KeyCode> keys;
 
+    int numberLemmingSpawn;
+    int numberLemmingExit = 0;
+
     cocos2d::Sprite* cursorSprite;
     cocos2d::Sprite* _exit;
     cocos2d::Sprite* _spawn;
     float cursorX, cursorY;
 
-    int exitBitmask;
-    int lemmingBitmask;
-
     SpriteFrameCache* frameCache;
     PhysicsShapeCache* physicCache;
+    EventListenerPhysicsContact* contactListener;
 };

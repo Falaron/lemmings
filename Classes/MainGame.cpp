@@ -62,8 +62,8 @@ bool MainGame::init()
 
    
     
-
-    for (int i = 0; i < 10; i++) {
+    numberLemmingSpawn = 10;
+    for (int i = 0; i < numberLemmingSpawn; i++) {
         cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
             auto lemming = new Lemmings();
             this->addChild(lemming, 2);
@@ -112,8 +112,8 @@ bool MainGame::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
 
-    auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(MainGame::onContactExit, this);
+    contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(MainGame::onContactEnter, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
     this->scheduleUpdate();
@@ -140,8 +140,6 @@ void MainGame::update(float delta)
             lemming->removeFromParentAndCleanup(true);
             CCLOG("delete");
         }
-
-        lemmingBitmask = lemming->getPhysicsBody()->getCollisionBitmask();
     }
 }
 
@@ -186,9 +184,7 @@ void MainGame::InitSpawnAndExit()
     this->addChild(_exit, 1);
     _exit->setAnchorPoint(Vec2(0.5, 0));
     _exit->setPosition(*MapLoader::GetExitPoint());
-    _exit->getPhysicsBody()->setCategoryBitmask(2);
-    _exit->getPhysicsBody()->setCollisionBitmask(1);
-    exitBitmask = _exit->getPhysicsBody()->getCollisionBitmask();
+    _exit->getPhysicsBody()->setContactTestBitmask(0xFFFFFFFF);
 }
 
 bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
@@ -198,13 +194,19 @@ bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
     return false;
 }
 
-bool MainGame::onContactExit(PhysicsContact& contact)
+bool MainGame::onContactEnter(PhysicsContact& contact)
 {
-    CCLOG("CONTACT");
-    if (lemmingBitmask && exitBitmask)
-    {
-        CCLOG("CONTACT");
+    auto lemming = contact.getShapeA()->getBody()->getNode();
+    auto exit = contact.getShapeB()->getBody()->getNode();
+
+    if (lemming && exit) {
+        if (lemming->getTag() == -1)
+        {
+            lemming->removeFromParentAndCleanup(true);
+            numberLemmingExit++;
+            CCLOG(to_string(numberLemmingExit).c_str());
+        }
     }
-    
+
     return true;
 }

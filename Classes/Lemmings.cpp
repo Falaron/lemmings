@@ -27,8 +27,7 @@ Lemmings::Lemmings()
 	box->setGravityEnable(true);
 	box->setGroup(-1);
 	box->setGroup(1);
-	box->setCategoryBitmask(1);
-	box->setCollisionBitmask(2);
+	box->setContactTestBitmask(0xFFFFFFFF);
 	box->setDynamic(true);
 	box->setRotationEnable(false);
 
