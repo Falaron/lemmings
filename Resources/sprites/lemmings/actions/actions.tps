@@ -180,8 +180,8 @@
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
             <key type="filename">frames/build.png</key>
-            <key type="filename">frames/dig-below.png</key>
             <key type="filename">frames/dig-front.png</key>
+            <key type="filename">frames/dig.png</key>
             <key type="filename">frames/explode.png</key>
             <key type="filename">frames/jump.png</key>
             <key type="filename">frames/mine.png</key>
