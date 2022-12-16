@@ -59,7 +59,6 @@ bool MainGame::init()
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
-
     contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(MainGame::onContactEnter, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -133,4 +132,9 @@ void MainGame::InitCamera()
     defaultCamera->setPosition(0, 0);
     defaultCamera->setScale(ratio / s.width);
     hudLayer->setScale(ratio / s.width);
+}
+
+bool MainGame::onContactEnter(PhysicsContact& contact)
+{
+    return false;
 }

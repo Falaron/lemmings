@@ -20,16 +20,6 @@ bool GameLayer::init()
     frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
     physicCache->addShapesWithFile("sprites/exit-door.plist");
 
-    for (int i = 0; i < 10; i++) {
-        cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
-            auto lemming = new Lemmings();
-            this->addChild(lemming, 1);
-            this->lemmingsList.push_back(lemming);
-        });
-        cocos2d::DelayTime* delay = cocos2d::DelayTime::create(i);
-        runAction(cocos2d::Sequence::create(delay, A, NULL));
-    }
-    CCLOG("length : %d", this->lemmingsList.size());
 
     InitSpawnAndExit();
 
@@ -48,6 +38,18 @@ void GameLayer::update(float delta) {
             lemmingsList.erase(std::remove(lemmingsList.begin(), lemmingsList.end(), lemming), lemmingsList.end());
             lemming->removeFromParentAndCleanup(true);
         }
+    }
+}
+
+void GameLayer::SpawnLemmings() {
+    for (int i = 0; i < 10; i++) {
+        cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
+            auto lemming = new Lemmings();
+            this->addChild(lemming, 1);
+            this->lemmingsList.push_back(lemming);
+        });
+        cocos2d::DelayTime* delay = cocos2d::DelayTime::create(i);
+        runAction(cocos2d::Sequence::create(delay, A, NULL));
     }
 }
 

@@ -14,6 +14,7 @@ public:
     void update(float delta) override;
 
     void InitSpawnAndExit();
+    void SpawnLemmings();
 
     Vec2 GetExitPos() { return _exit->getPosition(); }
     Vec2 GetSpawnPos() { return _spawn->getPosition(); }
