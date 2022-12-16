@@ -10,6 +10,10 @@ public:
     CREATE_FUNC(HUDLayer);
 
 private:
+
     cocos2d::Label* comboLabel1;
+    cocos2d::Sprite* cursorSprite;
+    float cursorX, cursorY;
+    float timer;
 
 };
