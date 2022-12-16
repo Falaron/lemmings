@@ -94,6 +94,8 @@ void MainGame::update(float delta)
         hudLayer->setPositionY(hudLayer->getPositionY() - CAMERA_STEP * delta);
     }
     
+    //check if level is there is no lemmings left and lead to EndLevelScene
+    checkEndLevel();
 }
 
 bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
@@ -101,17 +103,6 @@ bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
     if (std::find(keys.begin(), keys.end(), code) != keys.end())
         return true;
     return false;
-        lemming->Move();
-        if (!lemming->isInMap()) {
-            lemmingsList.erase(std::remove(lemmingsList.begin(),lemmingsList.end(), lemming),lemmingsList.end());
-            lemming->removeFromParentAndCleanup(true);
-            GameManager::IncreaseLemmingExit(1);
-            CCLOG("delete");
-        }
-    }
-
-    //check if level is there is no lemmings left and lead to EndLevelScene
-    checkEndLevel();
 }
 
 void MainGame::checkEndLevel()
