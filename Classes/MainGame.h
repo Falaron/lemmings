@@ -7,7 +7,10 @@
 #include "PhysicsShapeCache.h"
 
 #include "PauseScene.h"
+#include "EndLevelScene.h"
+#include "GameManager.h"
 #include <iostream>
+
 using namespace std;
 
 class MainGame : public cocos2d::Layer
@@ -30,14 +33,13 @@ public:
     CREATE_FUNC(MainGame);
     void update(float delta) override;
 
+    //Check if level end
+    void checkEndLevel();
+
     std::vector<Lemmings*> lemmingsList;
 
 private:
     std::vector<cocos2d::EventKeyboard::KeyCode> keys;
-
-    int numberLemmingSpawn;
-    int numberLemmingExit = 0;
-    int numberLemmingDead = 0;
 
     cocos2d::Sprite* cursorSprite;
     cocos2d::Sprite* _exit;

@@ -1,5 +1,9 @@
 #include "MainGame.h"
 
+int GameManager::numberLemmingSpawn = 2;
+int GameManager::numberLemmingExit = 0;
+int GameManager::numberLemmingDead = 0;
+
 USING_NS_CC;
 
 Scene* MainGame::createScene()
@@ -32,6 +36,7 @@ bool MainGame::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+
     auto closeItem = MenuItemImage::create(
         "CloseNormal.png",
         "CloseSelected.png",
@@ -62,8 +67,7 @@ bool MainGame::init()
 
    
     
-    numberLemmingSpawn = 10;
-    for (int i = 0; i < numberLemmingSpawn; i++) {
+    for (int i = 0; i < GameManager::GetLemmingSpawn(); i++) {
         cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
             auto lemming = new Lemmings();
             this->addChild(lemming, 2);
@@ -138,9 +142,19 @@ void MainGame::update(float delta)
         if (!lemming->isInMap()) {
             lemmingsList.erase(std::remove(lemmingsList.begin(),lemmingsList.end(), lemming),lemmingsList.end());
             lemming->removeFromParentAndCleanup(true);
+            GameManager::IncreaseLemmingExit(1);
             CCLOG("delete");
         }
     }
+
+    //check if level is there is no lemmings left and lead to EndLevelScene
+    checkEndLevel();
+}
+
+void MainGame::checkEndLevel()
+{
+    if (GameManager::GetLemmingDead() + GameManager::GetLemmingExit() == GameManager::GetLemmingSpawn())
+        Director::getInstance()->pushScene(EndLevelScene::createScene());
 }
 
 void MainGame::menuCloseCallback(Ref* pSender)
@@ -203,7 +217,7 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         if (lemming->getTag() == -1)
         {
             lemming->removeFromParentAndCleanup(true);
-            numberLemmingExit++;
+            GameManager::IncreaseLemmingExit(1);
         }
     }
 

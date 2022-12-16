@@ -1,17 +1,18 @@
-# include "PauseScene.h"
+# include "EndLevelScene.h"
 
 USING_NS_CC;
 
 using namespace ui;
 
-Scene* PauseMenu::createScene()
+Scene* EndLevelScene::createScene()
 {
     auto scene = Scene::create();
-    auto layer = PauseMenu::create();
-    
+    auto layer = EndLevelScene::create();
+
     scene->addChild(layer);
     return scene;
 }
+
 
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
@@ -21,7 +22,7 @@ static void problemLoading(const char* filename)
 }
 
 // Initialize MainMenu instance
-bool PauseMenu::init()
+bool EndLevelScene::init()
 {
     if (!Layer::init())
     {
@@ -31,9 +32,6 @@ bool PauseMenu::init()
     //Important variables setup
     Size screenSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    //auto mainGameScene = HelloWorld::createScene();
-
 
 
     //////////////////////
@@ -46,41 +44,35 @@ bool PauseMenu::init()
     this->addChild(backgroundMenu, 0);
 
 
-    // Adding pause title
-    auto pauseTitle = Label::createWithSystemFont("PAUSE", "fonts/arial.ttf", 40);
-    pauseTitle->setPosition(Vec2(160,250));
-    this->addChild(pauseTitle);
+    // Adding LEVEL REVIEW title
+    auto endLevelTitle = Label::createWithSystemFont("LEVEL REVIEW", "fonts/arial.ttf", 40);
+    endLevelTitle->setPosition(Vec2(150, 250));
+    this->addChild(endLevelTitle);
 
-    auto menuReturn = MenuItemFont::create("return", CC_CALLBACK_1(PauseMenu::Return,this));
-    auto menuQuitMainMenu = MenuItemFont::create("quit", CC_CALLBACK_1(PauseMenu::Quit, this));
+    // Adding Score
+    auto lemmingsEscapedText = Label::createWithSystemFont("Lemmings escaped : " + to_string(GameManager::GetLemmingExit()) + " / " + to_string(GameManager::GetLemmingSpawn()), "fonts/arial.ttf", 20);
+    lemmingsEscapedText->setPosition(Vec2(100, 200));
+    this->addChild(lemmingsEscapedText);
+
+    auto lemmingsDeadText = Label::createWithSystemFont("Lemmings dead : " + to_string(GameManager::GetLemmingDead()) + " / " + to_string(GameManager::GetLemmingSpawn()), "fonts/arial.ttf", 20);
+    lemmingsDeadText->setPosition(Vec2(100, 170));
+    this->addChild(lemmingsDeadText);
+
+
+    // Quit Menu
+    auto menuQuit = MenuItemFont::create("quit", CC_CALLBACK_1(EndLevelScene::Quit, this));
     auto moveTo = MoveBy::create(0, Vec2(0, -50));
-    menuQuitMainMenu->runAction(moveTo);
+    menuQuit->runAction(moveTo);
 
-    auto* menu = Menu::create(menuReturn, menuQuitMainMenu, NULL);
+    auto* menu = Menu::create(menuQuit, NULL);
     menu->setPosition(Point(155, 150));
     this->addChild(menu);
 
-    //Go back to game scene
-    auto keyboardListener = EventListenerKeyboard::create();
-    keyboardListener->onKeyPressed = [](EventKeyboard::KeyCode keyCode, Event* event) {
-        if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
-            Director::getInstance()->popScene();
-    };
-
-    this->_eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
 
     return true;
 }
 
-void PauseMenu::Return(cocos2d::Ref *pSender) {
-    Director::getInstance()->popScene();
-}
-
-void PauseMenu::Quit(cocos2d::Ref* pSender) {
-    Director::getInstance()->end();
-}
-
-void PauseMenu::onEnter()
+void EndLevelScene::onEnter()
 {
     Layer::onEnter();
     /*auto defaultCamera = Camera::getDefaultCamera();
@@ -91,3 +83,6 @@ void PauseMenu::onEnter()
     //changed static zoom to distance between spawn and ecit
 }
 
+void EndLevelScene::Quit(cocos2d::Ref* pSender) {
+    Director::getInstance()->end();
+}
