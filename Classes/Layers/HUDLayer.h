@@ -9,6 +9,7 @@ public:
     virtual bool init();
     CREATE_FUNC(HUDLayer);
     void InitializeCursorMovementTrigger();
+    void CreateActionsHUD();
 
 private:
 
