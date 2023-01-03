@@ -2,6 +2,7 @@
 
 USING_NS_CC;
 
+const float TilesSize = 15.37f;
 TMXTiledMap* MapLoader::_map = 0;
 Layer* MapLoader::_layer = 0;
 Vec2* MapLoader::_spawnPoint = 0;
@@ -27,16 +28,27 @@ void MapLoader::LoadMapCollisions()
     for (Value& rectangle : collider_array)
     {
         ValueMap rectangle_properties = rectangle.asValueMap();
-        Node* collider = Node::create();
-        collider->setPosition(Vec2(rectangle_properties["x"].asInt() + rectangle_properties["width"].asInt() / 2, rectangle_properties["y"].asInt() + rectangle_properties["height"].asInt() / 2));
 
-        PhysicsBody* box = PhysicsBody::createEdgeBox(Size(rectangle_properties["width"].asInt(), rectangle_properties["height"].asInt()), PHYSICSBODY_MATERIAL_DEFAULT, 0.5f);
-        box->setGravityEnable(false);
-        box->setDynamic(false);
-        box->setGroup(1);
+        float posX = rectangle_properties["x"].asFloat();
+        float posY = rectangle_properties["y"].asFloat();
 
-        collider->setPhysicsBody(box);
-        _layer->addChild(collider);
+        for (int i = 0; i < rectangle_properties["height"].asFloat() / TilesSize; i++)
+        {
+            for (int y = 0; y < rectangle_properties["width"].asFloat() / TilesSize ; y++)
+            {
+                Node* collider = Node::create();
+                collider->setPosition(Vec2((posX + y * TilesSize) + TilesSize / 2, (posY + i * TilesSize) + TilesSize / 2));
+
+                PhysicsBody* box = PhysicsBody::createEdgeBox(Size(TilesSize, TilesSize), PhysicsMaterial(0,0,0), 0.5f);
+                box->setGravityEnable(false);
+                box->setDynamic(false);
+                box->setGroup(1);
+
+                collider->setPhysicsBody(box);
+                _layer->addChild(collider);
+            }
+        }
+        
     }
 }
 

@@ -17,14 +17,14 @@ Lemmings::Lemmings()
 	this->_state = SPAWNING;
 	this->setScale(1);
 
-	// create a temp sprite to create the physic box ( in game animation is manage in UpdateAnimation()
+	// create a temp sprite to setup the physic box ( in game animation is manage in UpdateAnimation() )
 	auto frames = GetAnimation("walk-%04d.png", 9);
 	this->setSpriteFrame(frames.front());
 	this->setName("lemming");
 
 
 	//create Physic body and setup basics parameters
-	box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0.2f,0,0));
+	box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0, 0, 0));
 	box->setGravityEnable(true);
 	box->setGroup(-1);
 	box->setContactTestBitmask(0xEEEEEEEE);

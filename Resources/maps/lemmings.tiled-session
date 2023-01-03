@@ -9,6 +9,9 @@
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
+        "": {
+            "scaleInEditor": 1
+        },
         "TileKitDemo.tmx": {
             "scale": 0.33,
             "selectedLayer": 5,
@@ -21,11 +24,14 @@
             "scaleInDock": 1
         },
         "test.tmx": {
-            "scale": 1,
-            "selectedLayer": 1,
+            "expandedObjectLayers": [
+                7
+            ],
+            "scale": 1.5,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 107.5,
-                "y": 360
+                "x": 678.6666666666666,
+                "y": 457.3333333333333
             }
         },
         "test.tmx#TileKit": {
@@ -35,8 +41,8 @@
             "scale": 1,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 480,
-                "y": 319.5
+                "x": 479.5,
+                "y": 320
             }
         },
         "test2.tmx#TileKit": {
@@ -47,13 +53,12 @@
     "map.lastUsedExportFilter": "Tous les Fichiers (*)",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
-        "test2.tmx",
         "test.tmx"
     ],
     "project": "lemmings.tiled-project",
     "recentFiles": [
-        "test2.tmx",
         "test.tmx",
+        "test2.tmx",
         "TileKitDemo.tmx"
     ]
 }
