@@ -35,7 +35,7 @@ bool MainGame::init()
 
     //std::vector<LemmingAction>
 
-    GameManager::SetLemmingSpawn(10);
+    GameManager::SetLemmingSpawn(1);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -50,7 +50,7 @@ bool MainGame::init()
     keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
         if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
             auto pauseScene = PauseMenu::createScene();
-            Director::getInstance()->pushScene(TransitionFade::create(.2f, pauseScene));
+            Director::getInstance()->pushScene(pauseScene);
         }
         
         switch (keyCode)

@@ -40,13 +40,13 @@ bool PauseMenu::init()
     backgroundMenu->setAnchorPoint(Vec2(0, 0));
     backgroundMenu->setPosition(Vec2(0, 0));
     backgroundMenu->getTexture()->setAliasTexParameters();
-    backgroundMenu->setScale(3);
+    backgroundMenu->setScale(4);
     this->addChild(backgroundMenu, 0);
 
 
     // Adding pause title
     auto pauseTitle = Label::createWithSystemFont("PAUSE", "fonts/arial.ttf", 40);
-    pauseTitle->setPosition(Vec2(160,250));
+    pauseTitle->setPosition(Vec2(230,250));
     this->addChild(pauseTitle);
 
     auto menuReturn = MenuItemFont::create("return", CC_CALLBACK_1(PauseMenu::Return,this));
@@ -55,7 +55,7 @@ bool PauseMenu::init()
     menuQuitMainMenu->runAction(moveTo);
 
     auto* menu = Menu::create(menuReturn, menuQuitMainMenu, NULL);
-    menu->setPosition(Point(155, 150));
+    menu->setPosition(Point(230, 150));
     this->addChild(menu);
 
     //Go back to game scene

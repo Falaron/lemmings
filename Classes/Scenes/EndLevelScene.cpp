@@ -40,22 +40,22 @@ bool EndLevelScene::init()
     backgroundMenu->setAnchorPoint(Vec2(0, 0));
     backgroundMenu->setPosition(Vec2(0, 0));
     backgroundMenu->getTexture()->setAliasTexParameters();
-    backgroundMenu->setScale(3);
+    backgroundMenu->setScale(4);
     this->addChild(backgroundMenu, 0);
 
 
     // Adding LEVEL REVIEW title
     auto endLevelTitle = Label::createWithSystemFont("LEVEL REVIEW", "fonts/arial.ttf", 40);
-    endLevelTitle->setPosition(Vec2(150, 250));
+    endLevelTitle->setPosition(Vec2(230, 250));
     this->addChild(endLevelTitle);
 
     // Adding Score
     auto lemmingsEscapedText = Label::createWithSystemFont("Lemmings escaped : " + to_string(GameManager::GetLemmingExit()) + " / " + to_string(GameManager::GetLemmingSpawn()), "fonts/arial.ttf", 20);
-    lemmingsEscapedText->setPosition(Vec2(100, 200));
+    lemmingsEscapedText->setPosition(Vec2(230, 200));
     this->addChild(lemmingsEscapedText);
 
     auto lemmingsDeadText = Label::createWithSystemFont("Lemmings dead : " + to_string(GameManager::GetLemmingDead()) + " / " + to_string(GameManager::GetLemmingSpawn()), "fonts/arial.ttf", 20);
-    lemmingsDeadText->setPosition(Vec2(100, 170));
+    lemmingsDeadText->setPosition(Vec2(230, 170));
     this->addChild(lemmingsDeadText);
 
     if (GameManager::GetLemmingExit == 0)
@@ -65,7 +65,7 @@ bool EndLevelScene::init()
     }
         
     auto winRateText = Label::createWithSystemFont("Win rate : " + to_string(int(winRate)) + "%", "fonts/arial.ttf", 20);
-    winRateText->setPosition(Vec2(100, 140));
+    winRateText->setPosition(Vec2(230, 140));
     this->addChild(winRateText);
 
 
@@ -75,7 +75,7 @@ bool EndLevelScene::init()
     menuQuit->runAction(moveTo);
 
     auto* menu = Menu::create(menuQuit, NULL);
-    menu->setPosition(Point(155, 150));
+    menu->setPosition(Point(230, 150));
     this->addChild(menu);
 
 
