@@ -8,6 +8,7 @@
 int GameManager::numberLemmingSpawn = 0;
 int GameManager::numberLemmingExit = 0;
 int GameManager::numberLemmingDead = 0;
+LemmingAction GameManager::selectedAction;
 
 USING_NS_CC;
 
@@ -21,7 +22,7 @@ Scene* MainGame::createScene()
     hud->setName(HUD_LAYER_NAME);
     scene->addChild(hud, 1);
 
-    auto gameLayer = GameLayer::create();
+    GameLayer* gameLayer = GameLayer::create();
     gameLayer->setName(GAME_LAYER_NAME);
     scene->addChild(gameLayer);
 
@@ -33,15 +34,13 @@ bool MainGame::init()
 {
     if (!Scene::initWithPhysics()) return false;
 
-    //std::vector<LemmingAction>
-
     GameManager::SetLemmingSpawn(10);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     //Load available actions from level
-    int actions[] = { PARACHUTE, DIG };
+    int actions[] = { DIG, PARACHUTE };
     for (int action : actions) {
         GameManager::AddAction((LemmingAction)action);
     }
@@ -137,8 +136,6 @@ void MainGame::InitCamera()
     if (distX > distY) ratio = distX;
     else ratio = distY;
     ratio *= 2.0f;
-
-    //CCLOG("distX:%d | distY:%d", distX, distY);
 
     defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
     defaultCamera->setPosition(0, 0);
