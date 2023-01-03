@@ -1,4 +1,4 @@
-#include "MainGame.h"
+#include "Scenes/MainGame.h"
 
 #define HUD_LAYER_NAME "HUDLayer"
 #define GAME_LAYER_NAME "GameLayer"
