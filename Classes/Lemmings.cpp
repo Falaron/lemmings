@@ -2,7 +2,9 @@
 #include "MapLoader.h"
 #define RIGHT false
 #define LEFT true
-#define DEFAULT_SPEED 15.0f
+#define UP false
+#define DOWN true
+#define DEFAULT_SPEED 13.0f
 
 #include <iostream>
 
@@ -11,7 +13,8 @@ Lemmings::Lemmings()
 {
 	// setup private var
 	this->setPosition(*MapLoader::GetSpawnPoint());
-	this->_direction = RIGHT;
+	this->_horizontalDirection = RIGHT;
+	this->_verticalDirection = UP;
 	this->_speed = DEFAULT_SPEED;
 	this->_currentAnimation = SPAWNING;
 	this->_state = SPAWNING;
@@ -35,50 +38,48 @@ Lemmings::Lemmings()
 	this->addComponent(box);
 }
 
-void Lemmings::Move()
+void Lemmings::Update()
 {
 	const auto physicsBody = this->getPhysicsBody();
 	const auto velocity = physicsBody->getVelocity();
 
+	if (this->_state == JUMPING) {
+		this->Jump();
+	}
 
-	// detect if the lemmings is falling
-	if ((int)velocity.y == 0)
-	{
-		// detect if the lemmgings is moving will he's on the ground
-		if (this->_state == MOVING) {
-			if (((int)velocity.x * 100) / 100 == 0) this->ChangeDirection();
-		}
-		else { 
-			this->_state = MOVING;
-			this->UpdateAnimation();
-		}
+	else if (this->_state == PARACHUTING) {
+		this->Parachute();
+	}
+	else {
 
-		//movement
-		float distance;
-		if (this->_direction)
+		// detect if the lemmings is falling
+		if ((int)velocity.y == 0)
 		{
-			distance = -this->_speed;
+			// detect if the lemmgings is moving will he's on the ground
+			if (this->_state == MOVING) {
+				if ((int)velocity.x == 0) this->ChangeDirection();
+			}
+			else { this->_state = MOVING; }
+
+			//movement
+			this->Move();
 		}
+
 		else
 		{
-			distance = this->_speed;
+			if (this->_state != FALLING) { this->_state = FALLING; }
+			physicsBody->setVelocity(Vec2(0, velocity.y));
 		}
-		physicsBody->setVelocity(Vec2(distance, velocity.y));
+
+		this->UpdateAnimation();
 	}
-	else 
-	{
-		if (this->_state != FALLING) { 
-			this->_state = FALLING; 
-			this->UpdateAnimation();
-		}
-		physicsBody->setVelocity(Vec2(0, velocity.y));
-	}
+	this->setVerticalDirection();
 }
 
 void Lemmings::ChangeDirection()
 {
-	this->_direction = !_direction;
-	this->setFlippedX(_direction);
+	this->_horizontalDirection = !_horizontalDirection;
+	this->setFlippedX(_horizontalDirection);
 }
 
 void Lemmings::UpdateAnimation()
@@ -102,7 +103,7 @@ void Lemmings::UpdateAnimation()
 		case FALLING:
 			frames = GetAnimation("fall-%04d.png", 5);
 			this->setSpriteFrame(frames.front());
-			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5))));
+			this->runAction(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5)));
 			this->_currentAnimation = FALLING;
 
 			break;
@@ -112,6 +113,22 @@ void Lemmings::UpdateAnimation()
 			this->setSpriteFrame(frames.front());
 			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 9))));
 			this->_currentAnimation = MOVING;
+
+			break;
+
+		case JUMPING:
+			frames = GetAnimation("fall-%04d.png", 5);
+			this->setSpriteFrame(frames.front());
+			this->runAction(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5)));
+			this->_currentAnimation = JUMPING;
+
+			break;
+
+		case PARACHUTING:
+			frames = GetAnimation("parachute-%04d.png", 8);
+			this->setSpriteFrame(frames.front());
+			this->runAction(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 5)));
+			this->_currentAnimation = PARACHUTING;
 
 			break;
 
@@ -142,4 +159,73 @@ bool Lemmings::isInMap()
 		return false;
 	}
 	else return true;
+}
+
+void Lemmings::Move()
+{
+	float distance;
+	if (this->_horizontalDirection)
+	{
+		distance = -this->_speed;
+	}
+	else
+	{
+		distance = this->_speed;
+	}
+	this->getPhysicsBody()->setVelocity(Vec2(distance, this->getPhysicsBody()->getVelocity().y));
+}
+
+void Lemmings::Jump()
+{
+	// check only if the state change
+	if (this->_state != this->_currentAnimation) {
+
+		auto jump = JumpBy::create(1.6f, Vec2(2.0f, 0.0f), 2.0f, 1);
+
+		auto callbackChangeState = CallFunc::create([this]() {
+			this->_state = MOVING;
+			});
+
+		auto seq = Sequence::create(jump, callbackChangeState, nullptr);
+		this->runAction(seq);
+	}
+}
+
+void Lemmings::Parachute()
+{
+	auto physicsBody = this->getPhysicsBody();
+	auto velocity = physicsBody->getVelocity();
+
+	CCLOG("state : %d  current state : %d", this->_state, this->_currentAnimation);
+	CCLOG("velocity start: %f . %f", velocity.x, velocity.y);
+
+	// check only if the state change
+	if (this->_state != this->_currentAnimation) 
+	{
+		physicsBody->setVelocity(Vec2(velocity.x, 50.0f));
+	}
+	else {
+		if ((int)velocity.y == 0 && this->_verticalDirection == DOWN)
+		{
+			this->Move();
+			this->_state = MOVING;
+		}
+		else
+		{
+			if (velocity.y < -8.0f) physicsBody->setVelocity(Vec2(velocity.x, -8.0f));
+		}
+	}
+
+	physicsBody = this->getPhysicsBody();
+	velocity = physicsBody->getVelocity();
+
+	CCLOG("velocity end: %f . %f", velocity.x, velocity.y);
+	this->UpdateAnimation();
+}
+
+void Lemmings::setVerticalDirection() {
+	const auto velocityY = this->getPhysicsBody()->getVelocity().y;
+	if (velocityY > 0) this->_verticalDirection = UP;
+	else if (velocityY < 0) this->_verticalDirection = DOWN;
+	
 }
