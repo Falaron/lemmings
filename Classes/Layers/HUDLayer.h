@@ -7,8 +7,11 @@ class HUDLayer : public cocos2d::Layer
 public:
 
     virtual bool init();
+
     CREATE_FUNC(HUDLayer);
+
     void InitializeCursorMovementTrigger();
+    void setCursorSprite(const char * sprite);
 
 private:
 

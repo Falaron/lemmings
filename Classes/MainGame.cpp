@@ -138,7 +138,7 @@ void MainGame::InitCamera()
     hudLayer->setScale(ratio / s.width);
 }
 
-bool MainGame::onContactEnter(PhysicsContact& contact)
+bool MainGame::contactExit(PhysicsContact& contact)
 {
     auto lemming = contact.getShapeA()->getBody()->getNode();
     auto exit = contact.getShapeB()->getBody()->getNode();

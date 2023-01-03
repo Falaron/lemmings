@@ -69,5 +69,6 @@ void GameLayer::InitSpawnAndExit()
     this->addChild(_exit);
     _exit->setAnchorPoint(Vec2(0.5, 0));
     _exit->setPosition(*MapLoader::GetExitPoint());
-    _exit->getPhysicsBody()->setContactTestBitmask(0xFFFFFFFF);
+    _exit->getPhysicsBody()->setContactTestBitmask(0xEEEEEEEE);
+    _exit->setName("exit door");
 }

@@ -35,7 +35,7 @@ bool MainGame::init()
 
     //std::vector<LemmingAction>
 
-    GameManager::SetLemmingSpawn(1);
+    GameManager::SetLemmingSpawn(10);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -74,6 +74,10 @@ bool MainGame::init()
     contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(MainGame::onContactEnter, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
+
+    EventListenerPhysicsContact* contactListener1 = EventListenerPhysicsContact::create();
+    contactListener1->onContactSeparate = CC_CALLBACK_1(MainGame::onContactExit, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener1, this);
 
     this->scheduleUpdate();
 
@@ -148,16 +152,51 @@ void MainGame::InitCamera()
 
 bool MainGame::onContactEnter(PhysicsContact& contact)
 {
-    auto lemming = contact.getShapeA()->getBody()->getNode();
-    auto exit = contact.getShapeB()->getBody()->getNode();
+    auto shapeA = contact.getShapeA()->getBody()->getNode();
+    auto shapeB = contact.getShapeB()->getBody()->getNode();
 
-    if (lemming && exit) {
-        if (lemming->getTag() == -1)
-        {
-            lemming->removeFromParentAndCleanup(true);
+    if (shapeA && shapeB) {
+
+        // EXIT DOOR COLLISION
+        if (shapeA->getName() == "lemming" && shapeB->getName() == "exit door") {
+            shapeA->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
             if (GameManager::IsEndOfLevel())
                 Director::getInstance()->replaceScene(EndLevelScene::createScene());
+        }
+        else if (shapeB->getName() == "lemming" && shapeA->getName() == "exit door") {
+            shapeB->removeFromParentAndCleanup(true);
+            GameManager::IncreaseLemmingExit();
+            if (GameManager::IsEndOfLevel())
+                Director::getInstance()->replaceScene(EndLevelScene::createScene());
+        }
+
+
+        // CURSOR COLLISION
+        if (shapeA->getName() == "lemming" && shapeB->getName() == "cursor") {
+            hudLayer->setCursorSprite("sprites/cursor/0001.png");
+        }
+        else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
+            hudLayer->setCursorSprite("sprites/cursor/0001.png");
+        }
+    }
+
+    return true;
+}
+
+bool MainGame::onContactExit(PhysicsContact& contact)
+{
+    auto shapeA = contact.getShapeA()->getBody()->getNode();
+    auto shapeB = contact.getShapeB()->getBody()->getNode();
+
+    if (shapeA && shapeB) {
+
+        // CURSOR COLLISION
+        if (shapeA->getName() == "lemming" && shapeB->getName() == "cursor") {
+            hudLayer->setCursorSprite("sprites/cursor/0002.png");
+        }
+        else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
+            hudLayer->setCursorSprite("sprites/cursor/0002.png");
         }
     }
 

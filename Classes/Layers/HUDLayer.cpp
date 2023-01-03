@@ -31,8 +31,18 @@ bool HUDLayer::init()
 
     //Cursor show
     this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
-    this->cursorSprite->setScale(4);
-    this->addChild(this->cursorSprite);    
+    this->cursorSprite->setScale(2);
+    this->cursorSprite->setName("cursor");
+
+    PhysicsBody* box = PhysicsBody::createBox(cursorSprite->getContentSize(), PhysicsMaterial(0.2f, 0, 0));
+    box->setGravityEnable(false);
+    box->setDynamic(false);
+    box->setRotationEnable(false);
+    box->setContactTestBitmask(0xEEEEEEEE);
+    box->setCollisionBitmask(0);
+
+    cursorSprite->addComponent(box);
+    this->addChild(this->cursorSprite);
 
     InitializeCursorMovementTrigger();
 
@@ -40,20 +50,33 @@ bool HUDLayer::init()
 }
 
 void HUDLayer::InitializeCursorMovementTrigger() {
-    //Mouse listener
+    //Create a mouse listener
     auto mouseListener = EventListenerMouse::create();
+
+    // Move mouse listener
     mouseListener->onMouseMove = [=](cocos2d::Event* event) {
         auto* mouseEvent = dynamic_cast<EventMouse*>(event);
 
         cursorX = mouseEvent->getCursorX();
         cursorY = mouseEvent->getCursorY();
-        this->cursorSprite->setPosition(cursorX, cursorY);
-
-        if (mouseEvent->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT)
-            this->cursorSprite->setTexture("sprites/cursor/0001.png");
-        else
-            this->cursorSprite->setTexture("sprites/cursor/0002.png");
+        cursorSprite->setPosition(cursorX, cursorY);
     };
 
+
+    // Click mouse listener
+    /*mouseListener->onMouseDown = [=](EventMouse* event) {
+        if (event->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) {
+            this->cursorSprite->setTexture("sprites/cursor/0001.png");
+        }
+    };
+    mouseListener->onMouseUp = [=](EventMouse* event) {
+        if (event->getMouseButton() == EventMouse::MouseButton::BUTTON_RIGHT) {
+            this->cursorSprite->setTexture("sprites/cursor/0002.png");
+        }
+    };*/
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
+}
+
+void HUDLayer::setCursorSprite(const char * sprite) {
+    this->cursorSprite->setTexture(sprite);
 }

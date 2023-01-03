@@ -24,6 +24,7 @@ public:
 
     void onEnterTransitionDidFinish() override;
     bool onContactEnter(PhysicsContact& contact);
+    bool onContactExit(PhysicsContact& contact);
 
     void InitCamera();
 
