@@ -1,6 +1,7 @@
 #include "HUDLayer.h"
 #include "GameManager.h"
-#include <iostream>
+
+#include <ui/UIButton.h>
 
 std::vector<LemmingAction> GameManager::_actions;
 const std::string lemmingActionNames[] = { "build", "", "dig", "", "jump", "", "parachute", "stop" };
