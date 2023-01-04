@@ -43,13 +43,10 @@ void Lemmings::Update()
 	const auto physicsBody = this->getPhysicsBody();
 	const auto velocity = physicsBody->getVelocity();
 
-	if (this->_state == JUMPING) {
-		this->Jump();
-	}
+	if (this->_state == JUMPING) { this->Jump(); }
 
-	else if (this->_state == PARACHUTING) {
-		this->Parachute();
-	}
+	else if (this->_state == PARACHUTING) { this->Parachute(); }
+
 	else {
 
 		// detect if the lemmings is falling
@@ -132,6 +129,15 @@ void Lemmings::UpdateAnimation()
 
 			break;
 
+		case DIGGING:
+			frames = GetAnimation("digging-%04d.png", 8);
+			this->setSpriteFrame(frames.front());
+			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 8))));
+			this->_currentAnimation = DIGGING;
+
+			break;
+
+
 		default:
 			break;
 
@@ -196,9 +202,6 @@ void Lemmings::Parachute()
 	auto physicsBody = this->getPhysicsBody();
 	auto velocity = physicsBody->getVelocity();
 
-	CCLOG("state : %d  current state : %d", this->_state, this->_currentAnimation);
-	CCLOG("velocity start: %f . %f", velocity.x, velocity.y);
-
 	// check only if the state change
 	if (this->_state != this->_currentAnimation) 
 	{
@@ -228,4 +231,26 @@ void Lemmings::setVerticalDirection() {
 	if (velocityY > 0) this->_verticalDirection = UP;
 	else if (velocityY < 0) this->_verticalDirection = DOWN;
 	
+}
+
+void Lemmings::Digging()
+{
+	auto physicsBody = this->getPhysicsBody();
+	auto velocity = physicsBody->getVelocity();
+
+	if (this->_state != this->_currentAnimation)
+	{
+		auto delay = DelayTime::create(1);
+		auto destroyBlock = CallFunc::create([this]() 
+			{
+			
+			}
+		);
+
+
+		auto callbackChangeState = CallFunc::create([this]() { this->_state = MOVING; });
+
+		auto seq = Sequence::create(delay, destroyBlock, callbackChangeState, nullptr);
+		this->runAction(seq);
+	}
 }
