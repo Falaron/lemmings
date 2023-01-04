@@ -13,6 +13,9 @@ public:
     void InitializeCursorMovementTrigger();
     void CreateActionsHUD();
     void setCursorSprite(const char * sprite);
+    void ticktock(float dt);
+
+    void updateLemmingsScore();
 
 private:
 
@@ -20,6 +23,9 @@ private:
 
     cocos2d::Label* comboLabel1;
     cocos2d::Sprite* cursorSprite;
+    cocos2d::Label* timer;
+    cocos2d::Label* lemmingsInGameText;
+    cocos2d::Label* lemmingsEscapedText;
     float cursorX, cursorY;
-    float timer;
+    float _seconds, _minutes;
 };

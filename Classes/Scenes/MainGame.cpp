@@ -158,12 +158,14 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         if (shapeA->getName() == "lemming" && shapeB->getName() == "exit door") {
             shapeA->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
+            hudLayer->updateLemmingsScore();
             if (GameManager::IsEndOfLevel())
                 Director::getInstance()->replaceScene(EndLevelScene::createScene());
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "exit door") {
             shapeB->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
+            hudLayer->updateLemmingsScore();
             if (GameManager::IsEndOfLevel())
                 Director::getInstance()->replaceScene(EndLevelScene::createScene());
         }

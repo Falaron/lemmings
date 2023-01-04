@@ -30,6 +30,21 @@ bool HUDLayer::init()
     rectNode->drawPolygon(rectangle, 4, Color4F::BLACK, BORDER_WIDTH, Color4F::BLUE);
     this->addChild(rectNode);
 
+    //Show infos
+    lemmingsInGameText = Label::createWithSystemFont("OUT " + std::to_string(GameManager::GetLemmingSpawn() - (GameManager::GetLemmingDead() + GameManager::GetLemmingExit())), "fonts/arial.ttf", 20);
+    lemmingsInGameText->setPosition(Vec2(200, 35));
+    this->addChild(lemmingsInGameText);
+
+    lemmingsEscapedText = Label::createWithSystemFont("IN " + std::to_string(GameManager::GetLemmingExit()), "fonts/arial.ttf", 20);
+    lemmingsEscapedText->setPosition(Vec2(275, 35));
+    this->addChild(lemmingsEscapedText);
+
+    //Show timer
+    this->schedule(CC_SCHEDULE_SELECTOR(HUDLayer::ticktock), 1.0f);
+    timer = Label::createWithSystemFont("TIME 0 - 0", "fonts/arial.ttf", 20);
+    timer->setPosition(Vec2(375, 35));
+    this->addChild(timer);
+
     //Cursor show
     this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
     this->cursorSprite->setScale(2);
@@ -104,6 +119,21 @@ void HUDLayer::CreateActionsHUD() {
 
     addChild(actionsHUD);
 }
+
 void HUDLayer::setCursorSprite(const char * sprite) {
     this->cursorSprite->setTexture(sprite);
+}
+
+void HUDLayer::ticktock(float dt) {
+    if (_seconds >= 60) {
+        _minutes++;
+        _seconds = 0;
+    }
+    else _seconds++;
+    timer->setString("TIME " + std::to_string(int(_minutes)) + " - " + std::to_string(int(_seconds)));
+}
+
+void HUDLayer::updateLemmingsScore() {
+    lemmingsInGameText->setString("OUT " + std::to_string(GameManager::GetLemmingSpawn() - (GameManager::GetLemmingDead() + GameManager::GetLemmingExit())));
+    lemmingsEscapedText->setString("IN " + std::to_string(GameManager::GetLemmingExit()));
 }

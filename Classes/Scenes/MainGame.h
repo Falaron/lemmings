@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <vector>
+#include <CCScheduler.h>
 
 #include "GameManager.h"
 #include "EndLevelScene.h"
@@ -34,6 +35,8 @@ public:
 
     //Check if level end
     void checkEndLevel();
+
+    void timer(float dt);
 
     std::vector<Lemmings*> lemmingsList;
 
