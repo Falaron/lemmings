@@ -15,7 +15,7 @@ USING_NS_CC;
 Scene* MainGame::createScene()
 {
     auto scene = MainGame::create();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
 
     HUDLayer* hud = HUDLayer::create();
@@ -177,6 +177,14 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->setCursorSprite("sprites/cursor/0001.png");
+        }
+
+        //DEATH COLLISION
+        if (shapeB->getName() == "lemming" && shapeA->getName() == "deathCollider") {
+            GameManager::IncreaseLemmingDead();
+            DelayTime* pause = DelayTime::create(1.0f);
+            this->runAction(Sequence::create(pause, NULL));
+            shapeB->removeFromParentAndCleanup(true);
         }
     }
 

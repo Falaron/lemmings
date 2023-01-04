@@ -40,8 +40,6 @@ void GameLayer::update(float delta) {
             lemmingsList.erase(std::remove(lemmingsList.begin(), lemmingsList.end(), lemming), lemmingsList.end());
             lemming->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingDead();
-            //if (GameManager::IsEndOfLevel())
-                //Director::getInstance()->replaceScene(EndLevelScene::createScene());
         }
     }
 }

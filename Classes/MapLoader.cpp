@@ -17,6 +17,7 @@ void MapLoader::LoadMap(const char * mapName, Layer* currentLayer)
     LoadMapCollisions();
     LoadSpawnPoint();
     LoadExitPoint();
+    LoadDeadCollision();
 }
 
 
@@ -62,4 +63,38 @@ void MapLoader::LoadExitPoint()
 {
     auto exitPointObject = _map->getObjectGroup("Meta")->getObject("exitPoint");
     _exitpoint = new Vec2(exitPointObject["x"].asInt(), exitPointObject["y"].asInt());
+}
+
+void MapLoader::LoadDeadCollision() {
+    cocos2d::TMXObjectGroup* deathCollisions = _map->getObjectGroup("MapDeathObjects");
+
+    ValueVector& collider_array = deathCollisions->getObjects();
+    for (Value& rectangle : collider_array)
+    {
+        ValueMap rectangle_properties = rectangle.asValueMap();
+
+        float posX = rectangle_properties["x"].asFloat();
+        float posY = rectangle_properties["y"].asFloat();
+
+        for (int i = 0; i < rectangle_properties["height"].asFloat() / TilesSize; i++)
+        {
+            for (int y = 0; y < rectangle_properties["width"].asFloat() / TilesSize; y++)
+            {
+                Node* deathCollider = Node::create();
+                deathCollider->setPosition(Vec2((posX + y * TilesSize) + TilesSize / 2, (posY + i * TilesSize) + TilesSize / 2));
+                deathCollider->setName("deathCollider");
+
+                PhysicsBody* box = PhysicsBody::createEdgeBox(Size(TilesSize, TilesSize), PhysicsMaterial(0, .3f, 0), 0.5f);
+                box->setGravityEnable(false);
+                box->setDynamic(false);
+                box->setGroup(1);
+                box->setContactTestBitmask(0xEEEEEEEE);
+
+                deathCollider->setPhysicsBody(box);
+                _layer->addChild(deathCollider);
+            }
+        }
+
+    }
+
 }
