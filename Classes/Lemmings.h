@@ -8,6 +8,7 @@ enum state {
 	MOVING,
 	JUMPING,
 	PARACHUTING,
+	DIGGING,
 };
 
 USING_NS_CC;
@@ -38,6 +39,9 @@ public:
 
 	/// <summary> Parachute action </summary>
 	void Parachute();
+
+	/// <summary> Digging action </summary>
+	void Digging();
 
 	bool onContactExit(PhysicsContact& contact, int exitBit);
 
