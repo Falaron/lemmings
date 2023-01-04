@@ -12,6 +12,7 @@
 Lemmings::Lemmings()
 {
 	// setup private var
+	this->_ground = NULL;
 	this->setPosition(*MapLoader::GetSpawnPoint());
 	this->_horizontalDirection = RIGHT;
 	this->_verticalDirection = UP;
@@ -46,6 +47,8 @@ void Lemmings::Update()
 	if (this->_state == JUMPING) { this->Jump(); }
 
 	else if (this->_state == PARACHUTING) { this->Parachute(); }
+
+	else if (this->_state == DIGGING) { this->Digging(); }
 
 	else {
 
@@ -183,18 +186,23 @@ void Lemmings::Move()
 
 void Lemmings::Jump()
 {
+	auto physicsBody = this->getPhysicsBody();
+	auto velocity = physicsBody->getVelocity();
+
 	// check only if the state change
-	if (this->_state != this->_currentAnimation) {
-
-		auto jump = JumpBy::create(1.6f, Vec2(2.0f, 0.0f), 2.0f, 1);
-
-		auto callbackChangeState = CallFunc::create([this]() {
-			this->_state = MOVING;
-			});
-
-		auto seq = Sequence::create(jump, callbackChangeState, nullptr);
-		this->runAction(seq);
+	if (this->_state != this->_currentAnimation)
+	{
+		physicsBody->setVelocity(Vec2(30.0f , 70.0f));
 	}
+	else {
+		if ((int)velocity.y == 0 && this->_verticalDirection == DOWN)
+		{
+			this->Move();
+			this->_state = MOVING;
+		}
+	}
+
+	this->UpdateAnimation();
 }
 
 void Lemmings::Parachute()
@@ -219,10 +227,6 @@ void Lemmings::Parachute()
 		}
 	}
 
-	physicsBody = this->getPhysicsBody();
-	velocity = physicsBody->getVelocity();
-
-	CCLOG("velocity end: %f . %f", velocity.x, velocity.y);
 	this->UpdateAnimation();
 }
 
@@ -240,17 +244,32 @@ void Lemmings::Digging()
 
 	if (this->_state != this->_currentAnimation)
 	{
+		this->UpdateAnimation();
 		auto delay = DelayTime::create(1);
+		
 		auto destroyBlock = CallFunc::create([this]() 
 			{
-			
+				if (_ground != NULL) 
+				{
+					Vec2 position = *MapLoader::NormalizePosition(_ground->getPosition());
+					auto layer = MapLoader::GetLayer("Foreground");
+
+					position.y = (layer->getLayerSize().height-1) - position.y;
+					layer->removeTileAt(position);
+					_ground->removeFromParentAndCleanup(true);
+				}
 			}
 		);
 
 
-		auto callbackChangeState = CallFunc::create([this]() { this->_state = MOVING; });
+		auto callbackChangeState = CallFunc::create([this]() { this->_state = FALLING; });
 
 		auto seq = Sequence::create(delay, destroyBlock, callbackChangeState, nullptr);
 		this->runAction(seq);
 	}
+}
+
+void Lemmings::SetGround(Node* ground)
+{
+	_ground = ground;
 }

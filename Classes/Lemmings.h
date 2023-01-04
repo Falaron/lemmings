@@ -43,7 +43,7 @@ public:
 	/// <summary> Digging action </summary>
 	void Digging();
 
-	bool onContactExit(PhysicsContact& contact, int exitBit);
+	void SetGround(Node* ground);
 
 private:
 	cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
@@ -54,5 +54,6 @@ private:
 	float _speed;
 	state _state;
 	state _currentAnimation;
+	Node* _ground;
 	PhysicsBody* box;
 };

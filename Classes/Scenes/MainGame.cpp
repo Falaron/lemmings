@@ -35,7 +35,7 @@ bool MainGame::init()
 
     //std::vector<LemmingAction>
 
-    GameManager::SetLemmingSpawn(10);
+    GameManager::SetLemmingSpawn(1);
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -178,6 +178,14 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->setCursorSprite("sprites/cursor/0001.png");
+        }
+
+        // GROUND COLLISION
+        if (shapeA->getName() == "lemming" && shapeB->getName() == "ground") {
+            ((Lemmings*)shapeA)->SetGround(shapeB);
+        }
+        else if (shapeB->getName() == "lemming" && shapeA->getName() == "ground") {
+            ((Lemmings*)shapeB)->SetGround(shapeA);
         }
     }
 
