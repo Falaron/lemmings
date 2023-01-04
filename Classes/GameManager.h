@@ -19,6 +19,7 @@ class GameManager
 public:
 
     static void AddAction(LemmingAction action) { _actions.push_back(action); };
+    static void ChangeSelectedAction(LemmingAction action) { selectedAction = action; };
 
     //Get Spawn, Exit & Dead lemmings
     static int GetLemmingSpawn(){ return numberLemmingSpawn;};
@@ -42,6 +43,7 @@ private:
     static int numberLemmingExit;
     static int numberLemmingDead;
 
+    static LemmingAction selectedAction;
     static std::vector<LemmingAction> _actions;
 };
 

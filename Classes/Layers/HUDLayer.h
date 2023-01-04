@@ -11,6 +11,7 @@ public:
     CREATE_FUNC(HUDLayer);
 
     void InitializeCursorMovementTrigger();
+    void CreateActionsHUD();
     void setCursorSprite(const char * sprite);
 
 private:
