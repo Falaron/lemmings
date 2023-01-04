@@ -15,7 +15,7 @@
  </layer>
  <layer id="8" name="GroundBackground" width="25" height="18">
   <data encoding="base64" compression="zlib">
-   eJxjYKA90EHC9LADhHWhmJp2eqNhXQZUe5DtpZYdDGj2oGNywhWbHdQG6Hagxw814mUg/UFLO2gBhoodoDTdCcVWQLwdiLchYWLsQFeDT60uHvWjdowcOwBZcy5D
+   eJxjYKA90EHC9LADhHWhmJp22gFxGBR7IdkBswfZXmrZwYBmDzomJ1yx2UFtgG4HevxQI14G0h+0tIMWYKjYAUrTnVBsBcTbgXgbEibGDmQ1hNTqYlE/asfIswMAEwgv5w==
   </data>
  </layer>
  <layer id="3" name="Foreground" width="25" height="18">
@@ -41,7 +41,7 @@
   <object id="76" x="800" y="0" width="32" height="576"/>
  </objectgroup>
  <objectgroup id="7" name="Meta">
-  <object id="27" name="spawnPoint" x="32" y="0">
+  <object id="27" name="spawnPoint" x="64" y="32">
    <point/>
   </object>
   <object id="28" name="exitPoint" x="768" y="384">
