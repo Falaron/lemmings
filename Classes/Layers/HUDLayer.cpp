@@ -2,8 +2,6 @@
 #include "GameManager.h"
 
 std::vector<LemmingAction> GameManager::_actions;
-
-std::vector<LemmingAction> GameManager::_actions;
 const std::string lemmingActionNames[] = { "build", "", "dig", "", "jump", "", "parachute", "stop" };
 const float BORDER_WIDTH = 0.5f;
 
@@ -78,9 +76,6 @@ void HUDLayer::InitializeCursorMovementTrigger() {
             this->cursorSprite->setTexture("sprites/cursor/0002.png");
         }
     };*/
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
-}
-
     _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 }
 
