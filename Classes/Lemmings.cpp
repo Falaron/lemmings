@@ -12,7 +12,7 @@
 Lemmings::Lemmings()
 {
 	// setup private var
-	this->_ground = NULL;
+	this->_thereIsGround = false;
 	this->setPosition(*MapLoader::GetSpawnPoint());
 	this->_horizontalDirection = RIGHT;
 	this->_verticalDirection = UP;
@@ -249,12 +249,11 @@ void Lemmings::Digging()
 		
 		auto destroyBlock = CallFunc::create([this]() 
 			{
-				if (_ground != NULL) 
-				{
+				if (this->_currentAnimation == MOVING) {
 					Vec2 position = *MapLoader::NormalizePosition(_ground->getPosition());
 					auto layer = MapLoader::GetLayer("Foreground");
 
-					position.y = (layer->getLayerSize().height-1) - position.y;
+					position.y = (layer->getLayerSize().height - 1) - position.y;
 					layer->removeTileAt(position);
 					_ground->removeFromParentAndCleanup(true);
 				}
@@ -269,7 +268,8 @@ void Lemmings::Digging()
 	}
 }
 
-void Lemmings::SetGround(Node* ground)
+void Lemmings::SetGround(Node* ground, bool thereIsGround)
 {
 	_ground = ground;
+	_thereIsGround = thereIsGround;
 }

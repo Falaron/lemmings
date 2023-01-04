@@ -181,10 +181,10 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
 
         // GROUND COLLISION
         if (shapeA->getName() == "lemming" && shapeB->getName() == "ground") {
-            ((Lemmings*)shapeA)->SetGround(shapeB);
+            ((Lemmings*)shapeA)->SetGround(shapeB,true);
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "ground") {
-            ((Lemmings*)shapeB)->SetGround(shapeA);
+            ((Lemmings*)shapeB)->SetGround(shapeA,true);
         }
     }
 

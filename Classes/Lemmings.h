@@ -43,7 +43,7 @@ public:
 	/// <summary> Digging action </summary>
 	void Digging();
 
-	void SetGround(Node* ground);
+	void SetGround(Node* ground, bool thereIsGround);
 
 private:
 	cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
@@ -51,6 +51,7 @@ private:
 
 	bool _horizontalDirection;
 	bool _verticalDirection;
+	bool _thereIsGround;
 	float _speed;
 	state _state;
 	state _currentAnimation;
