@@ -6,7 +6,7 @@
 #ifndef __GAMEMANAGER_H__
 #define __GAMEMANAGER_H__
 
-enum LemmingAction {
+enum LemmingActionName {
     BUILD = 0,
     DIG = 2,
     JUMP = 4,
@@ -18,14 +18,14 @@ class GameManager
 {
 public:
 
-    static void AddAction(LemmingAction action) { _actions.push_back(action); };
-    static void ChangeSelectedAction(LemmingAction action) { selectedAction = action; };
+    static void AddAction(LemmingActionName action) { _actions.push_back(action); };
+    static void ChangeSelectedAction(LemmingActionName action) { selectedAction = action; };
 
     //Get Spawn, Exit & Dead lemmings
     static int GetLemmingSpawn(){ return numberLemmingSpawn;};
     static int GetLemmingExit() { return numberLemmingExit; };
     static int GetLemmingDead() { return numberLemmingDead; };
-    static std::vector<LemmingAction> GetLemmingActions() { return _actions; };
+    static std::vector<LemmingActionName> GetLemmingActions() { return _actions; };
 
     static void SetLemmingSpawn(int number){ numberLemmingSpawn = number;};
 
@@ -43,8 +43,8 @@ private:
     static int numberLemmingExit;
     static int numberLemmingDead;
 
-    static LemmingAction selectedAction;
-    static std::vector<LemmingAction> _actions;
+    static LemmingActionName selectedAction;
+    static std::vector<LemmingActionName> _actions;
 };
 
 #endif // __GAMEMANAGER_H__

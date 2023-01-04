@@ -25,6 +25,7 @@ void MapLoader::LoadMapCollisions()
     cocos2d::TMXObjectGroup* collisions = _map->getObjectGroup("MapCollisions");
 
     ValueVector& collider_array = collisions->getObjects();
+
     for (Value& rectangle : collider_array)
     {
         ValueMap rectangle_properties = rectangle.asValueMap();

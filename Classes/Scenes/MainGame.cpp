@@ -1,4 +1,5 @@
 #include "MainGame.h"
+#include "LemmingAction.h"
 
 #define HUD_LAYER_NAME "HUDLayer"
 #define GAME_LAYER_NAME "GameLayer"
@@ -8,14 +9,14 @@
 int GameManager::numberLemmingSpawn = 0;
 int GameManager::numberLemmingExit = 0;
 int GameManager::numberLemmingDead = 0;
-LemmingAction GameManager::selectedAction;
+LemmingActionName GameManager::selectedAction;
 
 USING_NS_CC;
 
 Scene* MainGame::createScene()
 {
     auto scene = MainGame::create();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
 
     HUDLayer* hud = HUDLayer::create();
@@ -42,7 +43,7 @@ bool MainGame::init()
     //Load available actions from level
     int actions[] = { DIG, PARACHUTE };
     for (int action : actions) {
-        GameManager::AddAction((LemmingAction)action);
+        GameManager::AddAction((LemmingActionName)action);
     }
 
     auto keyboardListener = EventListenerKeyboard::create();
@@ -74,13 +75,13 @@ bool MainGame::init()
     contactListener->onContactBegin = CC_CALLBACK_1(MainGame::onContactEnter, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-    EventListenerPhysicsContact* contactListener1 = EventListenerPhysicsContact::create();
-    contactListener1->onContactSeparate = CC_CALLBACK_1(MainGame::onContactExit, this);
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener1, this);
+EventListenerPhysicsContact* contactListener1 = EventListenerPhysicsContact::create();
+contactListener1->onContactSeparate = CC_CALLBACK_1(MainGame::onContactExit, this);
+_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener1, this);
 
-    this->scheduleUpdate();
+this->scheduleUpdate();
 
-    return true;
+return true;
 }
 
 void MainGame::update(float delta)
@@ -104,7 +105,7 @@ void MainGame::update(float delta)
         this->getDefaultCamera()->setPositionY(this->getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
         hudLayer->setPositionY(hudLayer->getPositionY() - CAMERA_STEP * delta);
     }
-   
+
 }
 
 bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
@@ -175,6 +176,11 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->setCursorSprite("sprites/cursor/0001.png");
+        }
+        else if (shapeB->getTag() == 5 && shapeA->getName() == "cursor") {
+            GameManager::ChangeSelectedAction(((LemmingAction*)shapeA)->GetAction());
+            hudLayer->UpdateSelectedActionBorder(((LemmingAction*)shapeA)->GetIndex());
+            CCLOG("Selected action n°%d", ((LemmingAction*)shapeA)->GetAction());
         }
     }
 
