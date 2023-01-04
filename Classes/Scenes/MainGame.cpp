@@ -178,6 +178,14 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->setCursorSprite("sprites/cursor/0001.png");
         }
+
+        // GROUND COLLISION
+        if (shapeA->getName() == "lemming" && shapeB->getName() == "ground") {
+            ((Lemmings*)shapeA)->SetGround(shapeB);
+        }
+        else if (shapeB->getName() == "lemming" && shapeA->getName() == "ground") {
+            ((Lemmings*)shapeB)->SetGround(shapeA);
+        }
     }
 
     return true;

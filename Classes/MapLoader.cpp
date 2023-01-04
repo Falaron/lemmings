@@ -19,6 +19,11 @@ void MapLoader::LoadMap(const char * mapName, Layer* currentLayer)
     LoadExitPoint();
 }
 
+cocos2d::TMXLayer* MapLoader::GetLayer(std::string layer)
+{
+    return _map->getLayer(layer);
+}
+
 
 void MapLoader::LoadMapCollisions()
 {
@@ -43,7 +48,9 @@ void MapLoader::LoadMapCollisions()
                 box->setGravityEnable(false);
                 box->setDynamic(false);
                 box->setGroup(1);
+                box->setContactTestBitmask(0xEEEEEEEE);
 
+                collider->setName("ground");
                 collider->setPhysicsBody(box);
                 _layer->addChild(collider);
             }
@@ -62,4 +69,16 @@ void MapLoader::LoadExitPoint()
 {
     auto exitPointObject = _map->getObjectGroup("Meta")->getObject("exitPoint");
     _exitpoint = new Vec2(exitPointObject["x"].asInt(), exitPointObject["y"].asInt());
+}
+
+cocos2d::Vec2* MapLoader::NormalizePosition(cocos2d::Vec2 position)
+{
+    int posX = ((int)position.x / TilesSize);
+    int posY = ((int)position.y / TilesSize);
+
+    auto test = new Vec2(posX, posY);
+
+    CCLOG("position :  %f : %f", test->x, test->y);
+
+    return test;
 }

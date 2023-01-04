@@ -7,9 +7,11 @@ public:
 
 	static void LoadMap(const char *, cocos2d::Layer*);
 
+	static cocos2d::Vec2* NormalizePosition(cocos2d::Vec2 position);
 	static cocos2d::TMXTiledMap* GetLoadedMap() { return _map; };
 	static cocos2d::Vec2* GetSpawnPoint() { return _spawnPoint; };
 	static cocos2d::Vec2* GetExitPoint() { return _exitpoint; };
+	static cocos2d::TMXLayer* GetLayer(std::string layer);
 
 
 private:
