@@ -129,7 +129,7 @@ void HUDLayer::CreateActionsHUD() {
         
         LemmingAction* lemmingActionSprite = LemmingAction::create();
         lemmingActionSprite->initWithSpriteFrame(sprite);
-        lemmingActionSprite->Initialize(i, action);
+        lemmingActionSprite->Initialize(i, action, 0);
         
         actions.push_back(lemmingActionSprite);
         actionsContainer->addChild(lemmingActionSprite);

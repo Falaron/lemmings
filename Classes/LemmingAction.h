@@ -7,7 +7,7 @@ class LemmingAction : public::cocos2d::Sprite
 {
 public:
 
-	void Initialize(int index, LemmingActionName action);
+	void Initialize(int index, LemmingActionName action, int actionCount);
 	CREATE_FUNC(LemmingAction);
 
 	LemmingActionName GetAction() { return _action; };
@@ -15,7 +15,10 @@ public:
 
 private:
 
+	cocos2d::Label* _actionCountText;
+
 	int _actionIndex;
 	LemmingActionName _action;
+	int _actionCount;
 };
 
