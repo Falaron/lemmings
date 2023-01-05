@@ -160,14 +160,10 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         if (shapeA->getName() == "lemming" && shapeB->getName() == "exit door") {
             shapeA->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
-            if (GameManager::IsEndOfLevel())
-                Director::getInstance()->replaceScene(EndLevelScene::createScene());
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "exit door") {
             shapeB->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
-            if (GameManager::IsEndOfLevel())
-                Director::getInstance()->replaceScene(EndLevelScene::createScene());
         }
 
 
@@ -177,6 +173,17 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->setCursorSprite("sprites/cursor/0001.png");
+        }
+
+        //DEATH COLLISION
+        if (shapeB->getName() == "lemming" && shapeA->getName() == "deathCollider") {
+            shapeB->getPhysicsBody()->setContactTestBitmask(0);
+            GameManager::IncreaseLemmingDead();
+            cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
+                shapeB->removeFromParentAndCleanup(true);
+                });
+            cocos2d::DelayTime* delay = cocos2d::DelayTime::create(1);
+            this->runAction(Sequence::create(delay,A, NULL));
         }
 
         // GROUND COLLISION

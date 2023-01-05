@@ -19,6 +19,7 @@ private:
 	static void LoadMapCollisions();
 	static void LoadSpawnPoint();
 	static void LoadExitPoint();
+	static void LoadDeadCollision();
 
 	static cocos2d::Layer* _layer;
 	static cocos2d::TMXTiledMap* _map;
