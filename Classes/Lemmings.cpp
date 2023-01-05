@@ -326,21 +326,21 @@ void Lemmings::Bombing()
 
 		auto callbackChangeState = CallFunc::create([this]() { this->_state = DEAD; });
 
-		auto seq = Sequence::create(
-									delay,
-									count--,
-									countDecrease,
-									delay,
-									count--,
-									countDecrease,
-									delay,
-									count--,
-									countDecrease,
-									delay,
-									destroyBlock,
-									callbackChangeState,
-									nullptr
-									);
-		this->runAction(seq);
+	//	auto seq = Sequence::create(
+	//								delay,
+	//								count--,
+	//								countDecrease,
+	//								delay,
+	//								count--,
+	//								countDecrease,
+	//								delay,
+	//								count--,
+	//								countDecrease,
+	//								delay,
+	//								destroyBlock,
+	//								callbackChangeState,
+	//								nullptr
+	//								);
+	//	this->runAction(seq);
 	}
 }
