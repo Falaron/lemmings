@@ -2,17 +2,11 @@
 
 #include <vector>
 #include <string>
+#include "LemmingAction.h"
+#include "Level.h"
 
 #ifndef __GAMEMANAGER_H__
 #define __GAMEMANAGER_H__
-
-enum LemmingActionName {
-    DIG = 2,
-    EXPLODE = 3,
-    JUMP = 4,
-    PARACHUTE = 6,
-    STOP = 7
-};
 
 class GameManager
 {
@@ -26,10 +20,15 @@ public:
     static int GetLemmingExit() { return numberLemmingExit; };
     static int GetLemmingDead() { return numberLemmingDead; };
     static int GetLemmingVictory() { return numberLemmingVictory; };
+    static Level GetCurrentLevelInfo() { return *currentLevelInfo; };
+
+    static int GetCurrentLevel() { return currentLevel; };
     static std::vector<LemmingActionName> GetLemmingActions() { return _actions; };
 
     static void SetLemmingSpawn(int number){ numberLemmingSpawn = number;};
     static void SetLemmingVictory(int number) { numberLemmingVictory = number; };
+    static void SetStartLevel(int level) { currentLevel = level; };
+    static void SetCurrentLevelInfo(Level* levelInfo) { currentLevelInfo = levelInfo; };
 
     //Increase Exit and Dead lemmings by 1
     static void IncreaseLemmingExit();
@@ -39,21 +38,24 @@ public:
     static void checkEndLevel();
 
     //Timer
-    static void setTimer(float minutes, float seconds) { minutes = minutes; seconds = seconds; };
-    static void decreaseMinutes() { minutes--; };
-    static void decreaseSeconds() { seconds--; };
-    static void reloadSeconds() { seconds = 60; };
-    static int getMinutes() { return int(minutes); };
-    static int getSeconds() { return int(seconds); };
+    static void setTimer(float minutes, float seconds) { _minutes = minutes; _seconds = seconds; };
+    static void decreaseMinutes() { _minutes--; };
+    static void decreaseSeconds() { _seconds--; };
+    static void reloadSeconds() { _seconds = 60; };
+    static int getMinutes() { return int(_minutes); };
+    static int getSeconds() { return int(_seconds); };
 
 private:
+
+    static int currentLevel;
+    static Level* currentLevelInfo;
 
     static int numberLemmingSpawn;
     static int numberLemmingExit;
     static int numberLemmingDead;
     static int numberLemmingVictory;
 
-    static float seconds, minutes;
+    static float _seconds, _minutes;
 
     static LemmingActionName selectedAction;
     static std::vector<LemmingActionName> _actions;

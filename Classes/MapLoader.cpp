@@ -1,4 +1,6 @@
 #include "MapLoader.h"
+#include "LevelRegistry.h"
+#include "GameManager.h"
 
 USING_NS_CC;
 
@@ -9,10 +11,10 @@ Vec2* MapLoader::_spawnPoint = 0;
 Vec2* MapLoader::_exitpoint = 0;
 std::vector<cocos2d::Node*> MapLoader::_blockList;
 
-void MapLoader::LoadMap(const char * mapName, Layer* currentLayer)
+void MapLoader::LoadMap(Layer* currentLayer)
 {
     _layer = currentLayer;
-    _map = TMXTiledMap::create(mapName);
+    _map = TMXTiledMap::create("maps/map" + std::to_string(GameManager::GetCurrentLevel()) + ".tmx");
     _layer->addChild(_map);
 
     LoadMapCollisions();
@@ -76,7 +78,10 @@ void MapLoader::LoadExitPoint()
 }
 
 void MapLoader::LoadDeadCollision() {
+
     cocos2d::TMXObjectGroup* deathCollisions = _map->getObjectGroup("MapDeathObjects");
+
+    if (!deathCollisions) return;
 
     ValueVector& collider_array = deathCollisions->getObjects();
     for (Value& rectangle : collider_array)
@@ -107,6 +112,19 @@ void MapLoader::LoadDeadCollision() {
 
     }
 
+}
+
+void MapLoader::LoadLevelInfo()
+{
+    Level currentLevel = LevelRegistry::GetLevel(GameManager::GetCurrentLevel());
+    GameManager::SetLemmingSpawn(currentLevel.GetLemmingsToSpawn());
+    GameManager::SetLemmingVictory(currentLevel.GetLemmingsToSpawn());
+    GameManager::setTimer(currentLevel.GetMinutes(), currentLevel.GetSeconds());
+
+    for (auto action : currentLevel.GetActions())
+    {
+        GameManager::AddAction(action);
+    }
 }
 
 cocos2d::Vec2* MapLoader::NormalizePosition(cocos2d::Vec2 position)

@@ -5,7 +5,7 @@
 class LevelRegistry {
 public:
 
-	Level GetLevel(int levelNumber) { return levels[levelNumber-1]; };
+	static Level GetLevel(int levelNumber) { return levels[levelNumber-1]; };
 
 private:
 

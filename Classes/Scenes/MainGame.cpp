@@ -1,5 +1,7 @@
 #include "MainGame.h"
 #include "LemmingAction.h"
+#include "LevelRegistry.h"
+#include "MapLoader.h"
 
 #define HUD_LAYER_NAME "HUDLayer"
 #define GAME_LAYER_NAME "GameLayer"
@@ -12,8 +14,9 @@ int GameManager::numberLemmingSpawn = 0;
 int GameManager::numberLemmingExit = 0;
 int GameManager::numberLemmingDead = 0;
 int GameManager::numberLemmingVictory = 5;
-float GameManager::minutes = 4.f;
-float GameManager::seconds = 0.f;
+int GameManager::currentLevel = 0;
+float GameManager::_minutes;
+float GameManager::_seconds;
 
 LemmingActionName GameManager::selectedAction;
 
@@ -21,6 +24,8 @@ USING_NS_CC;
 
 Scene* MainGame::createScene()
 {
+    GameManager::SetStartLevel(2);
+
     auto scene = MainGame::create();
     //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
@@ -41,16 +46,10 @@ bool MainGame::init()
 {
     if (!Scene::initWithPhysics()) return false;
 
-    GameManager::SetLemmingSpawn(4);
-
     windowSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    //Load available actions from level
-    int actions[] = { DIG, EXPLODE, JUMP, PARACHUTE, STOP };
-    for (int action : actions) {
-        GameManager::AddAction((LemmingActionName)action);
-    }
+    MapLoader::LoadLevelInfo();
 
     auto keyboardListener = EventListenerKeyboard::create();
     keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {

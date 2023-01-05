@@ -1,7 +1,14 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "GameManager.h"
+
+enum LemmingActionName {
+	DIG = 2,
+	EXPLODE = 3,
+	JUMP = 4,
+	PARACHUTE = 6,
+	STOP = 7
+};
 
 class LemmingAction : public::cocos2d::Sprite
 {

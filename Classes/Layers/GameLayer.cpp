@@ -10,7 +10,7 @@ bool GameLayer::init()
 {
 	if (!Layer::init()) return false;
 
-    MapLoader::LoadMap("maps/map2.tmx", this);
+    MapLoader::LoadMap(this);
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
