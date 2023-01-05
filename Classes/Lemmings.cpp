@@ -18,7 +18,7 @@ Lemmings::Lemmings()
 	this->_verticalDirection = UP;
 	this->_speed = DEFAULT_SPEED;
 	this->_currentAnimation = SPAWNING;
-	this->_state = BOMBING;
+	this->_state = SPAWNING;
 	this->setScale(1);
 
 	// create a temp sprite to setup the physic box ( in game animation is manage in UpdateAnimation() )
@@ -28,7 +28,7 @@ Lemmings::Lemmings()
 
 
 	//create Physic body and setup basics parameters
-	box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0, 1, 0));
+	auto box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0, 1, 0));
 	box->setGravityEnable(true);
 	box->setGroup(-1);
 	box->setContactTestBitmask(0xEEEEEEEE);
@@ -51,6 +51,8 @@ void Lemmings::Update()
 	else if (this->_state == DIGGING) { this->Digging(); }
 
 	else if (this->_state == BOMBING) { this->Bombing(); }
+
+	else if (this->_state == HORIZONTALDIGGING) { this->HorizontalDigging(); }
 
 	else if (this->_state == DEAD) { }
 
@@ -149,6 +151,14 @@ void Lemmings::UpdateAnimation()
 			this->setSpriteFrame(frames.front());
 			this->runAction(Sequence::create(DelayTime::create(3), Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 14)), nullptr));
 			this->_currentAnimation = BOMBING;
+
+			break;
+
+		case HORIZONTALDIGGING:
+			frames = GetAnimation("horizontalDigging-%04d.png", 11);
+			this->setSpriteFrame(frames.front());
+			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 14))));
+			this->_currentAnimation = HORIZONTALDIGGING;
 
 			break;
 
@@ -258,12 +268,13 @@ void Lemmings::Digging()
 	{
 		this->UpdateAnimation();
 		auto delay = DelayTime::create(1);
+		auto lemmingsPos = this->getPosition();
 		
-		auto destroyBlock = CallFunc::create([this,velocity]() 
+		auto destroyBlock = CallFunc::create([velocity, lemmingsPos]()
 			{
 				if (velocity.y == 0) {
-					Vec2 position = *MapLoader::NormalizePosition(_ground->getPosition());
-					MapLoader::DeleteTile(position);
+					Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
+					MapLoader::DeleteTile(Vec2(position.x,position.y-1));
 				}
 			}
 		);
@@ -276,25 +287,51 @@ void Lemmings::Digging()
 	}
 }
 
-void Lemmings::SetGround(Node* ground, bool thereIsGround)
-{
-	_ground = ground;
-	_thereIsGround = thereIsGround;
-}
-
-void Lemmings::Bombing()
+void Lemmings::HorizontalDigging()
 {
 	auto physicsBody = this->getPhysicsBody();
 	auto velocity = physicsBody->getVelocity();
-	int count = 3;
-	auto countText = Label::createWithSystemFont(std::to_string(count),"fonts/arial.ttf",5);
-	auto lemmingsPos = this->getPosition();
-	countText->setPosition(Vec2(lemmingsPos.x+4, lemmingsPos.y+10));
-	this->getParent()->addChild(countText,1);
+	this->Move();
 
 	if (this->_state != this->_currentAnimation)
 	{
 		this->UpdateAnimation();
+		auto delay = DelayTime::create(1);
+		auto lemmingsPos = this->getPosition();
+
+		auto destroyBlock = CallFunc::create([this,velocity, lemmingsPos]()
+			{
+				if (velocity.y == 0) {
+					Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
+					if (_horizontalDirection == RIGHT) MapLoader::DeleteTile(Vec2(position.x + 1, position.y));
+					else MapLoader::DeleteTile(Vec2(position.x - 1, position.y));
+				}
+			}
+		);
+
+
+		auto callbackChangeState = CallFunc::create([this]() { this->_state = MOVING; });
+
+		auto seq = Sequence::create(delay, destroyBlock, callbackChangeState, nullptr);
+		this->runAction(seq);
+	}
+}
+
+void Lemmings::Bombing()
+{
+	if (this->_state != this->_currentAnimation)
+	{
+		auto velocity = this->getPhysicsBody()->getVelocity();
+		auto lemmingsPos = this->getPosition();
+
+
+		auto countText = Label::createWithSystemFont(std::to_string(3), "fonts/arial.ttf", 5);
+		countText->setPosition(Vec2(lemmingsPos.x + 4, lemmingsPos.y + 10));
+		this->getParent()->addChild(countText, 1);
+
+		this->UpdateAnimation();
+
+
 		auto delay = DelayTime::create(1);
 
 		auto destroyBlock = CallFunc::create([this, velocity,lemmingsPos, countText]()
@@ -302,45 +339,44 @@ void Lemmings::Bombing()
 				if (velocity.y == 0) {
 					Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
 
-					MapLoader::DeleteTile(Vec2(position.x, position.y + 1));
-					MapLoader::DeleteTile(Vec2(position.x - 2, position.y + 1));
+					MapLoader::DeleteTile(Vec2(position.x, position.y));
+					MapLoader::DeleteTile(Vec2(position.x - 2, position.y));
+					MapLoader::DeleteTile(Vec2(position.x - 1, position.y));
 					MapLoader::DeleteTile(Vec2(position.x - 1, position.y + 1));
-					MapLoader::DeleteTile(Vec2(position.x - 1, position.y + 2));
+					MapLoader::DeleteTile(Vec2(position.x, position.y + 1));
 					MapLoader::DeleteTile(Vec2(position.x, position.y + 2));
-					MapLoader::DeleteTile(Vec2(position.x, position.y + 3));
-					MapLoader::DeleteTile(Vec2(position.x + 1, position.y + 2));
 					MapLoader::DeleteTile(Vec2(position.x + 1, position.y + 1));
-					MapLoader::DeleteTile(Vec2(position.x + 2, position.y + 1));
+					MapLoader::DeleteTile(Vec2(position.x + 1, position.y));
+					MapLoader::DeleteTile(Vec2(position.x + 2, position.y));
+					MapLoader::DeleteTile(Vec2(position.x - 1, position.y-1));
+					MapLoader::DeleteTile(Vec2(position.x + 1, position.y-1));
+					MapLoader::DeleteTile(Vec2(position.x, position.y-1));
+					MapLoader::DeleteTile(Vec2(position.x, position.y-2));
 					countText->removeFromParentAndCleanup(true);
 
 				}
 			}
 		);
 
-		auto countDecrease = CallFunc::create([countText,count]()
-			{
-				countText->setString(std::to_string(count));
-			}
-		);
+		auto two = CallFunc::create([countText]() { countText->setString(std::to_string(2)); });
+		auto one = CallFunc::create([countText]() { countText->setString(std::to_string(1)); });
+		auto zero = CallFunc::create([countText]() { countText->setString(std::to_string(0)); });
 
 
 		auto callbackChangeState = CallFunc::create([this]() { this->_state = DEAD; });
 
-	//	auto seq = Sequence::create(
-	//								delay,
-	//								count--,
-	//								countDecrease,
-	//								delay,
-	//								count--,
-	//								countDecrease,
-	//								delay,
-	//								count--,
-	//								countDecrease,
-	//								delay,
-	//								destroyBlock,
-	//								callbackChangeState,
-	//								nullptr
-	//								);
-	//	this->runAction(seq);
+		auto seq = Sequence::create(
+									delay,
+									two,
+									delay,
+									one,
+									delay,
+									zero,
+									delay,
+									destroyBlock,
+									callbackChangeState,
+									nullptr
+								);
+		this->runAction(seq);
 	}
 }

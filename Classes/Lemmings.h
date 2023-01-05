@@ -12,6 +12,7 @@ enum state {
 	PARACHUTING,
 	DIGGING,
 	BOMBING,
+	HORIZONTALDIGGING,
 	DEAD,
 };
 
@@ -47,10 +48,11 @@ public:
 	/// <summary> Digging action </summary>
 	void Digging();
 
+	/// <summary> Digging action </summary>
+	void HorizontalDigging();
+
 	/// <summary> Bombing action </summary>
 	void Bombing();
-
-	void SetGround(Node* ground, bool thereIsGround);
 
 	state GetState() { return _state; };
 
@@ -65,5 +67,4 @@ private:
 	state _state;
 	state _currentAnimation;
 	Node* _ground;
-	PhysicsBody* box;
 };

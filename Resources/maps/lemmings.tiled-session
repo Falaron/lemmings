@@ -38,11 +38,11 @@
             "expandedObjectLayers": [
                 7
             ],
-            "scale": 0.5,
-            "selectedLayer": 6,
+            "scale": 1.5,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 386,
-                "y": 626
+                "x": 457.99999999999994,
+                "y": 232.66666666666669
             }
         },
         "map2.tmx#TileKit": {

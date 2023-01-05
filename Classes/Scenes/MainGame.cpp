@@ -22,7 +22,7 @@ USING_NS_CC;
 Scene* MainGame::createScene()
 {
     auto scene = MainGame::create();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
 
     HUDLayer* hud = HUDLayer::create();
@@ -41,7 +41,7 @@ bool MainGame::init()
 {
     if (!Scene::initWithPhysics()) return false;
 
-    GameManager::SetLemmingSpawn(1);
+    GameManager::SetLemmingSpawn(4);
 
     windowSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -209,14 +209,7 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             this->runAction(Sequence::create(delay,A, NULL));
         }
 
-        // GROUND COLLISION
-        if (shapeA->getName() == "lemming" && shapeB->getName() == "ground") {
-            ((Lemmings*)shapeA)->SetGround(shapeB,true);
-        }
-        else if (shapeB->getName() == "lemming" && shapeA->getName() == "ground") {
-            ((Lemmings*)shapeB)->SetGround(shapeA,true);
-        }
-        else if (shapeB->getTag() == 5 && shapeA->getName() == "cursor") {
+        if (shapeB->getTag() == 5 && shapeA->getName() == "cursor") {
             GameManager::ChangeSelectedAction(((LemmingAction*)shapeA)->GetAction());
             hudLayer->UpdateSelectedActionBorder(((LemmingAction*)shapeA)->GetIndex());
             CCLOG("Selected action n°%d", ((LemmingAction*)shapeA)->GetAction());
