@@ -1,6 +1,8 @@
 #pragma once
+
 #include "cocos2d.h"
 #include "PhysicsShapeCache.h"
+#include "GameManager.h"
 
 enum state {
 	SPAWNING,

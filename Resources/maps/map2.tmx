@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="82">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="114">
  <tileset firstgid="1" name="TileKit" tilewidth="32" tileheight="32" tilecount="228" columns="12">
   <image source="TileKit.png" width="384" height="608"/>
  </tileset>
@@ -15,29 +15,52 @@
  </layer>
  <layer id="8" name="GroundBackground" width="25" height="40">
   <data encoding="base64" compression="zlib">
-   eJztlMENg1AMQ8MADPAH4NYeGOBz/wzQ/UcplRLVmBRSuKFEsoSqyK+QxCLb6lT4/K+wHge9/Qkxp6Pfub+cUE+Mnry5fzih8uM9PM9p0etA86KRNKgnvgd6Y++kmtXPe/6okkb1tCrkjb1RRiNV9bQayBt7owyeR1NPm8noeDeYR4ThzaPKd1fRn3uvzKMBA78h6+o8bGebrG8Q2VHGU9Y3hfMwL7tNzoMoQ2Q7d/y/NiMvD/ZuEBlHOVeBw3kQZXi5yN/OOLx/UYaXi3wv3l7h7u5llXeDnEm8d8iMMvgbcCbtVZRxpaLZnoxkJCMZyUhGMu7PeAPc+ZXH
+   eJztlVEKg0AMROMBPIAH8K/98ADr/3qA3v8otZDQcYyaulhqMTAgJcyrm+woMq9Khc+fCuu20VvvEHMq+p37mx2qiVGTN/e3O9QsvIfn2Y96bGgY1ZFa9cT3QG/s7VWD+nnPLyVSp55WDXljb5SRSUk9rVryxt4og+eR1dNm0jneGeYRYXjzSPLeVfTn3pJ5ZGDgGbJK52E7m2V6B5EdZdxleqdwHuZld5PzIMoQmc8d/6/NyMuDKGMr5xJwOA+iDC8X+eyMw/u3liXI8HKR74u3V7i7a1nl3UHOJN47ZEYZfAacSWsVZZQUz3yJcxbGN87qaEbkW1vKiObVxbgYv8aIfD9KGf+SJcjw8vcsDJ7xxTiW8QQuI5Bv
   </data>
  </layer>
  <layer id="3" name="Foreground" width="25" height="40">
   <data encoding="base64" compression="zlib">
-   eJztlEEKwkAMRTOCgouCpSjUXQvdufEAgtKVoDfw/udwChMapj/T1C6dwIOiJY9k/tQRkYv4peIesk8BQO8vgftw1QCrF71XiD5cHWCN14k+XFfA8P/Gc/RsE+w8J89+xn0DsOvgaQOl5xwoxe+VYeYngF1Wh2XXMeyyOtCuEejsrA5t10wq51aHtmtGy3ihOFrgkJlF57tkDvRc0ZhX3o2cYc7x8jSBh/Lc0/QexHOkdtUILjOO+B5whuW3BbHE4UR/meGa9CwPvEM/xCfQ0/ROywx3hL9XzF300ujB/DLDcQZirA60A+lJldWxpgaHdh5MdmRHdmRHdmRHdvyH4wvMIm/t
+   eJztlFEKwjAMhjtBwYeBYyjom4MdwAMIG3vyDt7/HHbQYMj+dKlj6mCBD4qOfCRNmjnnMsEnIXPwPDkAfZ8C5aE4A6xe9F3O8lDUgCnejOWhuAH6/zeeo2cbYec5efYj7juAXAdPFSg8l0DBfi8NNT8A5LI6LL2WkMvqQL1GoLuzOrReE7E5tzq0XhPajOeKowIOPrPoflPqQOfSveeVesNrGHM0nmugVc6dG+6BrCPWqxSH3AOaYf62IFLroPx8hs9On+U6OFqFZ6Bzw53mM1w7/F4RDcul0YH6+QzLGZBYHagH3BMLq2NK9A7abe1elubQWIpD69Fc94HOq2N1/KtD24ul7fkvHN94d+dwyDteHfM6XnzfYZw=
   </data>
  </layer>
  <layer id="4" name="ForegroundDecor" width="25" height="40">
   <data encoding="base64" compression="zlib">
-   eJztlLERwyAMReUBnN7pXFCmYAAGYI102X+BOHfSWeYEkYiKFPp3r7DB/yOBWQBgcWY9uCGAz+tgrhX+/R0zNkSav00wWjPB578OEvIQ+Lx/Kvom1Sr5adD2Yta/15MkMJvR1sOzMsPDX6qpNHhktXtSG4rzntC+SJkeOeSZ4Hqu+PivPSLPjDltNo3TecusRu0/T98WhXeG80zUQd97VIN3ZfMt7Abv3r32jX1y3ZZewcBbc4drCIVCoVAoFPoXvQFjJTHk
+   eJztlT0OwyAMhZ0DpHuyZWDswAFYK3GNbr3/BZpKtuIiAyYx7cKTPik/8B4YQiYAmIyZd24I4P1caNsK779ixoJI7ZcTlMZM8PavHYfcBT7Pn4q6SXOV/DRoa3HWP1cTJ3A2I50Pz/IMC39pTiHBIitdk5gQjNeE1kXKtMghTwff+4q/v1oj8vSYk2bTe9pvns1R+81T36Dw9nDsiVioe45Y8X4gkV2nNamxKcZN5M61GpvCWxpbS62g4K05wzW0iNbDWisc/7Oe+kXG0NDQ/8TPqF7n1dDQUF+9AftyM+I=
   </data>
  </layer>
  <objectgroup id="5" name="MapCollisions">
   <object id="79" x="224" y="128" width="320" height="32"/>
+  <object id="95" x="-32" y="0" width="32" height="1280"/>
+  <object id="96" x="416" y="160" width="32" height="320"/>
+  <object id="97" x="512" y="160" width="32" height="1120"/>
+  <object id="98" x="800" y="0" width="32" height="1280"/>
+  <object id="101" x="224" y="160" width="32" height="1120"/>
+  <object id="103" x="320" y="160" width="32" height="320"/>
+  <object id="104" x="416" y="768" width="32" height="224"/>
+  <object id="105" x="320" y="768" width="32" height="224"/>
+  <object id="106" x="256" y="1152" width="64" height="128"/>
+  <object id="107" x="320" y="608" width="192" height="64"/>
+  <object id="108" x="384" y="1088" width="128" height="192"/>
+  <object id="109" x="256" y="480" width="192" height="33.3333"/>
+  <object id="110" x="256" y="992" width="192" height="33.3333"/>
+  <object id="111" x="256" y="736" width="256" height="32"/>
+  <object id="112" x="512" y="96" width="32" height="32"/>
+  <object id="113" x="224" y="96" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="7" name="Meta">
-  <object id="80" name="spawnPoint" x="384" y="96">
+  <object id="80" name="spawnPoint" x="384" y="64">
    <point/>
   </object>
-  <object id="81" name="exitPoint" x="672" y="1216">
+  <object id="81" name="exitPoint" x="288" y="1152">
    <point/>
   </object>
+ </objectgroup>
+ <objectgroup id="11" name="MapDeathObjects">
+  <object id="90" name="DeathCollision" x="256" y="448" width="64" height="32"/>
+  <object id="91" name="DeathCollision" x="352" y="576" width="64" height="32"/>
+  <object id="92" name="DeathCollision" x="352" y="448" width="64" height="32"/>
+  <object id="93" name="DeathCollision" x="256" y="960" width="64" height="32"/>
+  <object id="94" name="DeathCollision" x="352" y="960" width="64" height="32"/>
  </objectgroup>
  <objectgroup id="6" name="Destructibles"/>
 </map>

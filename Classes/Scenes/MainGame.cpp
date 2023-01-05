@@ -1,21 +1,28 @@
 #include "MainGame.h"
+#include "LemmingAction.h"
 
 #define HUD_LAYER_NAME "HUDLayer"
 #define GAME_LAYER_NAME "GameLayer"
+
+#define CAMERA_PAN_OFFSET 50
 #define CAMERA_STEP 25
 #define CAMERA_MOVE_COOLDOWN 0.2
 
 int GameManager::numberLemmingSpawn = 0;
 int GameManager::numberLemmingExit = 0;
 int GameManager::numberLemmingDead = 0;
-LemmingAction GameManager::selectedAction;
+int GameManager::numberLemmingVictory = 5;
+float GameManager::minutes = 3.f;
+float GameManager::seconds = 0.f;
+
+LemmingActionName GameManager::selectedAction;
 
 USING_NS_CC;
 
 Scene* MainGame::createScene()
 {
     auto scene = MainGame::create();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
 
     HUDLayer* hud = HUDLayer::create();
@@ -36,13 +43,13 @@ bool MainGame::init()
 
     GameManager::SetLemmingSpawn(1);
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
+    windowSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     //Load available actions from level
-    int actions[] = { DIG, PARACHUTE };
+    int actions[] = { DIG, EXPLODE, JUMP, PARACHUTE, STOP };
     for (int action : actions) {
-        GameManager::AddAction((LemmingAction)action);
+        GameManager::AddAction((LemmingActionName)action);
     }
 
     auto keyboardListener = EventListenerKeyboard::create();
@@ -87,17 +94,25 @@ void MainGame::update(float delta)
 {
     Node::update(delta);
 
-    if (isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
+    if (hudLayer->GetCursorX() <= CAMERA_PAN_OFFSET) // LEFT CAMERA PAN 
     {
-        this->getDefaultCamera()->setPositionX(this->getDefaultCamera()->getPositionX() + CAMERA_STEP * delta);
-        hudLayer->setPositionX(hudLayer->getPositionX() + CAMERA_STEP * delta);
-    }
-    if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
-        this->getDefaultCamera()->setPositionX(this->getDefaultCamera()->getPositionX() - CAMERA_STEP * delta);
+        getDefaultCamera()->setPositionX(getDefaultCamera()->getPositionX() - CAMERA_STEP * delta);
         hudLayer->setPositionX(hudLayer->getPositionX() - CAMERA_STEP * delta);
     }
-    if (isKeyPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
-        this->getDefaultCamera()->setPositionY(this->getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
+    else if (hudLayer->GetCursorX() >= windowSize.width - CAMERA_PAN_OFFSET) // RIGHT CAMERA PAN 
+    {
+        getDefaultCamera()->setPositionX(getDefaultCamera()->getPositionX() + CAMERA_STEP * delta);
+        hudLayer->setPositionX(hudLayer->getPositionX() + CAMERA_STEP * delta);
+    }
+
+    if (hudLayer->GetCursorY() <= CAMERA_PAN_OFFSET) // DOWN CAMERA PAN 
+    {
+        getDefaultCamera()->setPositionY(getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
+        hudLayer->setPositionY(hudLayer->getPositionY() - CAMERA_STEP * delta);
+    }
+    else if (hudLayer->GetCursorY() >= windowSize.height - CAMERA_PAN_OFFSET) // UP CAMERA PAN 
+    {
+        getDefaultCamera()->setPositionY(getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
         hudLayer->setPositionY(hudLayer->getPositionY() + CAMERA_STEP * delta);
     }
     if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
@@ -136,17 +151,25 @@ void MainGame::InitCamera()
     Vec2 spawnPos = gameLayer->GetSpawnPos();
     Size spawnSize = gameLayer->GetSpawnSize();
 
-    int distX = (exitPos.x + exitSize.width) - (spawnPos.x + spawnSize.width);
-    int distY = (spawnPos.y + spawnSize.height) - (exitPos.y + exitSize.height);
-    int ratio;
-    if (distX > distY) ratio = distX;
-    else ratio = distY;
+    float distX = (exitPos.x + exitSize.width / 2) - (spawnPos.x + spawnSize.width / 2);
+    float distY = (spawnPos.y + spawnSize.height / 2) - (exitPos.y + exitSize.height / 2);
+    float ratio;
+    float scaleSide;
+    if (distX > distY)
+    {
+        ratio = distX;
+        scaleSide = s.width;
+    }
+    else {
+        ratio = distY;
+        scaleSide = s.height;
+    }
     ratio *= 2.0f;
 
     defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
-    defaultCamera->setPosition(0, 0);
-    defaultCamera->setScale(ratio / s.width);
-    hudLayer->setScale(ratio / s.width);
+    defaultCamera->setPosition((spawnPos.x - s.width/2), (spawnPos.y - s.height/2));
+    //defaultCamera->setScale(ratio / scaleSide);
+    //hudLayer->setScale(ratio / scaleSide);
 }
 
 bool MainGame::onContactEnter(PhysicsContact& contact)
@@ -160,14 +183,10 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         if (shapeA->getName() == "lemming" && shapeB->getName() == "exit door") {
             shapeA->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
-            if (GameManager::IsEndOfLevel())
-                Director::getInstance()->replaceScene(EndLevelScene::createScene());
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "exit door") {
             shapeB->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
-            if (GameManager::IsEndOfLevel())
-                Director::getInstance()->replaceScene(EndLevelScene::createScene());
         }
 
 
@@ -179,12 +198,28 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             hudLayer->setCursorSprite("sprites/cursor/0001.png");
         }
 
+        //DEATH COLLISION
+        if (shapeB->getName() == "lemming" && shapeA->getName() == "deathCollider") {
+            shapeB->getPhysicsBody()->setContactTestBitmask(0);
+            GameManager::IncreaseLemmingDead();
+            cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
+                shapeB->removeFromParentAndCleanup(true);
+                });
+            cocos2d::DelayTime* delay = cocos2d::DelayTime::create(1);
+            this->runAction(Sequence::create(delay,A, NULL));
+        }
+
         // GROUND COLLISION
         if (shapeA->getName() == "lemming" && shapeB->getName() == "ground") {
             ((Lemmings*)shapeA)->SetGround(shapeB,true);
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "ground") {
             ((Lemmings*)shapeB)->SetGround(shapeA,true);
+        }
+        else if (shapeB->getTag() == 5 && shapeA->getName() == "cursor") {
+            GameManager::ChangeSelectedAction(((LemmingAction*)shapeA)->GetAction());
+            hudLayer->UpdateSelectedActionBorder(((LemmingAction*)shapeA)->GetIndex());
+            CCLOG("Selected action n°%d", ((LemmingAction*)shapeA)->GetAction());
         }
     }
 

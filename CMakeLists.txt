@@ -57,17 +57,41 @@ endif()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
-     Classes/MainGame.cpp
+     Classes/GameManager.cpp
      Classes/Lemmings.cpp
+     Classes/LemmingAction.cpp
+     Classes/LevelRegistry.cpp
+     Classes/Level.cpp
      Classes/MapLoader.cpp
      Classes/PhysicsShapeCache.cpp
+
+     Classes/Scenes/EndLevelScene.cpp
+     Classes/Scenes/MainGame.cpp
+     Classes/Scenes/PauseScene.cpp
+     Classes/Scenes/TitleScene.cpp
+
+     Classes/Layers/GameLayer.cpp
+     Classes/Layers/HUDLayer.cpp
      )
 list(APPEND GAME_HEADER
+     Classes/Definitions.h
      Classes/AppDelegate.h
-     Classes/MainGame.h
+     Classes/GameManager.h
+
+     Classes/Level.h
+     Classes/LevelRegistry.h
      Classes/Lemmings.h
+     Classes/LemmingAction.h
      Classes/MapLoader.h
      Classes/PhysicsShapeCache.h
+
+     Classes/Scenes/EndLevelScene.h
+     Classes/Scenes/MainGame.h
+     Classes/Scenes/PauseScene.h
+     Classes/Scenes/TitleScene.h
+
+     Classes/Layers/GameLayer.h
+     Classes/Layers/HUDLayer.h
      )
 
 if(ANDROID)

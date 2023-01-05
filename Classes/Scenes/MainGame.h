@@ -33,8 +33,6 @@ public:
     CREATE_FUNC(MainGame);
     void update(float delta) override;
 
-    //Check if level end
-    void checkEndLevel();
 
     void timer(float dt);
 
@@ -44,7 +42,7 @@ private:
 
     std::vector<cocos2d::EventKeyboard::KeyCode> keys;
 
-    float cursorX, cursorY;
+    Size windowSize;
 
     SpriteFrameCache* frameCache;
     PhysicsShapeCache* physicCache;

@@ -28,7 +28,7 @@ Lemmings::Lemmings()
 
 
 	//create Physic body and setup basics parameters
-	box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0, 0, 0));
+	box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0, 1, 0));
 	box->setGravityEnable(true);
 	box->setGroup(-1);
 	box->setContactTestBitmask(0xEEEEEEEE);
