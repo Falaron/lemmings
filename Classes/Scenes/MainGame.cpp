@@ -214,7 +214,7 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             {
                 hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
             }
-        }
+        
 
         //DEATH COLLISION
         if (shapeB->getName() == "lemming" && shapeA->getName() == "deathCollider") {
@@ -233,8 +233,7 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             GameManager::ChangeSelectedAction(((LemmingAction*)shapeA)->GetAction());
             hudLayer->UpdateSelectedActionBorder(((LemmingAction*)shapeA)->GetIndex());
         }
-    }
-
+    
     return true;
 }
 
