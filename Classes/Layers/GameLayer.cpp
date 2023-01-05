@@ -36,7 +36,7 @@ void GameLayer::update(float delta) {
     for (auto lemming : lemmingsList)
     {
         lemming->Update();
-        if (!lemming->isInMap()) {
+        if (!lemming->isInMap() || lemming->GetState() == DEAD) {
             lemmingsList.erase(std::remove(lemmingsList.begin(), lemmingsList.end(), lemming), lemmingsList.end());
             lemming->removeFromParentAndCleanup(true);
             delete lemming;

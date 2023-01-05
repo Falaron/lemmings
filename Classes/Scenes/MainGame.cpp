@@ -41,7 +41,7 @@ bool MainGame::init()
 {
     if (!Scene::initWithPhysics()) return false;
 
-    GameManager::SetLemmingSpawn(10);
+    GameManager::SetLemmingSpawn(1);
 
     windowSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
