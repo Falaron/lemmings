@@ -24,10 +24,10 @@ USING_NS_CC;
 
 Scene* MainGame::createScene()
 {
-    GameManager::SetStartLevel(2);
+    GameManager::SetStartLevel(1);
 
     auto scene = MainGame::create();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
 
     HUDLayer* hud = HUDLayer::create();
@@ -136,7 +136,7 @@ void MainGame::onEnterTransitionDidFinish()
 
     this->hudLayer = (HUDLayer*)this->getChildByName(HUD_LAYER_NAME);
     this->gameLayer = (GameLayer*)this->getChildByName(GAME_LAYER_NAME);
-
+    gameLayer->setScale(1.5);
     InitCamera();
 }
 
@@ -167,9 +167,7 @@ void MainGame::InitCamera()
 
     defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
     defaultCamera->setPosition((spawnPos.x - s.width/2), (spawnPos.y - s.height/2));
-    //defaultCamera->setScale(ratio / scaleSide);
-    hudLayer->setPosition((spawnPos.x - s.width / 2), (spawnPos.y - s.height / 2));
-    //hudLayer->setScale(ratio / scaleSide);
+    hudLayer->setPosition((spawnPos.x - s.width/2), (spawnPos.y - s.height/2));
 }
 
 bool MainGame::onContactEnter(PhysicsContact& contact)
