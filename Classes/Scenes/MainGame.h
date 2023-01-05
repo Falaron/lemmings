@@ -44,6 +44,8 @@ private:
     SpriteFrameCache* frameCache;
     PhysicsShapeCache* physicCache;
     EventListenerPhysicsContact* contactListener;
+    EventListenerMouse* mouseListener;
+    bool mouseDown;
 
     GameLayer* gameLayer;
     HUDLayer* hudLayer;

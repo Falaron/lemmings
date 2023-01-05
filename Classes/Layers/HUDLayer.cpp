@@ -3,7 +3,7 @@
 #include "Scenes/EndLevelScene.h"
 
 std::vector<std::pair<LemmingActionName, int>> GameManager::_actions;
-const std::string lemmingActionNames[] = { "build", "", "dig", "explode", "jump", "", "parachute", "stop" };
+const std::string lemmingActionNames[] = {"dig","dig-front", "explode", "jump","", "parachute",""};
 
 const float BORDER_WIDTH = 0.5f;
 const float ACTION_SPRITE_SCALE_FACTOR = 1.25f;

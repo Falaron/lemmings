@@ -45,6 +45,8 @@ public:
     static int getMinutes() { return int(_minutes); };
     static int getSeconds() { return int(_seconds); };
 
+    static LemmingActionName getSelectedAction() { return selectedAction; };
+
 private:
 
     static int currentLevel;

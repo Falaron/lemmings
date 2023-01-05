@@ -28,7 +28,7 @@ void Lemmings::Initialize()
 
 
 	//create Physic body and setup basics parameters
-	auto box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0, 1, 0));
+	auto box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0, 0, 0));
 	box->setGravityEnable(true);
 	box->setGroup(-1);
 	box->setContactTestBitmask(0xEEEEEEEE);
@@ -41,6 +41,7 @@ void Lemmings::Initialize()
 
 void Lemmings::Update()
 {
+	this->setVerticalDirection();
 	const auto physicsBody = this->getPhysicsBody();
 	const auto velocity = physicsBody->getVelocity();
 
@@ -79,7 +80,6 @@ void Lemmings::Update()
 
 		this->UpdateAnimation();
 	}
-	this->setVerticalDirection();
 }
 
 void Lemmings::ChangeDirection()
@@ -214,7 +214,8 @@ void Lemmings::Jump()
 	// check only if the state change
 	if (this->_state != this->_currentAnimation)
 	{
-		physicsBody->setVelocity(Vec2(30.0f , 70.0f));
+		if (_horizontalDirection == RIGHT) physicsBody->setVelocity(Vec2(30.0f , 70.0f));
+		else physicsBody->setVelocity(Vec2(30.0f, -70.0f));
 	}
 	else {
 		if ((int)velocity.y == 0 && this->_verticalDirection == DOWN)
@@ -272,10 +273,8 @@ void Lemmings::Digging()
 		
 		auto destroyBlock = CallFunc::create([velocity, lemmingsPos]()
 			{
-				if (velocity.y == 0) {
-					Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
-					MapLoader::DeleteTile(Vec2(position.x,position.y-1));
-				}
+				Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
+				MapLoader::DeleteTile(Vec2(position.x,position.y-1));
 			}
 		);
 
@@ -301,11 +300,9 @@ void Lemmings::HorizontalDigging()
 
 		auto destroyBlock = CallFunc::create([this,velocity, lemmingsPos]()
 			{
-				if (velocity.y == 0) {
-					Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
-					if (_horizontalDirection == RIGHT) MapLoader::DeleteTile(Vec2(position.x + 1, position.y));
-					else MapLoader::DeleteTile(Vec2(position.x - 1, position.y));
-				}
+				Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
+				if (_horizontalDirection == RIGHT) MapLoader::DeleteTile(Vec2(position.x + 1, position.y));
+				else MapLoader::DeleteTile(Vec2(position.x - 1, position.y));
 			}
 		);
 
@@ -319,6 +316,8 @@ void Lemmings::HorizontalDigging()
 
 void Lemmings::Bombing()
 {
+	this->getPhysicsBody()->setVelocity(Vec2(0,0));
+
 	if (this->_state != this->_currentAnimation)
 	{
 		auto velocity = this->getPhysicsBody()->getVelocity();

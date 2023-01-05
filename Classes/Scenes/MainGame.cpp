@@ -24,7 +24,7 @@ Scene* MainGame::createScene()
     GameManager::SetStartLevel(1);
 
     auto scene = MainGame::create();
-    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
 
     HUDLayer* hud = HUDLayer::create();
@@ -43,6 +43,8 @@ bool MainGame::init()
 {
     if (!Scene::initWithPhysics()) return false;
 
+    mouseDown = false;
+
     windowSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -57,6 +59,19 @@ bool MainGame::init()
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener1, this);
 
     this->scheduleUpdate();
+
+    //Create a mouse listener
+    mouseListener = EventListenerMouse::create();
+
+    mouseListener->onMouseDown = [=](EventMouse* event) {
+        mouseDown = true;
+    };
+
+    mouseListener->onMouseUp = [=](EventMouse* event) {
+        mouseDown = false;
+    };
+
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(mouseListener, this);
 
     return true;
 }
@@ -132,13 +147,58 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             hudLayer->updateLemmingsScore();
         }
 
-
         // CURSOR COLLISION
         if (shapeA->getName() == "lemming" && shapeB->getName() == "cursor") {
             hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
+            if (mouseDown) {
+                state lemmingState = ((Lemmings*)shapeA)->GetState();
+                if (lemmingState == MOVING) {
+                    LemmingActionName action = GameManager::getSelectedAction();
+                    if (action == DIG) {
+                        ((Lemmings*)shapeA)->SetState(DIGGING);
+                    }
+                    else if (action == HORIZONTALDIG) {
+                        ((Lemmings*)shapeA)->SetState(HORIZONTALDIGGING);
+                    }
+                    else if (action == EXPLODE) {
+                        ((Lemmings*)shapeA)->SetState(BOMBING);
+                    }
+                    else if (action == JUMP) {
+                        ((Lemmings*)shapeA)->SetState(JUMPING);
+                    }
+                    else if (action == PARACHUTE) {
+                        ((Lemmings*)shapeA)->SetState(PARACHUTING);
+                    }
+                }
+
+            }
+            
+
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
+            if (mouseDown) {
+                state lemmingState = ((Lemmings*)shapeB)->GetState();
+                if (lemmingState == MOVING) {
+                    LemmingActionName action = GameManager::getSelectedAction();
+                    if (action == DIG) {
+                        ((Lemmings*)shapeB)->SetState(DIGGING);
+                    }
+                    else if (action == HORIZONTALDIG) {
+                        ((Lemmings*)shapeB)->SetState(HORIZONTALDIGGING);
+                    }
+                    else if (action == EXPLODE) {
+                        ((Lemmings*)shapeB)->SetState(BOMBING);
+                    }
+                    else if (action == JUMP) {
+                        ((Lemmings*)shapeB)->SetState(JUMPING);
+                    }
+                    else if (action == PARACHUTE) {
+                        ((Lemmings*)shapeB)->SetState(PARACHUTING);
+                    }
+                }
+
+            }
         }
 
         //DEATH COLLISION

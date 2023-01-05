@@ -56,6 +56,7 @@ public:
 	void Bombing();
 
 	state GetState() { return _state; };
+	void SetState(state action) { _state = action; };
 
 private:
 	cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);

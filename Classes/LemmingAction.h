@@ -3,11 +3,11 @@
 #include "cocos2d.h"
 
 enum LemmingActionName {
-	DIG = 2,
-	EXPLODE = 3,
-	JUMP = 4,
-	PARACHUTE = 6,
-	STOP = 7
+	DIG = 0,
+	EXPLODE = 2,
+	JUMP = 3,
+	PARACHUTE = 5,
+	HORIZONTALDIG = 1
 };
 
 class LemmingAction : public::cocos2d::Sprite

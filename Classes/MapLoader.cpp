@@ -139,15 +139,19 @@ cocos2d::Vec2* MapLoader::NormalizePosition(cocos2d::Vec2 position)
 
 void MapLoader::DeleteTile(cocos2d::Vec2 deletepos)
 {
-    for (auto block : _blockList) {
-        auto position = NormalizePosition(block->getPosition());
-        if (*position == deletepos) {
-            _blockList.erase(std::remove(_blockList.begin(), _blockList.end(), block), _blockList.end());
-            block->removeFromParentAndCleanup(true);
-        }
-    }
-    auto layer = MapLoader::GetLayer("Foreground");
+    Size size = _map->getMapSize();
+    if (deletepos.x > 0 && deletepos.x < size.width && deletepos.y > 0 && deletepos.y < size.height) {
 
-    deletepos.y = (layer->getLayerSize().height - 1) - deletepos.y;
-    layer->removeTileAt(deletepos);
+        for (auto block : _blockList) {
+            auto position = NormalizePosition(block->getPosition());
+            if (*position == deletepos) {
+                _blockList.erase(std::remove(_blockList.begin(), _blockList.end(), block), _blockList.end());
+                block->removeFromParentAndCleanup(true);
+            }
+        }
+        auto layer = MapLoader::GetLayer("Foreground");
+
+        deletepos.y = (layer->getLayerSize().height - 1) - deletepos.y;
+        layer->removeTileAt(deletepos);
+    }
 }
