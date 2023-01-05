@@ -12,7 +12,7 @@ int GameManager::numberLemmingSpawn = 0;
 int GameManager::numberLemmingExit = 0;
 int GameManager::numberLemmingDead = 0;
 int GameManager::numberLemmingVictory = 5;
-float GameManager::minutes = 3.f;
+float GameManager::minutes = 4.f;
 float GameManager::seconds = 0.f;
 
 LemmingActionName GameManager::selectedAction;
@@ -105,7 +105,7 @@ void MainGame::update(float delta)
         hudLayer->setPositionX(hudLayer->getPositionX() + CAMERA_STEP * delta);
     }
 
-    if (hudLayer->GetCursorY() <= CAMERA_PAN_OFFSET) // DOWN CAMERA PAN 
+    if (hudLayer->GetCursorY() <= CAMERA_PAN_OFFSET - 40) // DOWN CAMERA PAN 
     {
         getDefaultCamera()->setPositionY(getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
         hudLayer->setPositionY(hudLayer->getPositionY() - CAMERA_STEP * delta);
@@ -169,6 +169,7 @@ void MainGame::InitCamera()
     defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
     defaultCamera->setPosition((spawnPos.x - s.width/2), (spawnPos.y - s.height/2));
     //defaultCamera->setScale(ratio / scaleSide);
+    hudLayer->setPosition((spawnPos.x - s.width / 2), (spawnPos.y - s.height / 2));
     //hudLayer->setScale(ratio / scaleSide);
 }
 

@@ -7,20 +7,20 @@ const float ACTION_SPRITE_SCALE_FACTOR = 1.25f;
 
 USING_NS_CC;
 
-void LemmingAction::Initialize(int index, LemmingActionName action)
+void LemmingAction::Initialize(int index, LemmingActionName action, int actionCount)
 {
 	_action = action;
 	_actionIndex = index;
+	_actionCount = actionCount;
 
-	setTag(5);
 	setScale(ACTION_SPRITE_SCALE_FACTOR);
 	setPositionX(40 + (index * getContentSize().width * getScale()));
 	setAnchorPoint(Vec2(0, 0));
 
-	auto box = PhysicsBody::createBox(getContentSize(), PhysicsMaterial(0, 0, 0));
-	box->setDynamic(false);
-	box->setGravityEnable(false);
-	box->setRotationEnable(false);
-	box->setCollisionBitmask(10);
-	addComponent(box);
+	_actionCountText = Label::createWithSystemFont(std::to_string(actionCount), "fonts/arial.ttf", 15);
+	_actionCountText->setAnchorPoint(Vec2(0.5, 0.5));
+	_actionCountText->setPosition(5, 30);
+	addChild(_actionCountText);
+
+	//TODO: move counter small
 }
