@@ -18,7 +18,7 @@ public:
 
     void InitializeCursorMovementTrigger();
     void CreateActionsHUD();
-    void setCursorSprite(const char * sprite);
+    void SwitchCursorSprite(const char * sprite);
     void UpdateSelectedActionBorder(int selectedAction);
     void UpdateActionCount();
     

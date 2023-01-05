@@ -48,31 +48,6 @@ bool MainGame::init()
 
     MapLoader::LoadLevelInfo();
 
-    auto keyboardListener = EventListenerKeyboard::create();
-    keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
-        if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE) {
-            auto pauseScene = PauseMenu::createScene();
-            Director::getInstance()->pushScene(pauseScene);
-        }
-        
-        switch (keyCode)
-        {
-        case cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW:
-        case cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
-        case cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW:
-        case cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW:
-            keys.push_back(keyCode);
-            break;
-        }
-    };
-
-    keyboardListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event) {
-        // remove the key.
-        keys.erase(std::remove(keys.begin(), keys.end(), keyCode), keys.end());
-    };
-
-    _eventDispatcher->addEventListenerWithSceneGraphPriority(keyboardListener, this);
-
     contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(MainGame::onContactEnter, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -90,18 +65,18 @@ void MainGame::update(float delta)
 {
     Node::update(delta);
 
-    if (hudLayer->GetCursorX() <= CAMERA_PAN_OFFSET) // LEFT CAMERA PAN 
+    if (hudLayer->GetCursorX() <= CAMERA_PAN_OFFSET + 40 && hudLayer->GetCursorY() >= 50) // LEFT CAMERA PAN 
     {
         getDefaultCamera()->setPositionX(getDefaultCamera()->getPositionX() - CAMERA_STEP * delta);
         hudLayer->setPositionX(hudLayer->getPositionX() - CAMERA_STEP * delta);
     }
-    else if (hudLayer->GetCursorX() >= windowSize.width - CAMERA_PAN_OFFSET) // RIGHT CAMERA PAN 
+    else if (hudLayer->GetCursorX() >= windowSize.width - CAMERA_PAN_OFFSET + 20 && hudLayer->GetCursorY() >= 50) // RIGHT CAMERA PAN 
     {
         getDefaultCamera()->setPositionX(getDefaultCamera()->getPositionX() + CAMERA_STEP * delta);
         hudLayer->setPositionX(hudLayer->getPositionX() + CAMERA_STEP * delta);
     }
 
-    if (hudLayer->GetCursorY() <= CAMERA_PAN_OFFSET - 40) // DOWN CAMERA PAN 
+    if (hudLayer->GetCursorY() <= CAMERA_PAN_OFFSET * 2 && hudLayer->GetCursorY() >= 50 ) // DOWN CAMERA PAN 
     {
         getDefaultCamera()->setPositionY(getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
         hudLayer->setPositionY(hudLayer->getPositionY() - CAMERA_STEP * delta);
@@ -111,13 +86,6 @@ void MainGame::update(float delta)
         getDefaultCamera()->setPositionY(getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
         hudLayer->setPositionY(hudLayer->getPositionY() + CAMERA_STEP * delta);
     }
-}
-
-bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
-    // Check if the key is pressed
-    if (std::find(keys.begin(), keys.end(), code) != keys.end())
-        return true;
-    return false;
 }
 
 void MainGame::onEnterTransitionDidFinish()
@@ -139,21 +107,6 @@ void MainGame::InitCamera()
     Size exitSize = gameLayer->GetExitSize();
     Vec2 spawnPos = gameLayer->GetSpawnPos();
     Size spawnSize = gameLayer->GetSpawnSize();
-
-    float distX = (exitPos.x + exitSize.width / 2) - (spawnPos.x + spawnSize.width / 2);
-    float distY = (spawnPos.y + spawnSize.height / 2) - (exitPos.y + exitSize.height / 2);
-    float ratio;
-    float scaleSide;
-    if (distX > distY)
-    {
-        ratio = distX;
-        scaleSide = s.width;
-    }
-    else {
-        ratio = distY;
-        scaleSide = s.height;
-    }
-    ratio *= 2.0f;
 
     defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
     defaultCamera->setPosition((spawnPos.x - s.width/2), (spawnPos.y - s.height/2));
@@ -182,10 +135,10 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
 
         // CURSOR COLLISION
         if (shapeA->getName() == "lemming" && shapeB->getName() == "cursor") {
-            hudLayer->setCursorSprite("sprites/cursor/0001.png");
+            hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
-            hudLayer->setCursorSprite("sprites/cursor/0001.png");
+            hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
         }
 
         //DEATH COLLISION
@@ -219,10 +172,10 @@ bool MainGame::onContactExit(PhysicsContact& contact)
 
         // CURSOR COLLISION
         if (shapeA->getName() == "lemming" && shapeB->getName() == "cursor") {
-            hudLayer->setCursorSprite("sprites/cursor/0002.png");
+            hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
-            hudLayer->setCursorSprite("sprites/cursor/0002.png");
+            hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
         }
     }
 

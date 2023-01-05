@@ -21,7 +21,6 @@ public:
     static cocos2d::Scene* createScene();
 
     bool init() override;
-    bool isKeyPressed(cocos2d::EventKeyboard::KeyCode);
 
     void onEnterTransitionDidFinish() override;
     bool onContactEnter(PhysicsContact& contact);
@@ -39,8 +38,6 @@ public:
     std::vector<Lemmings*> lemmingsList;
 
 private:
-
-    std::vector<cocos2d::EventKeyboard::KeyCode> keys;
 
     Size windowSize;
 

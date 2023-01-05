@@ -145,7 +145,7 @@ void HUDLayer::CreateActionsHUD() {
     actionsContainer->setPosition(BORDER_WIDTH, BORDER_WIDTH);
 }
 
-void HUDLayer::setCursorSprite(const char * sprite) {
+void HUDLayer::SwitchCursorSprite(const char * sprite) {
     this->cursorSprite->setTexture(sprite);
 }
 
