@@ -169,6 +169,7 @@ void MainGame::InitCamera()
     defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
     defaultCamera->setPosition((spawnPos.x - s.width/2), (spawnPos.y - s.height/2));
     //defaultCamera->setScale(ratio / scaleSide);
+    hudLayer->setPosition((spawnPos.x - s.width / 2), (spawnPos.y - s.height / 2));
     //hudLayer->setScale(ratio / scaleSide);
 }
 
