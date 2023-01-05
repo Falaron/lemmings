@@ -59,6 +59,9 @@ list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/GameManager.cpp
      Classes/Lemmings.cpp
+     Classes/LemmingAction.cpp
+     Classes/LevelRegistry.cpp
+     Classes/Level.cpp
      Classes/MapLoader.cpp
      Classes/PhysicsShapeCache.cpp
 
@@ -74,7 +77,11 @@ list(APPEND GAME_HEADER
      Classes/Definitions.h
      Classes/AppDelegate.h
      Classes/GameManager.h
+
+     Classes/Level.h
+     Classes/LevelRegistry.h
      Classes/Lemmings.h
+     Classes/LemmingAction.h
      Classes/MapLoader.h
      Classes/PhysicsShapeCache.h
 
