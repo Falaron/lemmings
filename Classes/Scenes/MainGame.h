@@ -41,7 +41,7 @@ private:
 
     std::vector<cocos2d::EventKeyboard::KeyCode> keys;
 
-    float cursorX, cursorY;
+    Size windowSize;
 
     SpriteFrameCache* frameCache;
     PhysicsShapeCache* physicCache;

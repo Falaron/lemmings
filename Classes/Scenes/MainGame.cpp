@@ -3,6 +3,8 @@
 
 #define HUD_LAYER_NAME "HUDLayer"
 #define GAME_LAYER_NAME "GameLayer"
+
+#define CAMERA_PAN_OFFSET 50
 #define CAMERA_STEP 25
 #define CAMERA_MOVE_COOLDOWN 0.2
 
@@ -37,11 +39,11 @@ bool MainGame::init()
 
     GameManager::SetLemmingSpawn(10);
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
+    windowSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     //Load available actions from level
-    int actions[] = { DIG, PARACHUTE };
+    int actions[] = { DIG, EXPLODE, JUMP, PARACHUTE, STOP };
     for (int action : actions) {
         GameManager::AddAction((LemmingActionName)action);
     }
@@ -75,37 +77,40 @@ bool MainGame::init()
     contactListener->onContactBegin = CC_CALLBACK_1(MainGame::onContactEnter, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener, this);
 
-EventListenerPhysicsContact* contactListener1 = EventListenerPhysicsContact::create();
-contactListener1->onContactSeparate = CC_CALLBACK_1(MainGame::onContactExit, this);
-_eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener1, this);
+    EventListenerPhysicsContact* contactListener1 = EventListenerPhysicsContact::create();
+    contactListener1->onContactSeparate = CC_CALLBACK_1(MainGame::onContactExit, this);
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(contactListener1, this);
 
-this->scheduleUpdate();
+    this->scheduleUpdate();
 
-return true;
+    return true;
 }
 
 void MainGame::update(float delta)
 {
     Node::update(delta);
 
-    if (isKeyPressed(EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
+    if (hudLayer->GetCursorX() <= CAMERA_PAN_OFFSET) // LEFT CAMERA PAN 
     {
-        this->getDefaultCamera()->setPositionX(this->getDefaultCamera()->getPositionX() + CAMERA_STEP * delta);
-        hudLayer->setPositionX(hudLayer->getPositionX() + CAMERA_STEP * delta);
-    }
-    if (isKeyPressed(EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
-        this->getDefaultCamera()->setPositionX(this->getDefaultCamera()->getPositionX() - CAMERA_STEP * delta);
+        getDefaultCamera()->setPositionX(getDefaultCamera()->getPositionX() - CAMERA_STEP * delta);
         hudLayer->setPositionX(hudLayer->getPositionX() - CAMERA_STEP * delta);
     }
-    if (isKeyPressed(EventKeyboard::KeyCode::KEY_UP_ARROW)) {
-        this->getDefaultCamera()->setPositionY(this->getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
-        hudLayer->setPositionY(hudLayer->getPositionY() + CAMERA_STEP * delta);
-    }
-    if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
-        this->getDefaultCamera()->setPositionY(this->getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
-        hudLayer->setPositionY(hudLayer->getPositionY() - CAMERA_STEP * delta);
+    else if (hudLayer->GetCursorX() >= windowSize.width - CAMERA_PAN_OFFSET) // RIGHT CAMERA PAN 
+    {
+        getDefaultCamera()->setPositionX(getDefaultCamera()->getPositionX() + CAMERA_STEP * delta);
+        hudLayer->setPositionX(hudLayer->getPositionX() + CAMERA_STEP * delta);
     }
 
+    if (hudLayer->GetCursorY() <= CAMERA_PAN_OFFSET) // DOWN CAMERA PAN 
+    {
+        getDefaultCamera()->setPositionY(getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
+        hudLayer->setPositionY(hudLayer->getPositionY() - CAMERA_STEP * delta);
+    }
+    else if (hudLayer->GetCursorY() >= windowSize.height - CAMERA_PAN_OFFSET) // UP CAMERA PAN 
+    {
+        getDefaultCamera()->setPositionY(getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
+        hudLayer->setPositionY(hudLayer->getPositionY() + CAMERA_STEP * delta);
+    }
 }
 
 bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
