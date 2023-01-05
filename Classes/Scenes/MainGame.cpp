@@ -3,9 +3,6 @@
 #include "LevelRegistry.h"
 #include "MapLoader.h"
 
-#define HUD_LAYER_NAME "HUDLayer"
-#define GAME_LAYER_NAME "GameLayer"
-
 #define CAMERA_PAN_OFFSET 50
 #define CAMERA_STEP 25
 #define CAMERA_MOVE_COOLDOWN 0.2
@@ -27,7 +24,7 @@ Scene* MainGame::createScene()
     GameManager::SetStartLevel(1);
 
     auto scene = MainGame::create();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
 
     HUDLayer* hud = HUDLayer::create();
@@ -114,13 +111,6 @@ void MainGame::update(float delta)
         getDefaultCamera()->setPositionY(getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
         hudLayer->setPositionY(hudLayer->getPositionY() + CAMERA_STEP * delta);
     }
-    if (isKeyPressed(EventKeyboard::KeyCode::KEY_DOWN_ARROW)) {
-        this->getDefaultCamera()->setPositionY(this->getDefaultCamera()->getPositionY() - CAMERA_STEP * delta);
-        hudLayer->setPositionY(hudLayer->getPositionY() - CAMERA_STEP * delta);
-    }
-   
-    // HUD
-    hudLayer->updateLemmingsScore();
 }
 
 bool MainGame::isKeyPressed(EventKeyboard::KeyCode code) {
@@ -181,10 +171,12 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         if (shapeA->getName() == "lemming" && shapeB->getName() == "exit door") {
             shapeA->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
+            hudLayer->updateLemmingsScore();
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "exit door") {
             shapeB->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
+            hudLayer->updateLemmingsScore();
         }
 
 
@@ -200,6 +192,8 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         if (shapeB->getName() == "lemming" && shapeA->getName() == "deathCollider") {
             shapeB->getPhysicsBody()->setContactTestBitmask(0);
             GameManager::IncreaseLemmingDead();
+            hudLayer->updateLemmingsScore();
+
             cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
                 shapeB->removeFromParentAndCleanup(true);
                 });
@@ -210,7 +204,6 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
         if (shapeB->getTag() == 5 && shapeA->getName() == "cursor") {
             GameManager::ChangeSelectedAction(((LemmingAction*)shapeA)->GetAction());
             hudLayer->UpdateSelectedActionBorder(((LemmingAction*)shapeA)->GetIndex());
-            CCLOG("Selected action n°%d", ((LemmingAction*)shapeA)->GetAction());
         }
     }
 

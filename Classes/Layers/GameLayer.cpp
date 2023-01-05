@@ -1,8 +1,8 @@
 #include "GameLayer.h"
+#include "HUDLayer.h"
+
 #include "MapLoader.h"
 #include "GameManager.h"
-
-#define HUD_LAYER_TAG 999
 
 USING_NS_CC;
 
@@ -37,10 +37,7 @@ void GameLayer::update(float delta) {
     {
         lemming->Update();
         if (!lemming->isInMap() || lemming->GetState() == DEAD) {
-            lemmingsList.erase(std::remove(lemmingsList.begin(), lemmingsList.end(), lemming), lemmingsList.end());
-            lemming->removeFromParentAndCleanup(true);
-            delete lemming;
-            GameManager::IncreaseLemmingDead();
+            RemoveLemming(lemming);
         }
     }
 }
@@ -48,13 +45,22 @@ void GameLayer::update(float delta) {
 void GameLayer::SpawnLemmings() {
     for (int i = 0; i < GameManager::GetLemmingSpawn(); i++) {
         cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
-            auto lemming = new Lemmings();
+            Lemmings* lemming = Lemmings::create();
+            lemming->Initialize();
             this->addChild(lemming, 1);
             this->lemmingsList.push_back(lemming);
         });
         cocos2d::DelayTime* delay = cocos2d::DelayTime::create(i);
         runAction(cocos2d::Sequence::create(delay, A, NULL));
     }
+}
+
+void GameLayer::RemoveLemming(Lemmings* lemming)
+{
+    lemmingsList.erase(std::remove(lemmingsList.begin(), lemmingsList.end(), lemming), lemmingsList.end());
+    lemming->removeFromParentAndCleanup(true);
+    GameManager::IncreaseLemmingDead();
+    ((HUDLayer*)Director::getInstance()->getRunningScene()->getChildByName(HUD_LAYER_NAME))->updateLemmingsScore();
 }
 
 void GameLayer::InitSpawnAndExit()

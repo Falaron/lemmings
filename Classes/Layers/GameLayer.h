@@ -5,6 +5,8 @@
 
 #include "PhysicsShapeCache.h"
 
+#define GAME_LAYER_NAME "GameLayer"
+
 class GameLayer : public cocos2d::Layer
 {
 public:
@@ -15,6 +17,7 @@ public:
 
     void InitSpawnAndExit();
     void SpawnLemmings();
+    void RemoveLemming(Lemmings*);
 
     Vec2 GetExitPos() { return _exit->getPosition(); }
     Vec2 GetSpawnPos() { return _spawn->getPosition(); }
