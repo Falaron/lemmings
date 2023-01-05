@@ -2,7 +2,7 @@
 #include "GameManager.h"
 
 std::vector<LemmingActionName> GameManager::_actions;
-const std::string lemmingActionNames[] = { "build", "", "dig", "", "jump", "", "parachute", "stop" };
+const std::string lemmingActionNames[] = { "build", "", "dig", "explode", "jump", "", "parachute", "stop" };
 
 const float BORDER_WIDTH = 0.5f;
 const float ACTION_SPRITE_SCALE_FACTOR = 1.25f;
@@ -13,8 +13,6 @@ USING_NS_CC;
 bool HUDLayer::init()
 {
 	if (!Layer::init()) return false;
-
-    cursorOnAction = 0;
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -71,11 +69,11 @@ void HUDLayer::InitializeCursorMovementTrigger() {
     };
     mouseListener->onMouseDown = [=](EventMouse* event) {
         if (event->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT) {
-            if (cursorOnAction > -1)
+            if (isCursorOnAction)
             {
-                GameManager::ChangeSelectedAction(actions[cursorOnAction]->GetAction());
+                CCLOG("Action selected %d", cursorOnAction);
+                GameManager::ChangeSelectedAction(cursorOnAction);
             }
-            else CCLOG("Selection %d", cursorOnAction);
         }
     };
 
@@ -131,12 +129,14 @@ void HUDLayer::UpdateSelectedActionBorder(int selectedAction)
 void HUDLayer::update(float delta) {
     Node::update(delta);
 
+    isCursorOnAction = false;
+
     for (auto action : actions) {
-        if (cursorX >= action->getPosition().x && cursorX <= action->getPosition().x + ACTION_SPRITE_SIZE &&
-            cursorY >= action->getPosition().y && cursorY <= action->getPosition().y + ACTION_SPRITE_SIZE)
+        if (cursorX >= action->getPosition().x && cursorX <= action->getPosition().x + ACTION_SPRITE_SIZE * ACTION_SPRITE_SCALE_FACTOR &&
+            cursorY >= action->getPosition().y && cursorY <= action->getPosition().y + ACTION_SPRITE_SIZE * ACTION_SPRITE_SCALE_FACTOR)
         {
-            cursorOnAction = action->GetIndex();
+            isCursorOnAction = true;
+            cursorOnAction = action->GetAction();
         }
-        else cursorOnAction = -1;
     }
 }

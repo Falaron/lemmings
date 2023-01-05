@@ -18,6 +18,9 @@ public:
     void CreateActionsHUD();
     void setCursorSprite(const char * sprite);
     void UpdateSelectedActionBorder(int selectedAction);
+    
+    float GetCursorX() { return cursorX; };
+    float GetCursorY() { return cursorY; };
 
 private:
 
@@ -30,5 +33,6 @@ private:
     float cursorX, cursorY;
     float timer;
 
-    int cursorOnAction;
+    LemmingActionName cursorOnAction;
+    bool isCursorOnAction = false;
 };
