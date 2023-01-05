@@ -151,17 +151,25 @@ void MainGame::InitCamera()
     Vec2 spawnPos = gameLayer->GetSpawnPos();
     Size spawnSize = gameLayer->GetSpawnSize();
 
-    int distX = (exitPos.x + exitSize.width) - (spawnPos.x + spawnSize.width);
-    int distY = (spawnPos.y + spawnSize.height) - (exitPos.y + exitSize.height);
-    int ratio;
-    if (distX > distY) ratio = distX;
-    else ratio = distY;
+    float distX = (exitPos.x + exitSize.width / 2) - (spawnPos.x + spawnSize.width / 2);
+    float distY = (spawnPos.y + spawnSize.height / 2) - (exitPos.y + exitSize.height / 2);
+    float ratio;
+    float scaleSide;
+    if (distX > distY)
+    {
+        ratio = distX;
+        scaleSide = s.width;
+    }
+    else {
+        ratio = distY;
+        scaleSide = s.height;
+    }
     ratio *= 2.0f;
 
     defaultCamera->initOrthographic(s.width, s.height, 1, 2000);
-    defaultCamera->setPosition(0, 0);
-    defaultCamera->setScale(ratio / s.width);
-    hudLayer->setScale(ratio / s.width);
+    defaultCamera->setPosition((spawnPos.x - s.width/2), (spawnPos.y - s.height/2));
+    //defaultCamera->setScale(ratio / scaleSide);
+    //hudLayer->setScale(ratio / scaleSide);
 }
 
 bool MainGame::onContactEnter(PhysicsContact& contact)
