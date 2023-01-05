@@ -1,4 +1,5 @@
 # include "EndLevelScene.h"
+# include "Layers/GameLayer.h"
 
 USING_NS_CC;
 
@@ -46,36 +47,54 @@ bool EndLevelScene::init()
 
     // Adding LEVEL REVIEW title
     auto endLevelTitle = Label::createWithSystemFont("LEVEL REVIEW", "fonts/arial.ttf", 40);
-    endLevelTitle->setPosition(Vec2(230, 250));
+    endLevelTitle->setPosition(Vec2(240, 290));
     this->addChild(endLevelTitle);
 
     // Adding Score
     auto lemmingsEscapedText = Label::createWithSystemFont("Lemmings escaped : " + to_string(GameManager::GetLemmingExit()) + " / " + to_string(GameManager::GetLemmingSpawn()), "fonts/arial.ttf", 20);
-    lemmingsEscapedText->setPosition(Vec2(230, 200));
+    lemmingsEscapedText->setAnchorPoint(Vec2(0.f, 0.f));
+    lemmingsEscapedText->setPosition(Vec2(80, 220));
     this->addChild(lemmingsEscapedText);
 
     auto lemmingsDeadText = Label::createWithSystemFont("Lemmings dead : " + to_string(GameManager::GetLemmingDead()) + " / " + to_string(GameManager::GetLemmingSpawn()), "fonts/arial.ttf", 20);
-    lemmingsDeadText->setPosition(Vec2(230, 170));
+    lemmingsDeadText->setAnchorPoint(Vec2(0.f, 0.f));
+    lemmingsDeadText->setPosition(Vec2(80, 190));
     this->addChild(lemmingsDeadText);
+
+
+    auto timerText = Label::createWithSystemFont("Time remaining : " + std::to_string(GameManager::getMinutes()) + " - " + std::to_string(GameManager::getSeconds()), "fonts / arial.ttf", 20);
+    timerText->setAnchorPoint(Vec2(0.f, 0.f));
+    timerText->setPosition(Vec2(80, 160));
+    this->addChild(timerText);
 
     if (GameManager::GetLemmingExit == 0)
         winRate = 0;
     else {
         winRate = (float(GameManager::GetLemmingExit()) / GameManager::GetLemmingSpawn()) * 100;
     }
-        
-    auto winRateText = Label::createWithSystemFont("Win rate : " + to_string(int(winRate)) + "%", "fonts/arial.ttf", 20);
-    winRateText->setPosition(Vec2(230, 140));
+
+    auto winRateText = Label::createWithSystemFont("Win rate : " + to_string(int(winRate)) + "%   of   " + to_string(int(float(GameManager::GetLemmingVictory()) / GameManager::GetLemmingSpawn() * 100)) + "%", "fonts/arial.ttf", 20);
+    winRateText->setAnchorPoint(Vec2(0.f, 0.f));
+    winRateText->setPosition(Vec2(80, 130));
     this->addChild(winRateText);
+
+    auto victoryConditionText = Label::createWithSystemFont("FAILED", "fonts / arial.ttf", 40);
+    victoryConditionText->setAnchorPoint(Vec2(0.f, 0.f));
+    victoryConditionText->setPosition(Vec2(80, 80));
+    this->addChild(victoryConditionText);
+    if (winRate >= int(float(GameManager::GetLemmingVictory()) / GameManager::GetLemmingSpawn() * 100)) {
+        victoryConditionText->setString("VICTORY");
+    }
 
 
     // Quit Menu
     auto menuQuit = MenuItemFont::create("quit", CC_CALLBACK_1(EndLevelScene::Quit, this));
     auto moveTo = MoveBy::create(0, Vec2(0, -50));
+    menuQuit->setFontSizeObj(20);
     menuQuit->runAction(moveTo);
 
     auto* menu = Menu::create(menuQuit, NULL);
-    menu->setPosition(Point(230, 150));
+    menu->setPosition(Point(230, 90));
     this->addChild(menu);
 
 

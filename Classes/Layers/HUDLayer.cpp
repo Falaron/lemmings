@@ -1,5 +1,6 @@
 #include "HUDLayer.h"
 #include "GameManager.h"
+#include "Scenes/EndLevelScene.h"
 
 std::vector<LemmingActionName> GameManager::_actions;
 const std::string lemmingActionNames[] = { "build", "", "dig", "explode", "jump", "", "parachute", "stop" };
@@ -37,15 +38,20 @@ bool HUDLayer::init()
     lemmingsInGameText->setPosition(Vec2(200, 35));
     this->addChild(lemmingsInGameText);
 
-    lemmingsEscapedText = Label::createWithSystemFont("IN " + std::to_string(GameManager::GetLemmingExit()), "fonts/arial.ttf", 20);
+    lemmingsEscapedText = Label::createWithSystemFont("IN " + std::to_string(int(float(GameManager::GetLemmingExit()) / GameManager::GetLemmingSpawn() * 100)) + "%", "fonts/arial.ttf", 20);
     lemmingsEscapedText->setPosition(Vec2(275, 35));
     this->addChild(lemmingsEscapedText);
 
     //Show timer
     this->schedule(CC_SCHEDULE_SELECTOR(HUDLayer::ticktock), 1.0f);
-    timer = Label::createWithSystemFont("TIME 0 - 0", "fonts/arial.ttf", 20);
+    timer = Label::createWithSystemFont("TIME " + std::to_string(GameManager::getMinutes()) + " - " + std::to_string(GameManager::getSeconds()), "fonts/arial.ttf", 20);
     timer->setPosition(Vec2(375, 35));
     this->addChild(timer);
+
+    
+    LemmingvictoryText = Label::createWithSystemFont("VICTORY " + std::to_string(int(float(GameManager::GetLemmingVictory()) / GameManager::GetLemmingSpawn() * 100)) + "%", "fonts/arial.ttf", 20);
+    LemmingvictoryText->setPosition(Vec2(360, 10));
+    this->addChild(LemmingvictoryText);
 
     //Cursor show
     this->cursorSprite = Sprite::create("sprites/cursor/0002.png");
@@ -157,15 +163,18 @@ void HUDLayer::update(float delta) {
 }
 
 void HUDLayer::ticktock(float dt) {
-    if (_seconds >= 60) {
-        _minutes++;
-        _seconds = 0;
+    if (GameManager::getSeconds() <= 0) {
+        GameManager::decreaseMinutes();
+        GameManager::reloadSeconds();
     }
-    else _seconds++;
-    timer->setString("TIME " + std::to_string(int(_minutes)) + " - " + std::to_string(int(_seconds)));
+    else GameManager::decreaseSeconds();
+    timer->setString("TIME " + std::to_string(GameManager::getMinutes()) + " - " + std::to_string(GameManager::getSeconds()));
+
+    if (GameManager::getMinutes() + GameManager::getSeconds() <= 0)
+        cocos2d::Director::getInstance()->replaceScene(EndLevelScene::createScene());
 }
 
 void HUDLayer::updateLemmingsScore() {
     lemmingsInGameText->setString("OUT " + std::to_string(GameManager::GetLemmingSpawn() - (GameManager::GetLemmingDead() + GameManager::GetLemmingExit())));
-    lemmingsEscapedText->setString("IN " + std::to_string(GameManager::GetLemmingExit()));
+    lemmingsEscapedText->setString("IN " + std::to_string(int(float(GameManager::GetLemmingExit()) / GameManager::GetLemmingSpawn() * 100)) + "%");
 }

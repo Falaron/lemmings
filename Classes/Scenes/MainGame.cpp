@@ -11,6 +11,10 @@
 int GameManager::numberLemmingSpawn = 0;
 int GameManager::numberLemmingExit = 0;
 int GameManager::numberLemmingDead = 0;
+int GameManager::numberLemmingVictory = 5;
+float GameManager::minutes = 3.f;
+float GameManager::seconds = 0.f;
+
 LemmingActionName GameManager::selectedAction;
 
 USING_NS_CC;
