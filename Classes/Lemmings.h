@@ -21,8 +21,9 @@ USING_NS_CC;
 class Lemmings : public cocos2d::Sprite
 {
 public:
-	/// <summary> Spawn point define by the map (refer to MapLoader.h) / Create the physicalBody / Animation manage by UpdateAnimation() </summary>
-	Lemmings();
+
+	void Initialize();
+	CREATE_FUNC(Lemmings);
 
 	/// <summary> main loop for each lemmings. Mange collisions, actions and movements. </summary>
 	void Update();

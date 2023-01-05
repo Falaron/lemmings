@@ -9,7 +9,7 @@
 #include <iostream>
 
 
-Lemmings::Lemmings()
+void Lemmings::Initialize()
 {
 	// setup private var
 	this->_thereIsGround = false;
