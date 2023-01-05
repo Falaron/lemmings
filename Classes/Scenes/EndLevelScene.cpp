@@ -1,5 +1,6 @@
 # include "EndLevelScene.h"
 # include "Layers/GameLayer.h"
+# include "LevelRegistry.h"
 
 USING_NS_CC;
 
@@ -93,10 +94,22 @@ bool EndLevelScene::init()
     menuQuit->setFontSizeObj(20);
     menuQuit->runAction(moveTo);
 
-    auto* menu = Menu::create(menuQuit, NULL);
+    auto menu = Menu::create(menuQuit, NULL);
     menu->setPosition(Point(230, 90));
     this->addChild(menu);
 
+    if (GameManager::GetCurrentLevel()+1 <= LevelRegistry::GetTotalLevels())
+    {
+        auto nextLevelButton = Button::create();
+        nextLevelButton->setTitleText("Next Level");
+        nextLevelButton->setPosition(Vec2(200, 90));
+        nextLevelButton->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
+            if (type == ui::Widget::TouchEventType::ENDED)
+                GameManager::IncreaseLevel();
+                Director::getInstance()->replaceScene(MainGame::createScene());
+            });
+        this->addChild(nextLevelButton);
+    }
 
     return true;
 }

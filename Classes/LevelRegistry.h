@@ -1,14 +1,16 @@
 #pragma once
 
 #include "Level.h"
+#include <iostream>
 
 class LevelRegistry {
 public:
 
-	static Level GetLevel(int levelNumber) { return levels[levelNumber-1]; };
+	static const Level GetLevel(int levelNumber) { return levels.at(levelNumber); };
+	static int GetTotalLevels() { return levels.size(); };
 
 private:
 
-	static const Level levels[];
+	static const std::vector<Level> levels;
 
 };

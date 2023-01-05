@@ -12,8 +12,8 @@ int GameManager::numberLemmingExit = 0;
 int GameManager::numberLemmingDead = 0;
 int GameManager::numberLemmingVictory = 5;
 int GameManager::currentLevel = 0;
-float GameManager::_minutes;
-float GameManager::_seconds;
+float GameManager::_minutes = 0;
+float GameManager::_seconds = 0;
 
 LemmingActionName GameManager::selectedAction;
 
@@ -21,7 +21,10 @@ USING_NS_CC;
 
 Scene* MainGame::createScene()
 {
-    GameManager::SetStartLevel(1);
+    if (GameManager::GetCurrentLevel() == 0)
+    {
+        GameManager::SetStartLevel(1);
+    }
 
     auto scene = MainGame::create();
     scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
@@ -175,6 +178,12 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             
 
         }
+            hudLayer->IncreaseLemmingInCursor();
+            if (hudLayer->GetLemmingsInCursor() == 1)
+            {
+                hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
+            }
+        }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
             if (mouseDown) {
@@ -198,6 +207,12 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
                     }
                 }
 
+            }
+        }
+            hudLayer->IncreaseLemmingInCursor();
+            if (hudLayer->GetLemmingsInCursor() == 1)
+            {
+                hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
             }
         }
 
@@ -232,10 +247,18 @@ bool MainGame::onContactExit(PhysicsContact& contact)
 
         // CURSOR COLLISION
         if (shapeA->getName() == "lemming" && shapeB->getName() == "cursor") {
-            hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
+            hudLayer->DecreaseLemmingInCursor();
+            if (hudLayer->GetLemmingsInCursor() == 0)
+            {
+                hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
+            }
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
-            hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
+            hudLayer->DecreaseLemmingInCursor();
+            if (hudLayer->GetLemmingsInCursor() == 0)
+            {
+                hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
+            }
         }
     }
 

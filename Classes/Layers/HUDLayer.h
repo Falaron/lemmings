@@ -25,6 +25,11 @@ public:
     float GetCursorX() { return cursorX; };
     float GetCursorY() { return cursorY; };
 
+    int GetLemmingsInCursor() { return lemmingsOnCursor; };
+    void IncreaseLemmingInCursor() { lemmingsOnCursor ++; };
+    void DecreaseLemmingInCursor() { lemmingsOnCursor --; };
+    float IsLemmingOnCursor() { return lemmingsOnCursor > 0 ? true : false; };
+
     void ticktock(float dt);
 
     void updateLemmingsScore();
@@ -38,6 +43,7 @@ private:
     std::vector<LemmingAction*> actions;
     LemmingAction* selectedAction;
     int cursorOnActionIndex;
+    int lemmingsOnCursor = 0;
     bool isCursorOnAction = false;
 
     cocos2d::Label* comboLabel1;
