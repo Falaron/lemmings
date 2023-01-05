@@ -75,7 +75,7 @@ bool MainMenu::init()
 
     button->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
         if (type == ui::Widget::TouchEventType::ENDED)
-            Director::getInstance()->replaceScene(MainGame::createScene());
+            Director::getInstance()->replaceScene(EndLevelScene::createScene());
     });
 
     this->addChild(button);
@@ -84,12 +84,10 @@ bool MainMenu::init()
     auto button2 = Button::create(MAIN_MENU_BUTTON_QUIT_NORMAL);
     button2->setScale(.5f);
     button2->setPosition(Vec2(220, 75));
-
     button2->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type){
         if(type == ui::Widget::TouchEventType::ENDED)
             Director::getInstance()->end();
         });
-
     this->addChild(button2);
 
     // Adding credits

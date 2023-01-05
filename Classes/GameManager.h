@@ -33,6 +33,7 @@ public:
     //Increase Exit and Dead lemmings by 1
     static void IncreaseLemmingExit();
     static void IncreaseLemmingDead();
+    static void IncreaseLevel() { currentLevel++; };
 
     //check if level is there is no lemmings left and lead to EndLevelScene
     static void checkEndLevel();

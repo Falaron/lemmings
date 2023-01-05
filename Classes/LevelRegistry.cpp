@@ -1,7 +1,7 @@
 #include "LevelRegistry.h"
 
 // LemmingsToSpawn, LemmingsToWin, Minutes, Seconds, AvailableActions
-const Level LevelRegistry::levels[] =
+const std::vector<Level> LevelRegistry::levels =
 {
 	Level(10, 7, 1, 30, 
 		{std::make_pair(PARACHUTE, 3), std::make_pair(EXPLODE, 10)}),
