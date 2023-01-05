@@ -20,6 +20,7 @@ void LemmingAction::Initialize(int index, LemmingActionName action, int actionCo
 	_actionCountText = Label::createWithSystemFont(std::to_string(actionCount), "fonts/arial.ttf", 9);
 	_actionCountText->setPositionX(16 * ACTION_SPRITE_SCALE_FACTOR);
 	_actionCountText->setPositionY(_actionCountText->getPositionX());
+	_actionCountText->setName("count");
 	addChild(_actionCountText);
 
 	//TODO: move counter small

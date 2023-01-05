@@ -19,13 +19,16 @@ public:
 
 	LemmingActionName GetAction() { return _action; };
 	int GetIndex() { return _actionIndex; };
+	int GetCount() { return _actionCount; };
+
+	void DecreaseCount() {  _actionCount--; };
 
 private:
 
+	LemmingActionName _action;
 	cocos2d::Label* _actionCountText;
 
 	int _actionIndex;
-	LemmingActionName _action;
 	int _actionCount;
 };
 

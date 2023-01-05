@@ -12,7 +12,7 @@ class GameManager
 {
 public:
 
-    static void AddAction(LemmingActionName action) { _actions.push_back(action); };
+    static void AddAction(std::pair<LemmingActionName, int> action) { _actions.push_back(action); };
     static void ChangeSelectedAction(LemmingActionName action) { selectedAction = action; };
 
     //Get Spawn, Exit & Dead lemmings
@@ -23,7 +23,7 @@ public:
     static Level GetCurrentLevelInfo() { return *currentLevelInfo; };
 
     static int GetCurrentLevel() { return currentLevel; };
-    static std::vector<LemmingActionName> GetLemmingActions() { return _actions; };
+    static std::vector<std::pair<LemmingActionName, int>> GetLemmingActions() { return _actions; };
 
     static void SetLemmingSpawn(int number){ numberLemmingSpawn = number;};
     static void SetLemmingVictory(int number) { numberLemmingVictory = number; };
@@ -58,7 +58,7 @@ private:
     static float _seconds, _minutes;
 
     static LemmingActionName selectedAction;
-    static std::vector<LemmingActionName> _actions;
+    static std::vector<std::pair<LemmingActionName, int>> _actions;
 };
 
 #endif // __GAMEMANAGER_H__

@@ -2,7 +2,7 @@
 #include "GameManager.h"
 #include "Scenes/EndLevelScene.h"
 
-std::vector<LemmingActionName> GameManager::_actions;
+std::vector<std::pair<LemmingActionName, int>> GameManager::_actions;
 const std::string lemmingActionNames[] = { "build", "", "dig", "explode", "jump", "", "parachute", "stop" };
 
 const float BORDER_WIDTH = 0.5f;
@@ -24,6 +24,7 @@ bool HUDLayer::init()
 
     setAnchorPoint(Vec2(0,0));
 
+    //Create background
     auto backgroundNode = DrawNode::create();
     Vec2 rectangle[4];
     rectangle[0] = Vec2(40, 50);
@@ -71,6 +72,9 @@ bool HUDLayer::init()
     CreateActionsHUD();
     InitializeCursorMovementTrigger();
 
+    selectedAction = actions[0];
+    UpdateSelectedActionBorder(0);
+
     this->scheduleUpdate();
 
     return true;
@@ -92,8 +96,11 @@ void HUDLayer::InitializeCursorMovementTrigger() {
         if (event->getMouseButton() == EventMouse::MouseButton::BUTTON_LEFT) {
             if (isCursorOnAction)
             {
-                CCLOG("Action selected %d", cursorOnAction);
-                GameManager::ChangeSelectedAction(cursorOnAction);
+                selectedAction = actions[cursorOnActionIndex];
+
+                CCLOG("Action selected %d with %d", selectedAction->GetAction(), selectedAction->GetCount());
+                GameManager::ChangeSelectedAction(selectedAction->GetAction());
+                UpdateSelectedActionBorder(cursorOnActionIndex);
             }
         }
     };
@@ -116,20 +123,20 @@ void HUDLayer::CreateActionsHUD() {
     rectangle[3] = Vec2(ACTION_SPRITE_SIZE * ACTION_SPRITE_SCALE_FACTOR, 0);
 
     selectedFrameBorderAction = DrawNode::create();
-    //selectedFrameBorderAction->setPosition(40, 0);
     selectedFrameBorderAction->drawPolygon(rectangle, 4, Color4F(0,0,0,0), BORDER_WIDTH, Color4F::RED);
     selectedFrameBorderAction->setAnchorPoint(Vec2(0, 0));
     selectedFrameBorderAction->setName("FrameBorder");
     actionsContainer->addChild(selectedFrameBorderAction, 2);
 
+    //Create UI sprite for each action
     for (int i = 0; i < GameManager::GetLemmingActions().size(); i++)
     {
-        LemmingActionName action = GameManager::GetLemmingActions()[i];
-        auto sprite = frameCache->getSpriteFrameByName(lemmingActionNames[action] + ".png");
+        std::pair<LemmingActionName, int> action = GameManager::GetLemmingActions()[i];
+        auto sprite = frameCache->getSpriteFrameByName(lemmingActionNames[action.first] + ".png");
         
         LemmingAction* lemmingActionSprite = LemmingAction::create();
         lemmingActionSprite->initWithSpriteFrame(sprite);
-        lemmingActionSprite->Initialize(i, action, 0);
+        lemmingActionSprite->Initialize(i, action.first, action.second);
         
         actions.push_back(lemmingActionSprite);
         actionsContainer->addChild(lemmingActionSprite);
@@ -142,9 +149,18 @@ void HUDLayer::setCursorSprite(const char * sprite) {
     this->cursorSprite->setTexture(sprite);
 }
 
-void HUDLayer::UpdateSelectedActionBorder(int selectedAction)
+void HUDLayer::UpdateSelectedActionBorder(int selectedActionIndex)
 {
-    selectedFrameBorderAction->setPosition(40 + BORDER_WIDTH + (ACTION_SPRITE_SIZE * ACTION_SPRITE_SCALE_FACTOR * selectedAction), 0);
+    selectedFrameBorderAction->setPositionX(40 + BORDER_WIDTH + (ACTION_SPRITE_SIZE * ACTION_SPRITE_SCALE_FACTOR * selectedActionIndex));
+}
+
+void HUDLayer::UpdateActionCount()
+{
+    if (selectedAction->GetCount() > 0)
+    {
+        selectedAction->DecreaseCount();
+        ((Label*)selectedAction->getChildByName("count"))->setString(std::to_string(selectedAction->GetCount()));
+    }
 }
 
 void HUDLayer::update(float delta) {
@@ -157,7 +173,7 @@ void HUDLayer::update(float delta) {
             cursorY >= action->getPosition().y && cursorY <= action->getPosition().y + ACTION_SPRITE_SIZE * ACTION_SPRITE_SCALE_FACTOR)
         {
             isCursorOnAction = true;
-            cursorOnAction = action->GetAction();
+            cursorOnActionIndex = action->GetIndex();
         }
     }
 }
