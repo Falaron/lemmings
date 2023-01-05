@@ -10,7 +10,7 @@ bool GameLayer::init()
 {
 	if (!Layer::init()) return false;
 
-    MapLoader::LoadMap("maps/map2.tmx", this);
+    MapLoader::LoadMap("maps/map1.tmx", this);
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -36,7 +36,7 @@ void GameLayer::update(float delta) {
     for (auto lemming : lemmingsList)
     {
         lemming->Update();
-        if (!lemming->isInMap()) {
+        if (!lemming->isInMap() || lemming->GetState() == DEAD) {
             lemmingsList.erase(std::remove(lemmingsList.begin(), lemmingsList.end(), lemming), lemmingsList.end());
             lemming->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingDead();

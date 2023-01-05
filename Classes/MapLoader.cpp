@@ -7,6 +7,7 @@ TMXTiledMap* MapLoader::_map = 0;
 Layer* MapLoader::_layer = 0;
 Vec2* MapLoader::_spawnPoint = 0;
 Vec2* MapLoader::_exitpoint = 0;
+std::vector<cocos2d::Node*> MapLoader::_blockList;
 
 void MapLoader::LoadMap(const char * mapName, Layer* currentLayer)
 {
@@ -53,6 +54,7 @@ void MapLoader::LoadMapCollisions()
                 collider->setName("ground");
                 collider->setPhysicsBody(box);
                 _layer->addChild(collider);
+                _blockList.push_back(collider);
             }
         }
         
@@ -78,7 +80,20 @@ cocos2d::Vec2* MapLoader::NormalizePosition(cocos2d::Vec2 position)
 
     auto test = new Vec2(posX, posY);
 
-    CCLOG("position :  %f : %f", test->x, test->y);
-
     return test;
+}
+
+void MapLoader::DeleteTile(cocos2d::Vec2 deletepos)
+{
+    for (auto block : _blockList) {
+        auto position = NormalizePosition(block->getPosition());
+        if (*position == deletepos) {
+            _blockList.erase(std::remove(_blockList.begin(), _blockList.end(), block), _blockList.end());
+            block->removeFromParentAndCleanup(true);
+        }
+    }
+    auto layer = MapLoader::GetLayer("Foreground");
+
+    deletepos.y = (layer->getLayerSize().height - 1) - deletepos.y;
+    layer->removeTileAt(deletepos);
 }

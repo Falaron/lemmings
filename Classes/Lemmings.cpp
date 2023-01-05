@@ -18,7 +18,7 @@ Lemmings::Lemmings()
 	this->_verticalDirection = UP;
 	this->_speed = DEFAULT_SPEED;
 	this->_currentAnimation = SPAWNING;
-	this->_state = SPAWNING;
+	this->_state = BOMBING;
 	this->setScale(1);
 
 	// create a temp sprite to setup the physic box ( in game animation is manage in UpdateAnimation() )
@@ -49,6 +49,10 @@ void Lemmings::Update()
 	else if (this->_state == PARACHUTING) { this->Parachute(); }
 
 	else if (this->_state == DIGGING) { this->Digging(); }
+
+	else if (this->_state == BOMBING) { this->Bombing(); }
+
+	else if (this->_state == DEAD) { }
 
 	else {
 
@@ -137,6 +141,14 @@ void Lemmings::UpdateAnimation()
 			this->setSpriteFrame(frames.front());
 			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 8))));
 			this->_currentAnimation = DIGGING;
+
+			break;
+
+		case BOMBING:
+			frames = GetAnimation("bombing-%04d.png", 14);
+			this->setSpriteFrame(frames.front());
+			this->runAction(Sequence::create(DelayTime::create(3), Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 14)), nullptr));
+			this->_currentAnimation = BOMBING;
 
 			break;
 
@@ -247,15 +259,11 @@ void Lemmings::Digging()
 		this->UpdateAnimation();
 		auto delay = DelayTime::create(1);
 		
-		auto destroyBlock = CallFunc::create([this]() 
+		auto destroyBlock = CallFunc::create([this,velocity]() 
 			{
-				if (this->_currentAnimation == MOVING) {
+				if (velocity.y == 0) {
 					Vec2 position = *MapLoader::NormalizePosition(_ground->getPosition());
-					auto layer = MapLoader::GetLayer("Foreground");
-
-					position.y = (layer->getLayerSize().height - 1) - position.y;
-					layer->removeTileAt(position);
-					_ground->removeFromParentAndCleanup(true);
+					MapLoader::DeleteTile(position);
 				}
 			}
 		);
@@ -272,4 +280,67 @@ void Lemmings::SetGround(Node* ground, bool thereIsGround)
 {
 	_ground = ground;
 	_thereIsGround = thereIsGround;
+}
+
+void Lemmings::Bombing()
+{
+	auto physicsBody = this->getPhysicsBody();
+	auto velocity = physicsBody->getVelocity();
+	int count = 3;
+	auto countText = Label::createWithSystemFont(std::to_string(count),"fonts/arial.ttf",5);
+	auto lemmingsPos = this->getPosition();
+	countText->setPosition(Vec2(lemmingsPos.x+4, lemmingsPos.y+10));
+	this->getParent()->addChild(countText,1);
+
+	if (this->_state != this->_currentAnimation)
+	{
+		this->UpdateAnimation();
+		auto delay = DelayTime::create(1);
+
+		auto destroyBlock = CallFunc::create([this, velocity,lemmingsPos, countText]()
+			{
+				if (velocity.y == 0) {
+					Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
+
+					MapLoader::DeleteTile(Vec2(position.x, position.y + 1));
+					MapLoader::DeleteTile(Vec2(position.x - 2, position.y + 1));
+					MapLoader::DeleteTile(Vec2(position.x - 1, position.y + 1));
+					MapLoader::DeleteTile(Vec2(position.x - 1, position.y + 2));
+					MapLoader::DeleteTile(Vec2(position.x, position.y + 2));
+					MapLoader::DeleteTile(Vec2(position.x, position.y + 3));
+					MapLoader::DeleteTile(Vec2(position.x + 1, position.y + 2));
+					MapLoader::DeleteTile(Vec2(position.x + 1, position.y + 1));
+					MapLoader::DeleteTile(Vec2(position.x + 2, position.y + 1));
+					countText->removeFromParentAndCleanup(true);
+
+				}
+			}
+		);
+
+		auto countDecrease = CallFunc::create([countText,count]()
+			{
+				countText->setString(std::to_string(count));
+			}
+		);
+
+
+		auto callbackChangeState = CallFunc::create([this]() { this->_state = DEAD; });
+
+		auto seq = Sequence::create(
+									delay,
+									count--,
+									countDecrease,
+									delay,
+									count--,
+									countDecrease,
+									delay,
+									count--,
+									countDecrease,
+									delay,
+									destroyBlock,
+									callbackChangeState,
+									nullptr
+									);
+		this->runAction(seq);
+	}
 }

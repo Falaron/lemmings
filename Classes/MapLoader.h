@@ -12,6 +12,7 @@ public:
 	static cocos2d::Vec2* GetSpawnPoint() { return _spawnPoint; };
 	static cocos2d::Vec2* GetExitPoint() { return _exitpoint; };
 	static cocos2d::TMXLayer* GetLayer(std::string layer);
+	static void DeleteTile(cocos2d::Vec2);
 
 
 private:
@@ -25,4 +26,6 @@ private:
 
 	static cocos2d::Vec2* _spawnPoint;
 	static cocos2d::Vec2* _exitpoint;
+
+	static std::vector<cocos2d::Node*> _blockList;
 };

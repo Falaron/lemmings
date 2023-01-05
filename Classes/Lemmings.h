@@ -9,6 +9,8 @@ enum state {
 	JUMPING,
 	PARACHUTING,
 	DIGGING,
+	BOMBING,
+	DEAD,
 };
 
 USING_NS_CC;
@@ -43,7 +45,12 @@ public:
 	/// <summary> Digging action </summary>
 	void Digging();
 
+	/// <summary> Bombing action </summary>
+	void Bombing();
+
 	void SetGround(Node* ground, bool thereIsGround);
+
+	state GetState() { return _state; };
 
 private:
 	cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
