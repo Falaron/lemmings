@@ -57,14 +57,14 @@ endif()
 # add cross-platforms source files and header files 
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
-     Classes/MainGame.cpp
+     Classes/Scenes/MainGame.cpp
      Classes/Lemmings.cpp
      Classes/MapLoader.cpp
      Classes/PhysicsShapeCache.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
-     Classes/MainGame.h
+     Classes/Scenes/MainGame.h
      Classes/Lemmings.h
      Classes/MapLoader.h
      Classes/PhysicsShapeCache.h
