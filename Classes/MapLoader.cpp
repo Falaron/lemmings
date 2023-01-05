@@ -15,6 +15,7 @@ void MapLoader::LoadMap(Layer* currentLayer)
 {
     _layer = currentLayer;
     _map = TMXTiledMap::create("maps/map" + std::to_string(GameManager::GetCurrentLevel()) + ".tmx");
+    //_map = TMXTiledMap::create("maps/test2.tmx");
     _layer->addChild(_map);
 
     LoadMapCollisions();

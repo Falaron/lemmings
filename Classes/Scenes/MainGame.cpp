@@ -138,10 +138,18 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
 
         // CURSOR COLLISION
         if (shapeA->getName() == "lemming" && shapeB->getName() == "cursor") {
-            hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
+            hudLayer->IncreaseLemmingInCursor();
+            if (hudLayer->GetLemmingsInCursor() == 1)
+            {
+                hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
+            }
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
-            hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
+            hudLayer->IncreaseLemmingInCursor();
+            if (hudLayer->GetLemmingsInCursor() == 1)
+            {
+                hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
+            }
         }
 
         //DEATH COLLISION
@@ -175,10 +183,18 @@ bool MainGame::onContactExit(PhysicsContact& contact)
 
         // CURSOR COLLISION
         if (shapeA->getName() == "lemming" && shapeB->getName() == "cursor") {
-            hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
+            hudLayer->DecreaseLemmingInCursor();
+            if (hudLayer->GetLemmingsInCursor() == 0)
+            {
+                hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
+            }
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
-            hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
+            hudLayer->DecreaseLemmingInCursor();
+            if (hudLayer->GetLemmingsInCursor() == 0)
+            {
+                hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
+            }
         }
     }
 
