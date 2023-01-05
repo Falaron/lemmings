@@ -32,9 +32,6 @@ bool HUDLayer::init()
     backgroundNode->drawPolygon(rectangle, 4, Color4F::BLACK, BORDER_WIDTH, Color4F::BLUE);
     this->addChild(backgroundNode);
 
-    rectNode->drawPolygon(rectangle, 4, Color4F::BLACK, BORDER_WIDTH, Color4F::BLUE);
-    this->addChild(rectNode);
-
     //Show infos
     lemmingsInGameText = Label::createWithSystemFont("OUT " + std::to_string(GameManager::GetLemmingSpawn() - (GameManager::GetLemmingDead() + GameManager::GetLemmingExit())), "fonts/arial.ttf", 20);
     lemmingsInGameText->setPosition(Vec2(200, 35));
@@ -157,7 +154,6 @@ void HUDLayer::update(float delta) {
             cursorOnAction = action->GetAction();
         }
     }
-}
 }
 
 void HUDLayer::ticktock(float dt) {

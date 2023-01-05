@@ -35,12 +35,11 @@ private:
     std::vector<LemmingAction*> actions;
 
     cocos2d::Label* comboLabel1;
-    cocos2d::Sprite* cursorSprite;
     cocos2d::Label* timer;
     cocos2d::Label* lemmingsInGameText;
     cocos2d::Label* lemmingsEscapedText;
     float cursorX, cursorY;
-    float timer;
+    float _seconds, _minutes;
 
     LemmingActionName cursorOnAction;
     bool isCursorOnAction = false;
