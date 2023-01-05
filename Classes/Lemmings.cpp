@@ -12,6 +12,7 @@
 Lemmings::Lemmings()
 {
 	// setup private var
+	this->_thereIsGround = false;
 	this->setPosition(*MapLoader::GetSpawnPoint());
 	this->_horizontalDirection = RIGHT;
 	this->_verticalDirection = UP;
@@ -27,7 +28,7 @@ Lemmings::Lemmings()
 
 
 	//create Physic body and setup basics parameters
-	box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0, 0, 0));
+	box = PhysicsBody::createBox(this->getContentSize(), PhysicsMaterial(0, 1, 0));
 	box->setGravityEnable(true);
 	box->setGroup(-1);
 	box->setContactTestBitmask(0xEEEEEEEE);
@@ -43,13 +44,12 @@ void Lemmings::Update()
 	const auto physicsBody = this->getPhysicsBody();
 	const auto velocity = physicsBody->getVelocity();
 
-	if (this->_state == JUMPING) {
-		this->Jump();
-	}
+	if (this->_state == JUMPING) { this->Jump(); }
 
-	else if (this->_state == PARACHUTING) {
-		this->Parachute();
-	}
+	else if (this->_state == PARACHUTING) { this->Parachute(); }
+
+	else if (this->_state == DIGGING) { this->Digging(); }
+
 	else {
 
 		// detect if the lemmings is falling
@@ -132,6 +132,15 @@ void Lemmings::UpdateAnimation()
 
 			break;
 
+		case DIGGING:
+			frames = GetAnimation("digging-%04d.png", 8);
+			this->setSpriteFrame(frames.front());
+			this->runAction(RepeatForever::create(Animate::create(Animation::createWithSpriteFrames(frames, 1.0f / 8))));
+			this->_currentAnimation = DIGGING;
+
+			break;
+
+
 		default:
 			break;
 
@@ -177,27 +186,29 @@ void Lemmings::Move()
 
 void Lemmings::Jump()
 {
+	auto physicsBody = this->getPhysicsBody();
+	auto velocity = physicsBody->getVelocity();
+
 	// check only if the state change
-	if (this->_state != this->_currentAnimation) {
-
-		auto jump = JumpBy::create(1.6f, Vec2(2.0f, 0.0f), 2.0f, 1);
-
-		auto callbackChangeState = CallFunc::create([this]() {
-			this->_state = MOVING;
-			});
-
-		auto seq = Sequence::create(jump, callbackChangeState, nullptr);
-		this->runAction(seq);
+	if (this->_state != this->_currentAnimation)
+	{
+		physicsBody->setVelocity(Vec2(30.0f , 70.0f));
 	}
+	else {
+		if ((int)velocity.y == 0 && this->_verticalDirection == DOWN)
+		{
+			this->Move();
+			this->_state = MOVING;
+		}
+	}
+
+	this->UpdateAnimation();
 }
 
 void Lemmings::Parachute()
 {
 	auto physicsBody = this->getPhysicsBody();
 	auto velocity = physicsBody->getVelocity();
-
-	CCLOG("state : %d  current state : %d", this->_state, this->_currentAnimation);
-	CCLOG("velocity start: %f . %f", velocity.x, velocity.y);
 
 	// check only if the state change
 	if (this->_state != this->_currentAnimation) 
@@ -216,10 +227,6 @@ void Lemmings::Parachute()
 		}
 	}
 
-	physicsBody = this->getPhysicsBody();
-	velocity = physicsBody->getVelocity();
-
-	CCLOG("velocity end: %f . %f", velocity.x, velocity.y);
 	this->UpdateAnimation();
 }
 
@@ -228,4 +235,41 @@ void Lemmings::setVerticalDirection() {
 	if (velocityY > 0) this->_verticalDirection = UP;
 	else if (velocityY < 0) this->_verticalDirection = DOWN;
 	
+}
+
+void Lemmings::Digging()
+{
+	auto physicsBody = this->getPhysicsBody();
+	auto velocity = physicsBody->getVelocity();
+
+	if (this->_state != this->_currentAnimation)
+	{
+		this->UpdateAnimation();
+		auto delay = DelayTime::create(1);
+		
+		auto destroyBlock = CallFunc::create([this]() 
+			{
+				if (this->_currentAnimation == MOVING) {
+					Vec2 position = *MapLoader::NormalizePosition(_ground->getPosition());
+					auto layer = MapLoader::GetLayer("Foreground");
+
+					position.y = (layer->getLayerSize().height - 1) - position.y;
+					layer->removeTileAt(position);
+					_ground->removeFromParentAndCleanup(true);
+				}
+			}
+		);
+
+
+		auto callbackChangeState = CallFunc::create([this]() { this->_state = FALLING; });
+
+		auto seq = Sequence::create(delay, destroyBlock, callbackChangeState, nullptr);
+		this->runAction(seq);
+	}
+}
+
+void Lemmings::SetGround(Node* ground, bool thereIsGround)
+{
+	_ground = ground;
+	_thereIsGround = thereIsGround;
 }

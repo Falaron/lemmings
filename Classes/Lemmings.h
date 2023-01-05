@@ -10,6 +10,7 @@ enum state {
 	MOVING,
 	JUMPING,
 	PARACHUTING,
+	DIGGING,
 };
 
 USING_NS_CC;
@@ -41,7 +42,10 @@ public:
 	/// <summary> Parachute action </summary>
 	void Parachute();
 
-	bool onContactExit(PhysicsContact& contact, int exitBit);
+	/// <summary> Digging action </summary>
+	void Digging();
+
+	void SetGround(Node* ground, bool thereIsGround);
 
 private:
 	cocos2d::Vector<cocos2d::SpriteFrame*> GetAnimation(const char* format, int count);
@@ -49,8 +53,10 @@ private:
 
 	bool _horizontalDirection;
 	bool _verticalDirection;
+	bool _thereIsGround;
 	float _speed;
 	state _state;
 	state _currentAnimation;
+	Node* _ground;
 	PhysicsBody* box;
 };

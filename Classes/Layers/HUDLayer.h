@@ -22,6 +22,10 @@ public:
     float GetCursorX() { return cursorX; };
     float GetCursorY() { return cursorY; };
 
+    void ticktock(float dt);
+
+    void updateLemmingsScore();
+
 private:
 
     cocos2d::SpriteFrameCache* frameCache;
@@ -30,6 +34,11 @@ private:
 
     std::vector<LemmingAction*> actions;
 
+    cocos2d::Label* comboLabel1;
+    cocos2d::Sprite* cursorSprite;
+    cocos2d::Label* timer;
+    cocos2d::Label* lemmingsInGameText;
+    cocos2d::Label* lemmingsEscapedText;
     float cursorX, cursorY;
     float timer;
 

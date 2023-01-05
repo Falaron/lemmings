@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="77">
+ <tileset firstgid="1" name="TileKit" tilewidth="32" tileheight="32" tilecount="228" columns="12">
+  <image source="TileKit.png" width="384" height="608"/>
+ </tileset>
+ <layer id="1" name="Background" width="25" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxTYGBgUBjFo3gUj+JRPKxwOx3wZCCeBKVJwZPQ2JOINIeQGkLmYLMXxAYAG0NYuw==
+  </data>
+ </layer>
+ <layer id="2" name="CloudLayer" width="25" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAvOAfE54H4AhBfpJEdt4D4NhDfAeK7QHyPRvYMdjAa1iMbWEExLcwk1mx09aTqGQWjgB4AAJdbEkE=
+  </data>
+ </layer>
+ <layer id="8" name="GroundBackground" width="25" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYKA90EHC9LADhHWhmJp22gFxGBR7IdkBswfZXmrZwYBmDzomJ1yx2UFtgG4HevxQI14G0h+0tIMWYKjYAUrTnVBsBcTbgXgbEibGDmQ1hNTqYlE/asfIswMAEwgv5w==
+  </data>
+ </layer>
+ <layer id="3" name="Foreground" width="25" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYBh5QJdMfWZI2JWA+eTa4QjETlDaGY/ZlNjhB8TRUOxPphnIwAoNgwDI7T1ImFIzrbDIkWMHLjOxqQMB9PgIBGILIvQSMh9ZnSMSdsbiRmpgcuyAAVhaI9WOYCgmxq4sHBg9vRPyhxEQuwCxKQMkn8JoUH4tw4FFgZgVCRMTVg5o6pwYEPkVm3oBIBaEYiEGzHSFzw4nNDtwhaEAkvmk2kFs+qDEH6TaQU9/AACvuEGA
+  </data>
+ </layer>
+ <layer id="4" name="ForegroundDecor" width="25" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYKAviKWDHUlA7AnEKUCcCsRpUD4ypgZAN5Pa5uOzgxYA2Wxa2UFLAIrrQ0CsCMXUAIqDFJPqvsHkt8No7khCYusCsRUSzkTjE+NuUgAh/eTECaluJKRWl0R30DMNUqIXF8ClFp2NLRyJBeh2AACSfCPu
+  </data>
+ </layer>
+ <objectgroup id="5" name="MapCollisions">
+  <object id="67" x="0" y="256" width="128" height="320"/>
+  <object id="68" x="480" y="384" width="192" height="32"/>
+  <object id="69" x="672" y="384" width="128" height="192"/>
+  <object id="70" x="0" y="192" width="32" height="64"/>
+  <object id="71" x="288" y="384" width="192" height="192"/>
+  <object id="72" x="96" y="64" width="32" height="32"/>
+  <object id="73" x="0" y="96" width="128" height="96"/>
+  <object id="74" x="128" y="256" width="64" height="32"/>
+  <object id="75" x="-32" y="0" width="32" height="576"/>
+  <object id="76" x="800" y="0" width="32" height="576"/>
+ </objectgroup>
+ <objectgroup id="7" name="Meta">
+  <object id="27" name="spawnPoint" x="64" y="32">
+   <point/>
+  </object>
+  <object id="28" name="exitPoint" x="768" y="384">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="6" name="Destructibles"/>
+</map>

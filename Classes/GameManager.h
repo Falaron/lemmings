@@ -30,11 +30,11 @@ public:
     static void SetLemmingSpawn(int number){ numberLemmingSpawn = number;};
 
     //Increase Exit and Dead lemmings by 1
-    static void IncreaseLemmingExit() { numberLemmingExit ++; };
-    static void IncreaseLemmingDead() { numberLemmingDead ++; };
+    static void IncreaseLemmingExit();
+    static void IncreaseLemmingDead();
 
     //check if level is there is no lemmings left and lead to EndLevelScene
-    static bool IsEndOfLevel();
+    static void checkEndLevel();
 
 
 private:

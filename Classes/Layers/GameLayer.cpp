@@ -10,7 +10,7 @@ bool GameLayer::init()
 {
 	if (!Layer::init()) return false;
 
-    MapLoader::LoadMap("maps/test.tmx", this);
+    MapLoader::LoadMap("maps/map2.tmx", this);
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -41,8 +41,6 @@ void GameLayer::update(float delta) {
             lemming->removeFromParentAndCleanup(true);
             delete lemming;
             GameManager::IncreaseLemmingDead();
-            //if (GameManager::IsEndOfLevel())
-                //Director::getInstance()->replaceScene(EndLevelScene::createScene());
         }
     }
 }

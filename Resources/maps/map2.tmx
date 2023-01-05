@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="25" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="92">
+ <tileset firstgid="1" name="TileKit" tilewidth="32" tileheight="32" tilecount="228" columns="12">
+  <image source="TileKit.png" width="384" height="608"/>
+ </tileset>
+ <layer id="1" name="Background" width="25" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt0DEOwCAIBVCO4m3d7axetYtDQ4piRGqTP7xBVPghEFEAAPiB6OBiUsPr/I3mvXTX658GPS1psmly7M7qsQ+PfZ+Y9W23z1repDbSeVRfmbua1arv7H/LPczMsJr7VX44QwEA0Q3uB8m3
+  </data>
+ </layer>
+ <layer id="2" name="CloudLayer" width="25" height="40">
+  <data encoding="base64" compression="zlib">
+   eJzt07ERgCAQBVHqshZrFk1RrMUfMiTAeUTsm9mM40gIwSapWz0qq7dz7lBRneoy7m6xvm2GvTPv+zx2/dln3bGK8h/MUv4DL1vV6PnRGQAAAGAlH9+XI10=
+  </data>
+ </layer>
+ <layer id="8" name="GroundBackground" width="25" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztlMENg0AMBE0BFHAF8EseFHD8jwLSfykhkq0siwMO/JAtrYSQtQNn34psq1Ph87/Cehz09ifEnI7ec385oZ4YPXlz/3BC5cd/eJ7ToteB5kUjaVBP/A/0xt5JNauf9/xRJY3qaVXIG3ujjEaq6mk1kDf2Rhk8j6aeNpPR8W4wjwjDm0eV766iP/demUcDBp4h6+o8bGebrO8gsqOMp6zvFM7DvOxuch5EGSLbueP32oy8PIgyjnKuAofzIMrwcpHPzji8f3tZggwvF/m+eHuFu7uXVd4d5EzivUNmlMFnwJm0V1HGlYpmezKSkYxkJCMZybg/4w0gLpU3
+  </data>
+ </layer>
+ <layer id="3" name="Foreground" width="25" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztlEEKwkAMRVNBwUXBUhTqzkIP4AEES1fewfufwylMMKQ/04xdOoEHRUseyfxpRUSV4pfSPWSfGoDez4H7cHUArxe9V4s+XANgi7cSfbjugPn/XeAc2Cc4BC6B44r7AWDXKdBHmsA10ojfW8fMLwC7vA7PrjXs8jrQrhHo7LwOa9dMKudeh7Vrxsp4bTh64JCZReebMwd6bumbV96NnGHN8QzcIqPxPNHyHug5UrvKceh7wBmW3xZE7hzcX2a4IzvLQ3SMBu/IRMs7LTM8EP5eMU/Ry2IC88sM6wxovA60A+lJldexpWaHdR5McRRHcRRHcRRHcfyH4wP0D3A8
+  </data>
+ </layer>
+ <layer id="4" name="ForegroundDecor" width="25" height="40">
+  <data encoding="base64" compression="zlib">
+   eJztlDEOwyAMRZ0DpHu6ZWDswAFYK3GNbr3/BZpKtupaBhzqoYO/9KQkwP9gCAsALM6sBxcE8H3t9D0LH3/FjA3R+m8T9OZM8P7Pg4TcFN7fH4a6aWvV/CxYazHr36pJUpjNkOvhWZnh4a+tqQg8suSeVEFx3hPaFy3TI4c8E3yfK97+a43IM2OOzKZ2Om+ZrdH6z9PYYvDO8DkTtVP3FnXgfUcqe5Y1GbEb5k207rURu8Fbm9uZWkHH23KHWwiFQqFQKBT6F70A27Ux8A==
+  </data>
+ </layer>
+ <objectgroup id="5" name="MapCollisions">
+  <object id="79" x="423.333" y="80.6667" width="320" height="32"/>
+ </objectgroup>
+ <objectgroup id="7" name="Meta">
+  <object id="80" name="spawnPoint" x="384" y="96">
+   <point/>
+  </object>
+  <object id="82" name="spawnPoint" x="384" y="96">
+   <point/>
+  </object>
+  <object id="81" name="exitPoint" x="672" y="1216">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="11" name="MapDeathObjects">
+  <object id="90" name="DeathCollision" x="256" y="448" width="64" height="32"/>
+  <object id="91" name="DeathCollision" x="352" y="448" width="64" height="32"/>
+ </objectgroup>
+ <objectgroup id="6" name="Destructibles"/>
+</map>
