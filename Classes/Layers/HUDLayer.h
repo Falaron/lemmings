@@ -26,6 +26,6 @@ private:
     cocos2d::Label* timer;
     cocos2d::Label* lemmingsInGameText;
     cocos2d::Label* lemmingsEscapedText;
+    cocos2d::Label* LemmingvictoryText;
     float cursorX, cursorY;
-    float _seconds, _minutes;
 };
