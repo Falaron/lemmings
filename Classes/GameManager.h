@@ -7,8 +7,8 @@
 #define __GAMEMANAGER_H__
 
 enum LemmingActionName {
-    BUILD = 0,
     DIG = 2,
+    EXPLODE = 3,
     JUMP = 4,
     PARACHUTE = 6,
     STOP = 7
