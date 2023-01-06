@@ -25,6 +25,7 @@ public:
 
 private:
     float winRate;
+    bool isNextLEvel = false;
 };
 
 #endif // __ENDLEVEL_SCENE_H__

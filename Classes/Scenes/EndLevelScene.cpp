@@ -26,6 +26,8 @@ static void problemLoading(const char* filename)
 // Initialize MainMenu instance
 bool EndLevelScene::init()
 {
+    isNextLEvel = false;
+
     if (!Layer::init())
     {
         return false;
@@ -105,9 +107,13 @@ bool EndLevelScene::init()
         nextLevelButton->setPosition(Vec2(300, 90));
         nextLevelButton->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
             if (type == ui::Widget::TouchEventType::ENDED)
-                GameManager::IncreaseLevel();
-                GameManager::Reset();
-                Director::getInstance()->replaceScene(MainGame::createScene());
+                if (!isNextLEvel)
+                {
+                    GameManager::Reset();
+                    GameManager::IncreaseLevel();
+                    Director::getInstance()->replaceScene(MainGame::createScene());
+                    isNextLEvel = true;
+                }
             });
         this->addChild(nextLevelButton);
     }

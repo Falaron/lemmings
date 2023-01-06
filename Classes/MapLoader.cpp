@@ -14,7 +14,7 @@ std::vector<cocos2d::Node*> MapLoader::_blockList;
 void MapLoader::LoadMap(Layer* currentLayer)
 {
     _layer = currentLayer;
-    _map = TMXTiledMap::create("maps/map" + std::to_string(GameManager::GetCurrentLevel()) + ".tmx");
+    _map = TMXTiledMap::create("maps/map" + std::to_string(GameManager::GetCurrentLevel()+1) + ".tmx");
     _layer->addChild(_map);
 
     LoadMapCollisions();
@@ -109,9 +109,7 @@ void MapLoader::LoadDeadCollision() {
                 _layer->addChild(deathCollider);
             }
         }
-
     }
-
 }
 
 void MapLoader::LoadLevelInfo()

@@ -24,6 +24,7 @@ public:
     
     float GetCursorX() { return cursorX; };
     float GetCursorY() { return cursorY; };
+    LemmingAction* GetSelectedAction() { return selectedAction; };
 
     int GetLemmingsInCursor() { return lemmingsOnCursor; };
     void IncreaseLemmingInCursor() { lemmingsOnCursor ++; };

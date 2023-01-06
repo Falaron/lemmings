@@ -6,7 +6,7 @@
 class LevelRegistry {
 public:
 
-	static const Level GetLevel(int levelNumber) { return levels.at(levelNumber-1); };
+	static const Level GetLevel(int levelNumber) { return levels.at(levelNumber); };
 	static int GetTotalLevels() { return levels.size(); };
 
 private:

@@ -21,13 +21,8 @@ USING_NS_CC;
 
 Scene* MainGame::createScene()
 {
-    if (GameManager::GetCurrentLevel() == 0)
-    {
-        GameManager::SetStartLevel(1);
-    }
-
     auto scene = MainGame::create();
-    scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(cocos2d::PhysicsWorld::DEBUGDRAW_ALL);
     //scene->getPhysicsWorld()->setGravity(Vec2(0, -3));
 
     HUDLayer* hud = HUDLayer::create();
@@ -161,7 +156,7 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             }
             if (mouseDown) {
                 state lemmingState = ((Lemmings*)shapeA)->GetState();
-                if (lemmingState == MOVING) {
+                if (lemmingState == MOVING && hudLayer->GetSelectedAction()->GetCount() > 0) {
                     LemmingActionName action = GameManager::getSelectedAction();
                     if (action == DIG) {
                         ((Lemmings*)shapeA)->SetState(DIGGING);
@@ -178,6 +173,8 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
                     else if (action == PARACHUTE) {
                         ((Lemmings*)shapeA)->SetState(PARACHUTING);
                     }
+
+                    hudLayer->UpdateActionCount();
                 }
             }
         }
@@ -189,7 +186,7 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             }
             if (mouseDown) {
                 state lemmingState = ((Lemmings*)shapeA)->GetState();
-                if (lemmingState == MOVING) {
+                if (lemmingState == MOVING && hudLayer->GetSelectedAction()->GetCount() > 0) {
                     LemmingActionName action = GameManager::getSelectedAction();
                     if (action == DIG) {
                         ((Lemmings*)shapeA)->SetState(DIGGING);
@@ -206,6 +203,8 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
                     else if (action == PARACHUTE) {
                         ((Lemmings*)shapeA)->SetState(PARACHUTING);
                     }
+
+                    hudLayer->UpdateActionCount();
                 }
             }
         }
