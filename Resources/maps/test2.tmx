@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="1">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="6">
  <tileset firstgid="1" name="TileKit" tilewidth="32" tileheight="32" tilecount="228" columns="12">
   <image source="TileKit.png" width="384" height="608"/>
  </tileset>
@@ -99,4 +99,17 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="6" name="MapCollisions">
+  <object id="1" x="0" y="480" width="96" height="96"/>
+  <object id="2" x="96" y="480" width="320" height="32"/>
+  <object id="3" x="256" y="512" width="128" height="64"/>
+ </objectgroup>
+ <objectgroup id="7" name="Meta">
+  <object id="4" name="spawnPoint" x="69" y="366">
+   <point/>
+  </object>
+  <object id="5" name="exitPoint" x="371" y="447">
+   <point/>
+  </object>
+ </objectgroup>
 </map>

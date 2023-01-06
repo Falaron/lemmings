@@ -152,7 +152,11 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
 
         // CURSOR COLLISION
         if (shapeA->getName() == "lemming" && shapeB->getName() == "cursor") {
-            hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
+            hudLayer->IncreaseLemmingInCursor();
+            if (hudLayer->GetLemmingsInCursor() == 1)
+            {
+                hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
+            }
             if (mouseDown) {
                 state lemmingState = ((Lemmings*)shapeA)->GetState();
                 if (lemmingState == MOVING) {
@@ -173,19 +177,14 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
                         ((Lemmings*)shapeA)->SetState(PARACHUTING);
                     }
                 }
-
             }
-            
-
         }
+        else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->IncreaseLemmingInCursor();
             if (hudLayer->GetLemmingsInCursor() == 1)
             {
                 hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
             }
-        }
-        else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
-            hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
             if (mouseDown) {
                 state lemmingState = ((Lemmings*)shapeB)->GetState();
                 if (lemmingState == MOVING) {
@@ -209,12 +208,6 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
 
             }
         }
-            hudLayer->IncreaseLemmingInCursor();
-            if (hudLayer->GetLemmingsInCursor() == 1)
-            {
-                hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
-            }
-        }
 
         //DEATH COLLISION
         if (shapeB->getName() == "lemming" && shapeA->getName() == "deathCollider") {
@@ -226,7 +219,7 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
                 shapeB->removeFromParentAndCleanup(true);
                 });
             cocos2d::DelayTime* delay = cocos2d::DelayTime::create(1);
-            this->runAction(Sequence::create(delay,A, NULL));
+            this->runAction(Sequence::create(delay, A, NULL));
         }
 
         if (shapeB->getTag() == 5 && shapeA->getName() == "cursor") {

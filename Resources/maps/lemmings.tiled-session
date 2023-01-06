@@ -42,7 +42,7 @@
             "selectedLayer": 5,
             "viewCenter": {
                 "x": 457.99999999999994,
-                "y": 232.66666666666669
+                "y": 232.66666666666666
             }
         },
         "map2.tmx#TileKit": {
@@ -63,11 +63,15 @@
             "scaleInDock": 1
         },
         "test2.tmx": {
+            "expandedObjectLayers": [
+                6,
+                7
+            ],
             "scale": 1,
-            "selectedLayer": 3,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 480,
-                "y": 320
+                "x": 371,
+                "y": 447
             }
         },
         "test2.tmx#TileKit": {
