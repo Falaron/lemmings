@@ -49,4 +49,5 @@ private:
 
     GameLayer* gameLayer;
     HUDLayer* hudLayer;
+    Lemmings* selectedLemmings;
 };

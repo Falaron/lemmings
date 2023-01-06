@@ -99,6 +99,30 @@ void MainGame::update(float delta)
         getDefaultCamera()->setPositionY(getDefaultCamera()->getPositionY() + CAMERA_STEP * delta);
         hudLayer->setPositionY(hudLayer->getPositionY() + CAMERA_STEP * delta);
     }
+
+    if (mouseDown && selectedLemmings) {
+        state lemmingState = selectedLemmings->GetState();
+        if (lemmingState == MOVING && hudLayer->GetSelectedAction()->GetCount() > 0) {
+            LemmingActionName action = GameManager::getSelectedAction();
+            if (action == DIG) {
+                selectedLemmings->SetState(DIGGING);
+            }
+            else if (action == HORIZONTALDIG) {
+                selectedLemmings->SetState(HORIZONTALDIGGING);
+            }
+            else if (action == EXPLODE) {
+                selectedLemmings->SetState(BOMBING);
+            }
+            else if (action == JUMP) {
+                selectedLemmings->SetState(JUMPING);
+            }
+            else if (action == PARACHUTE) {
+                selectedLemmings->SetState(PARACHUTING);
+            }
+
+            hudLayer->UpdateActionCount();
+        }
+    }
 }
 
 void MainGame::onEnterTransitionDidFinish()
@@ -154,29 +178,8 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             {
                 hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
             }
-            if (mouseDown) {
-                state lemmingState = ((Lemmings*)shapeA)->GetState();
-                if (lemmingState == MOVING && hudLayer->GetSelectedAction()->GetCount() > 0) {
-                    LemmingActionName action = GameManager::getSelectedAction();
-                    if (action == DIG) {
-                        ((Lemmings*)shapeA)->SetState(DIGGING);
-                    }
-                    else if (action == HORIZONTALDIG) {
-                        ((Lemmings*)shapeA)->SetState(HORIZONTALDIGGING);
-                    }
-                    else if (action == EXPLODE) {
-                        ((Lemmings*)shapeA)->SetState(BOMBING);
-                    }
-                    else if (action == JUMP) {
-                        ((Lemmings*)shapeA)->SetState(JUMPING);
-                    }
-                    else if (action == PARACHUTE) {
-                        ((Lemmings*)shapeA)->SetState(PARACHUTING);
-                    }
 
-                    hudLayer->UpdateActionCount();
-                }
-            }
+            selectedLemmings = (Lemmings*)shapeA;
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->IncreaseLemmingInCursor();
@@ -184,32 +187,9 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             {
                 hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
             }
-            if (mouseDown) {
-                state lemmingState = ((Lemmings*)shapeA)->GetState();
-                if (lemmingState == MOVING && hudLayer->GetSelectedAction()->GetCount() > 0) {
-                    LemmingActionName action = GameManager::getSelectedAction();
-                    if (action == DIG) {
-                        ((Lemmings*)shapeA)->SetState(DIGGING);
-                    }
-                    else if (action == HORIZONTALDIG) {
-                        ((Lemmings*)shapeA)->SetState(HORIZONTALDIGGING);
-                    }
-                    else if (action == EXPLODE) {
-                        ((Lemmings*)shapeA)->SetState(BOMBING);
-                    }
-                    else if (action == JUMP) {
-                        ((Lemmings*)shapeA)->SetState(JUMPING);
-                    }
-                    else if (action == PARACHUTE) {
-                        ((Lemmings*)shapeA)->SetState(PARACHUTING);
-                    }
 
-                    hudLayer->UpdateActionCount();
-                }
-            }
+            selectedLemmings = (Lemmings*)shapeB;
         }
-
-       
 
         //DEATH COLLISION
         if (shapeB->getName() == "lemming" && shapeA->getName() == "deathCollider") {
@@ -247,12 +227,22 @@ bool MainGame::onContactExit(PhysicsContact& contact)
             {
                 hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
             }
+
+            if (hudLayer->GetLemmingsInCursor() < 1)
+            {
+                selectedLemmings = NULL;
+            }
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "cursor") {
             hudLayer->DecreaseLemmingInCursor();
             if (hudLayer->GetLemmingsInCursor() == 0)
             {
                 hudLayer->SwitchCursorSprite("sprites/cursor/0002.png");
+            }
+
+            if (hudLayer->GetLemmingsInCursor() < 1)
+            {
+                selectedLemmings = NULL;
             }
         }
     }
