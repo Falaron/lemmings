@@ -142,6 +142,7 @@ void HUDLayer::CreateActionsHUD() {
         actionsContainer->addChild(lemmingActionSprite);
     }
 
+    selectedAction = actions[0];
     actionsContainer->setPosition(BORDER_WIDTH, BORDER_WIDTH);
 }
 

@@ -20,12 +20,12 @@
  </layer>
  <layer id="3" name="Foreground" width="25" height="18">
   <data encoding="base64" compression="zlib">
-   eJxjYBh5QJdMfWZI2JWA+eTa4QjETlDaGY/ZlNjhB8TRUOxPphnIwAoNgwDI7T1ImFIzrbDIkWMHLjOxqQMB9PgIBGILIvQSMh9ZnSMSdsbiRmpgcuyAAVhaI9WOYCgmxq4sHBg9vRPyhxEQuwCxKQMkn8JoUH4tw4FFgZgVCRMTVg5o6pwYEPkVm3oBIBaEYiEGzHSFzw4nNDtwhaEAkvmk2kFs+qDEH6TaQU9/AACvuEGA
+   eJxjYBh+IImAvC6Z5pohYVcC5pNrhyMQO0FpZzxmU2KHHxBHQ7E/mWYgAys0DAIgt/cgYUrNtMIiR44duMzEpg4E0OMjEIgtiNBLyHxkdY5I2BmLG6mBybEDBmBpjVQ7gqGYGLuycGD09E7IH0ZA7ALEpgyQfAqjQfm1DAcWBWJWJExMWDmgqXNiQORXbOoFgFgQioUYMNMVPjuc0OzAFYYCSOaTagex6YMSf5BqBz39AQAPzUHi
   </data>
  </layer>
  <layer id="4" name="ForegroundDecor" width="25" height="18">
   <data encoding="base64" compression="zlib">
-   eJxjYKAviKWDHUlA7AnEKUCcCsRpUD4ypgZAN5Pa5uOzgxYA2Wxa2UFLAIrrQ0CsCMXUAIqDFJPqvsHkt8No7khCYusCsRUSzkTjE+NuUgAh/eTECaluJKRWl0R30DMNUqIXF8ClFp2NLRyJBeh2AACSfCPu
+   eJxjYKAviKWTPZ5AnALEqUCcBuUjY2rZgQtTC9DafGx2MTDQzg5aAlBcHwJiRSimBlAcpJhU9w0mvx1Gc0cSElsXiK2QcCYanxh3kwII6ScnTkh1IyG1uiS6g55pkBK9uAAutehsbOFILEC3AwAydiOM
   </data>
  </layer>
  <objectgroup id="5" name="MapCollisions">

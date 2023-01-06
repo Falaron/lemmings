@@ -31,6 +31,7 @@ cocos2d::TMXLayer* MapLoader::GetLayer(std::string layer)
 
 void MapLoader::LoadMapCollisions()
 {
+    _blockList.clear();
     cocos2d::TMXObjectGroup* collisions = _map->getObjectGroup("MapCollisions");
 
     ValueVector& collider_array = collisions->getObjects();

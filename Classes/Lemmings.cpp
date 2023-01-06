@@ -215,7 +215,7 @@ void Lemmings::Jump()
 	if (this->_state != this->_currentAnimation)
 	{
 		if (_horizontalDirection == RIGHT) physicsBody->setVelocity(Vec2(30.0f , 70.0f));
-		else physicsBody->setVelocity(Vec2(30.0f, -70.0f));
+		else physicsBody->setVelocity(Vec2(-30.0f, 70.0f));
 	}
 	else {
 		if ((int)velocity.y == 0 && this->_verticalDirection == DOWN)
@@ -254,6 +254,10 @@ void Lemmings::Parachute()
 }
 
 void Lemmings::setVerticalDirection() {
+	if (_state == DEAD)
+	{
+		return;
+	}
 	const auto velocityY = this->getPhysicsBody()->getVelocity().y;
 	if (velocityY > 0) this->_verticalDirection = UP;
 	else if (velocityY < 0) this->_verticalDirection = DOWN;
@@ -274,7 +278,7 @@ void Lemmings::Digging()
 		auto destroyBlock = CallFunc::create([velocity, lemmingsPos]()
 			{
 				Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
-				MapLoader::DeleteTile(Vec2(position.x,position.y-1));
+				MapLoader::DeleteTile(Vec2(position.x,position.y));
 			}
 		);
 
@@ -290,7 +294,6 @@ void Lemmings::HorizontalDigging()
 {
 	auto physicsBody = this->getPhysicsBody();
 	auto velocity = physicsBody->getVelocity();
-	this->Move();
 
 	if (this->_state != this->_currentAnimation)
 	{
@@ -301,8 +304,8 @@ void Lemmings::HorizontalDigging()
 		auto destroyBlock = CallFunc::create([this,velocity, lemmingsPos]()
 			{
 				Vec2 position = *MapLoader::NormalizePosition(lemmingsPos);
-				if (_horizontalDirection == RIGHT) MapLoader::DeleteTile(Vec2(position.x + 1, position.y));
-				else MapLoader::DeleteTile(Vec2(position.x - 1, position.y));
+				if (_horizontalDirection == RIGHT) MapLoader::DeleteTile(Vec2(position.x + 1, position.y+1));
+				else MapLoader::DeleteTile(Vec2(position.x - 1, position.y+1));
 			}
 		);
 
@@ -378,4 +381,10 @@ void Lemmings::Bombing()
 								);
 		this->runAction(seq);
 	}
+}
+
+void Lemmings::SetState(state action)
+{
+	 _state = action;
+	 this->getPhysicsBody()->setVelocity(Vec2(0, 0));
 }

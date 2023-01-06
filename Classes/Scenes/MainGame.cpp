@@ -4,7 +4,7 @@
 #include "MapLoader.h"
 
 #define CAMERA_PAN_OFFSET 50
-#define CAMERA_STEP 25
+#define CAMERA_STEP 50
 #define CAMERA_MOVE_COOLDOWN 0.2
 
 int GameManager::numberLemmingSpawn = 0;
