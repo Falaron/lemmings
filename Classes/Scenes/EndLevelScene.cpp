@@ -100,7 +100,7 @@ bool EndLevelScene::init()
     menu->setPosition(Point(230, 90));
     this->addChild(menu);
 
-    if (GameManager::GetCurrentLevel()+1 <= LevelRegistry::GetTotalLevels())
+    if (GameManager::GetCurrentLevel()+1 <= LevelRegistry::GetTotalLevels() && winRate >= int(float(GameManager::GetLemmingVictory()) / GameManager::GetLemmingSpawn() * 100))
     {
         auto nextLevelButton = Button::create();
         nextLevelButton->setTitleText("Next Level");
@@ -116,6 +116,21 @@ bool EndLevelScene::init()
                 }
             });
         this->addChild(nextLevelButton);
+    }
+    else {
+        auto retryButton = Button::create();
+        retryButton->setTitleText("Retry");
+        retryButton->setPosition(Vec2(300, 90));
+        retryButton->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
+            if (type == ui::Widget::TouchEventType::ENDED)
+                if (!isNextLEvel)
+                {
+                    GameManager::Reset();
+                    Director::getInstance()->replaceScene(MainGame::createScene());
+                    isNextLEvel = true;
+                }
+            });
+        this->addChild(retryButton);
     }
 
     return true;

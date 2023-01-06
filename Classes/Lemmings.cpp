@@ -214,11 +214,11 @@ void Lemmings::Jump()
 	// check only if the state change
 	if (this->_state != this->_currentAnimation)
 	{
-		if (_horizontalDirection == RIGHT) physicsBody->setVelocity(Vec2(30.0f , 70.0f));
-		else physicsBody->setVelocity(Vec2(-30.0f, 70.0f));
+		if (_horizontalDirection == RIGHT) physicsBody->setVelocity(Vec2(50.f , 100.f));
+		else physicsBody->setVelocity(Vec2(-50.f, 100.f));
 	}
 	else {
-		if ((int)velocity.y == 0 && this->_verticalDirection == DOWN)
+		if (int(velocity.y) == 0 && this->_verticalDirection == DOWN)
 		{
 			this->Move();
 			this->_state = MOVING;
