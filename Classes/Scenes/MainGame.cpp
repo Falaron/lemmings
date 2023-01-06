@@ -226,8 +226,7 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             GameManager::ChangeSelectedAction(((LemmingAction*)shapeA)->GetAction());
             hudLayer->UpdateSelectedActionBorder(((LemmingAction*)shapeA)->GetIndex());
         }
-    }
-
+    
     return true;
 }
 
