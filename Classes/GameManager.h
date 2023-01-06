@@ -37,6 +37,7 @@ public:
 
     //check if level is there is no lemmings left and lead to EndLevelScene
     static void checkEndLevel();
+    static void Reset();
 
     //Timer
     static void setTimer(float minutes, float seconds) { _minutes = minutes; _seconds = seconds; };

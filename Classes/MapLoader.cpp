@@ -15,7 +15,6 @@ void MapLoader::LoadMap(Layer* currentLayer)
 {
     _layer = currentLayer;
     _map = TMXTiledMap::create("maps/map" + std::to_string(GameManager::GetCurrentLevel()) + ".tmx");
-    //_map = TMXTiledMap::create("maps/test2.tmx");
     _layer->addChild(_map);
 
     LoadMapCollisions();
@@ -117,9 +116,10 @@ void MapLoader::LoadDeadCollision() {
 
 void MapLoader::LoadLevelInfo()
 {
+    int val = GameManager::GetCurrentLevel();
     Level currentLevel = LevelRegistry::GetLevel(GameManager::GetCurrentLevel());
     GameManager::SetLemmingSpawn(currentLevel.GetLemmingsToSpawn());
-    GameManager::SetLemmingVictory(currentLevel.GetLemmingsToSpawn());
+    GameManager::SetLemmingVictory(currentLevel.GetRequiredLemmingsToWin());
     GameManager::setTimer(currentLevel.GetMinutes(), currentLevel.GetSeconds());
 
     for (auto action : currentLevel.GetActions())

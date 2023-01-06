@@ -44,7 +44,7 @@
   <object id="27" name="spawnPoint" x="64" y="32">
    <point/>
   </object>
-  <object id="28" name="exitPoint" x="768" y="384">
+  <object id="28" name="exitPoint" x="159.32" y="257.684">
    <point/>
   </object>
  </objectgroup>

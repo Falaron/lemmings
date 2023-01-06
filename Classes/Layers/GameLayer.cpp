@@ -19,6 +19,7 @@ bool GameLayer::init()
     physicCache = PhysicsShapeCache::getInstance();
 
     frameCache->addSpriteFramesWithFile("sprites/lemmings.plist");
+    physicCache->getInstance()->removeAllShapes();
     physicCache->addShapesWithFile("sprites/exit-door.plist");
 
 
@@ -45,8 +46,7 @@ void GameLayer::update(float delta) {
 void GameLayer::SpawnLemmings() {
     for (int i = 0; i < GameManager::GetLemmingSpawn(); i++) {
         cocos2d::CallFunc* A = cocos2d::CallFunc::create([=]() {
-            Lemmings* lemming = Lemmings::create();
-            lemming->Initialize();
+            Lemmings* lemming = new Lemmings();
             this->addChild(lemming, 1);
             this->lemmingsList.push_back(lemming);
         });
@@ -59,6 +59,7 @@ void GameLayer::RemoveLemming(Lemmings* lemming)
 {
     lemmingsList.erase(std::remove(lemmingsList.begin(), lemmingsList.end(), lemming), lemmingsList.end());
     lemming->removeFromParentAndCleanup(true);
+    delete lemming;
     GameManager::IncreaseLemmingDead();
     ((HUDLayer*)Director::getInstance()->getRunningScene()->getChildByName(HUD_LAYER_NAME))->updateLemmingsScore();
 }

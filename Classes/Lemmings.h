@@ -22,8 +22,7 @@ class Lemmings : public cocos2d::Sprite
 {
 public:
 
-	void Initialize();
-	CREATE_FUNC(Lemmings);
+	Lemmings();
 
 	/// <summary> main loop for each lemmings. Mange collisions, actions and movements. </summary>
 	void Update();

@@ -143,11 +143,13 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             shapeA->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
             hudLayer->updateLemmingsScore();
+            return true;
         }
         else if (shapeB->getName() == "lemming" && shapeA->getName() == "exit door") {
             shapeB->removeFromParentAndCleanup(true);
             GameManager::IncreaseLemmingExit();
             hudLayer->updateLemmingsScore();
+            return true;
         }
 
         // CURSOR COLLISION
@@ -186,28 +188,29 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
                 hudLayer->SwitchCursorSprite("sprites/cursor/0001.png");
             }
             if (mouseDown) {
-                state lemmingState = ((Lemmings*)shapeB)->GetState();
+                state lemmingState = ((Lemmings*)shapeA)->GetState();
                 if (lemmingState == MOVING) {
                     LemmingActionName action = GameManager::getSelectedAction();
                     if (action == DIG) {
-                        ((Lemmings*)shapeB)->SetState(DIGGING);
+                        ((Lemmings*)shapeA)->SetState(DIGGING);
                     }
                     else if (action == HORIZONTALDIG) {
-                        ((Lemmings*)shapeB)->SetState(HORIZONTALDIGGING);
+                        ((Lemmings*)shapeA)->SetState(HORIZONTALDIGGING);
                     }
                     else if (action == EXPLODE) {
-                        ((Lemmings*)shapeB)->SetState(BOMBING);
+                        ((Lemmings*)shapeA)->SetState(BOMBING);
                     }
                     else if (action == JUMP) {
-                        ((Lemmings*)shapeB)->SetState(JUMPING);
+                        ((Lemmings*)shapeA)->SetState(JUMPING);
                     }
                     else if (action == PARACHUTE) {
-                        ((Lemmings*)shapeB)->SetState(PARACHUTING);
+                        ((Lemmings*)shapeA)->SetState(PARACHUTING);
                     }
                 }
-
             }
         }
+
+       
 
         //DEATH COLLISION
         if (shapeB->getName() == "lemming" && shapeA->getName() == "deathCollider") {
@@ -226,7 +229,8 @@ bool MainGame::onContactEnter(PhysicsContact& contact)
             GameManager::ChangeSelectedAction(((LemmingAction*)shapeA)->GetAction());
             hudLayer->UpdateSelectedActionBorder(((LemmingAction*)shapeA)->GetIndex());
         }
-    
+    }
+
     return true;
 }
 

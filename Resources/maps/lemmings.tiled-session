@@ -25,10 +25,10 @@
         },
         "map1.tmx": {
             "scale": 1.35375,
-            "selectedLayer": 3,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 400.3693444136657,
-                "y": 288.08864265927974
+                "x": 548.8457987072945,
+                "y": 292.5207756232687
             }
         },
         "map1.tmx#TileKit": {

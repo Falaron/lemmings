@@ -102,10 +102,11 @@ bool EndLevelScene::init()
     {
         auto nextLevelButton = Button::create();
         nextLevelButton->setTitleText("Next Level");
-        nextLevelButton->setPosition(Vec2(200, 90));
+        nextLevelButton->setPosition(Vec2(300, 90));
         nextLevelButton->addTouchEventListener([&](Ref* sender, Widget::TouchEventType type) {
             if (type == ui::Widget::TouchEventType::ENDED)
                 GameManager::IncreaseLevel();
+                GameManager::Reset();
                 Director::getInstance()->replaceScene(MainGame::createScene());
             });
         this->addChild(nextLevelButton);
